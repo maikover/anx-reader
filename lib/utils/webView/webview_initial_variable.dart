@@ -1,7 +1,7 @@
-import 'package:anx_reader/config/shared_preference_provider.dart';
-import 'package:anx_reader/models/book_style.dart';
-import 'package:anx_reader/models/read_theme.dart';
-import 'package:anx_reader/utils/js/convert_dart_color_to_js.dart';
+import 'package:cubebook/config/shared_preference_provider.dart';
+import 'package:cubebook/models/book_style.dart';
+import 'package:cubebook/models/read_theme.dart';
+import 'package:cubebook/utils/js/convert_dart_color_to_js.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 Future<void> webviewInitialVariable(

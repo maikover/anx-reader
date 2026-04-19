@@ -1,10 +1,10 @@
-import 'package:anx_reader/l10n/generated/L10n.dart';
-import 'package:anx_reader/models/bookmark.dart';
-import 'package:anx_reader/page/book_player/epub_player.dart';
-import 'package:anx_reader/providers/bookmark.dart';
-import 'package:anx_reader/utils/error_handler.dart';
-import 'package:anx_reader/widgets/common/container/filled_container.dart';
-import 'package:anx_reader/widgets/delete_confirm.dart';
+import 'package:cubebook/l10n/generated/L10n.dart';
+import 'package:cubebook/models/bookmark.dart';
+import 'package:cubebook/page/book_player/epub_player.dart';
+import 'package:cubebook/providers/bookmark.dart';
+import 'package:cubebook/utils/error_handler.dart';
+import 'package:cubebook/widgets/common/container/filled_container.dart';
+import 'package:cubebook/widgets/delete_confirm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -27,7 +27,7 @@ class _BookmarkWidgetState extends ConsumerState<BookmarkWidget> {
   Widget build(BuildContext context) {
     final bookId = widget.epubPlayerKey.currentState!.book.id;
 
-    final bookmarkList = ref.watch(BookmarkProvider(bookId));
+    final bookmarkList = ref.watch(bookmarkProvider(bookId));
     return bookmarkList.when(
       data: (bookmarks) {
         if (bookmarks.isEmpty) {
@@ -40,7 +40,7 @@ class _BookmarkWidgetState extends ConsumerState<BookmarkWidget> {
                         fontWeight: FontWeight.bold,
                       ),
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 Text(L10n.of(context).noBookmarksTip),
               ],
             ),
@@ -59,7 +59,7 @@ class _BookmarkWidgetState extends ConsumerState<BookmarkWidget> {
                   widget.onNavigate();
                 },
                 onDelete: (id) {
-                  ref.read(BookmarkProvider(bookId).notifier).removeBookmark(
+                  ref.read(bookmarkProvider(bookId).notifier).removeBookmark(
                         id: id,
                       );
                 },

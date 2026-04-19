@@ -1,6 +1,6 @@
-import 'package:anx_reader/dao/tag.dart';
-import 'package:anx_reader/models/tag.dart';
-import 'package:anx_reader/utils/color/rgb.dart';
+import 'package:cubebook/dao/tag.dart';
+import 'package:cubebook/models/tag.dart';
+import 'package:cubebook/utils/color/rgb.dart';
 import 'package:flutter/material.dart';
 import 'package:lpinyin/lpinyin.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -57,8 +57,8 @@ class TagList extends _$TagList {
   }
 
   Future<void> _refresh() async {
-    state = const AsyncValue.loading();
-    state = AsyncValue.data(await build());
+    state = AsyncLoading();
+    state = AsyncData(await build());
   }
 }
 
@@ -107,8 +107,8 @@ class BookTagEditor extends _$BookTagEditor {
   }
 
   Future<void> _refresh() async {
-    state = const AsyncValue.loading();
-    state = AsyncValue.data(await build(bookId));
+    state = AsyncLoading();
+    state = AsyncData(await build(bookId));
   }
 }
 

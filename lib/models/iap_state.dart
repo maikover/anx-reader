@@ -1,5 +1,5 @@
-import 'package:anx_reader/providers/iap.dart';
-import 'package:anx_reader/service/iap/base_iap_service.dart';
+import 'package:cubebook/providers/iap.dart';
+import 'package:cubebook/service/iap/base_iap_service.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 

@@ -1,4 +1,4 @@
-import 'package:anx_reader/dao/reading_time.dart';
+import 'package:cubebook/dao/reading_time.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'statictics_summary_value.g.dart';
@@ -28,7 +28,7 @@ class StaticticsSummaryValue extends _$StaticticsSummaryValue {
   }
 
   Future<void> refresh() async {
-    state = const AsyncValue.loading();
-    state = AsyncValue.data(await _getStatistic(type));
+    state = AsyncLoading();
+    state = AsyncData(await _getStatistic(type));
   }
 }

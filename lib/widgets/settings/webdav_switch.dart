@@ -1,8 +1,8 @@
-import 'package:anx_reader/config/shared_preference_provider.dart';
-import 'package:anx_reader/l10n/generated/L10n.dart';
-import 'package:anx_reader/providers/sync.dart';
-import 'package:anx_reader/utils/webdav/test_webdav.dart';
-import 'package:anx_reader/widgets/settings/settings_tile.dart';
+import 'package:cubebook/config/shared_preference_provider.dart';
+import 'package:cubebook/l10n/generated/L10n.dart';
+import 'package:cubebook/providers/sync.dart';
+import 'package:cubebook/utils/webdav/test_webdav.dart';
+import 'package:cubebook/widgets/settings/settings_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

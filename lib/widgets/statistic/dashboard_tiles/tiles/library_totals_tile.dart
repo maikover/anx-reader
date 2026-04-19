@@ -1,9 +1,9 @@
-import 'package:anx_reader/l10n/generated/L10n.dart';
-import 'package:anx_reader/providers/statictics_summary_value.dart';
-import 'package:anx_reader/widgets/common/async_skeleton_wrapper.dart';
-import 'package:anx_reader/widgets/statistic/dashboard_tiles/dashboard_tile_base.dart';
-import 'package:anx_reader/widgets/statistic/dashboard_tiles/dashboard_tile_metadata.dart';
-import 'package:anx_reader/widgets/statistic/dashboard_tiles/dashboard_tile_registry.dart';
+import 'package:cubebook/l10n/generated/L10n.dart';
+import 'package:cubebook/providers/statictics_summary_value.dart';
+import 'package:cubebook/widgets/common/async_skeleton_wrapper.dart';
+import 'package:cubebook/widgets/statistic/dashboard_tiles/dashboard_tile_base.dart';
+import 'package:cubebook/widgets/statistic/dashboard_tiles/dashboard_tile_metadata.dart';
+import 'package:cubebook/widgets/statistic/dashboard_tiles/dashboard_tile_registry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -32,9 +32,9 @@ class LibraryTotalsTile extends StatisticsDashboardTileBase {
 
     return AsyncSkeletonWrapper<List>(
         asyncValue: combineAsyncValues([
-          ref.watch(StaticticsSummaryValueProvider(StatisticType.totalBooks)),
-          ref.watch(StaticticsSummaryValueProvider(StatisticType.totalDates)),
-          ref.watch(StaticticsSummaryValueProvider(StatisticType.totalNotes)),
+          ref.watch(staticticsSummaryValueProvider(StatisticType.totalBooks)),
+          ref.watch(staticticsSummaryValueProvider(StatisticType.totalDates)),
+          ref.watch(staticticsSummaryValueProvider(StatisticType.totalNotes)),
         ]),
         mock: [0, 0, 0],
         builder: (data, _) {

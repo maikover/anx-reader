@@ -3,9 +3,9 @@
 <br>
 
 <p align="center">
-  <img src="./docs/images/Anx-logo.jpg" alt="Anx-logo" width="100" />
+  <img src="./docs/images/CubeBook-logo.jpg" alt="CubeBook-logo" width="100" />
 </p>
-<h1 align="center">Anx Reader</h1>
+<h1 align="center">CubeBook</h1>
 <p align="center"><a href="https://trendshift.io/repositories/10329" target="_blank"><img src="https://trendshift.io/api/badge/repositories/10329" alt="Anxcye%2Fanx-reader | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a></p>
 
 <p align="center">
@@ -22,7 +22,7 @@
   <a href="https://github.com/anxcye/anx-reader/stargazers"><img src="https://img.shields.io/github/stars/anxcye/anx-reader" alt="Yıldızlar"></a>
 </p>
 
-Anx Reader, kitap severler için özenle hazırlanmış bir e-kitap okuma uygulamasıdır. Güçlü yapay zeka yetenekleri ve geniş format desteğiyle okuma deneyimini daha akıllı ve odaklı hâle getirir. Modern arayüz tasarımıyla, saf okuma keyfini sunmayı hedefliyoruz.
+CubeBook, kitap severler için özenle hazırlanmış bir e-kitap okuma uygulamasıdır. Güçlü yapay zeka yetenekleri ve geniş format desteğiyle okuma deneyimini daha akıllı ve odaklı hâle getirir. Modern arayüz tasarımıyla, saf okuma keyfini sunmayı hedefliyoruz.
 
 
 ![](./docs/images/main.jpg)
@@ -116,12 +116,12 @@ QQ Grubu: 1042905699
 | ![](./docs/images/mobile7.png) | ![](./docs/images/mobile8.png) | ![](./docs/images/mobile9.png) |
 
 ## Bağışlar
-Anx Reader'ı seviyorsanız projeyi desteklemek için bağış yapmayı düşünebilirsiniz. Bağışlarınız, projeyi sürdürmemize ve geliştirmemize yardımcı olur.
+CubeBook'ı seviyorsanız projeyi desteklemek için bağış yapmayı düşünebilirsiniz. Bağışlarınız, projeyi sürdürmemize ve geliştirmemize yardımcı olur.
 
 ❤️ [Bağış Yap](https://anxcye.com/home/7)
 
 ## Derleme
-Anx Reader'ı kaynak kodundan derlemek ister misiniz? Lütfen şu adımları izleyin:
+CubeBook'ı kaynak kodundan derlemek ister misiniz? Lütfen şu adımları izleyin:
 - [Flutter](https://flutter.dev) kurun.
 - Projeyi klonlayın ve dizine girin.
 - `flutter pub get` komutunu çalıştırın.
@@ -146,7 +146,7 @@ Flutter sürüm uyumsuzluklarıyla karşılaşabilirsiniz. Detaylar için [Flutt
 ## Lisans
 Bu proje [MIT Lisansı](./LICENSE) ile lisanslanmıştır.
 
-Sürüm 1.1.4'ten itibaren, Anx Reader projesinin açık kaynak lisansı MIT Lisansından GNU Genel Kamu Lisansı sürüm 3 (GPLv3) olarak değiştirilmiştir.
+Sürüm 1.1.4'ten itibaren, CubeBook projesinin açık kaynak lisansı MIT Lisansından GNU Genel Kamu Lisansı sürüm 3 (GPLv3) olarak değiştirilmiştir.
 
 Sürüm 1.2.6'dan sonra seçim ve vurgulama özelliği yeniden yazılmış ve açık kaynak lisansı GPL-3.0 Lisansından MIT Lisansına dönmüştür. Tüm katkıda bulunanlar bu değişikliği kabul etmiştir (#116).
 

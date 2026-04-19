@@ -1,9 +1,9 @@
 [English](README.md) | **简体中文** | [Türkçe](README_tr.md)
 
 <p align="center">
-  <img src="./docs/images/Anx-logo.jpg" alt="Anx-logo" width="100" />
+  <img src="./docs/images/CubeBook-logo.jpg" alt="CubeBook-logo" width="100" />
 </p>
-<h1 align="center">Anx Reader - 让阅读更专注</h1>
+<h1 align="center">CubeBook - 让阅读更专注</h1>
 
 <p align="center">
   <a href="https://github.com/Anxcye/anx-reader/blob/main/LICENSE"><img src="https://img.shields.io/github/license/anxcye/anx-reader" alt="License" ></a>
@@ -13,7 +13,7 @@
 </p>
 
 
-Anx Reader，一款为热爱阅读的你精心打造的电子书阅读器。集成多种 AI 能力，支持丰富的电子书格式，让阅读更智能、更专注。现代化界面设计，只为提供纯粹的阅读体验。
+CubeBook，一款为热爱阅读的你精心打造的电子书阅读器。集成多种 AI 能力，支持丰富的电子书格式，让阅读更智能、更专注。现代化界面设计，只为提供纯粹的阅读体验。
 
 
 ![](./docs/images/main.jpg)

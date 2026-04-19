@@ -3,24 +3,24 @@ import 'dart:io';
 
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:anx_reader/dao/database.dart';
-import 'package:anx_reader/enums/sync_protocol.dart';
-import 'package:anx_reader/l10n/generated/L10n.dart';
-import 'package:anx_reader/main.dart';
-import 'package:anx_reader/providers/sync.dart';
-import 'package:anx_reader/service/sync/sync_client_factory.dart';
-import 'package:anx_reader/utils/platform_utils.dart';
-import 'package:anx_reader/utils/save_file_to_download.dart';
-import 'package:anx_reader/utils/get_path/get_temp_dir.dart';
-import 'package:anx_reader/utils/get_path/databases_path.dart';
-import 'package:anx_reader/utils/get_path/get_base_path.dart';
-import 'package:anx_reader/utils/log/common.dart';
-import 'package:anx_reader/utils/sync_test_helper.dart';
-import 'package:anx_reader/utils/toast/common.dart';
-import 'package:anx_reader/config/shared_preference_provider.dart';
-import 'package:anx_reader/utils/webdav/test_webdav.dart';
-import 'package:anx_reader/widgets/settings/settings_title.dart';
-import 'package:anx_reader/widgets/settings/webdav_switch.dart';
+import 'package:cubebook/dao/database.dart';
+import 'package:cubebook/enums/sync_protocol.dart';
+import 'package:cubebook/l10n/generated/L10n.dart';
+import 'package:cubebook/main.dart';
+import 'package:cubebook/providers/sync.dart';
+import 'package:cubebook/service/sync/sync_client_factory.dart';
+import 'package:cubebook/utils/platform_utils.dart';
+import 'package:cubebook/utils/save_file_to_download.dart';
+import 'package:cubebook/utils/get_path/get_temp_dir.dart';
+import 'package:cubebook/utils/get_path/databases_path.dart';
+import 'package:cubebook/utils/get_path/get_base_path.dart';
+import 'package:cubebook/utils/log/common.dart';
+import 'package:cubebook/utils/sync_test_helper.dart';
+import 'package:cubebook/utils/toast/common.dart';
+import 'package:cubebook/config/shared_preference_provider.dart';
+import 'package:cubebook/utils/webdav/test_webdav.dart';
+import 'package:cubebook/widgets/settings/settings_title.dart';
+import 'package:cubebook/widgets/settings/webdav_switch.dart';
 import 'package:archive/archive_io.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -29,8 +29,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:path/path.dart' as path;
-import 'package:anx_reader/widgets/settings/settings_section.dart';
-import 'package:anx_reader/widgets/settings/settings_tile.dart';
+import 'package:cubebook/widgets/settings/settings_section.dart';
+import 'package:cubebook/widgets/settings/settings_tile.dart';
 
 const String _prefsBackupFileName = 'anx_shared_prefs.json';
 
@@ -237,7 +237,7 @@ class _SyncSettingState extends ConsumerState<SyncSetting> {
 
     Directory cacheDir = await getAnxTempDir();
     String cachePath = cacheDir.path;
-    String extractPath = '$cachePath${pathSeparator}anx_reader_import';
+    String extractPath = '$cachePath${pathSeparator}cubebook_import';
 
     try {
       await Directory(extractPath).create(recursive: true);

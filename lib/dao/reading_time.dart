@@ -1,10 +1,10 @@
-import 'package:anx_reader/dao/base_dao.dart';
-import 'package:anx_reader/dao/book.dart';
-import 'package:anx_reader/enums/sync_direction.dart';
-import 'package:anx_reader/enums/sync_trigger.dart';
-import 'package:anx_reader/models/book.dart';
-import 'package:anx_reader/models/reading_time.dart';
-import 'package:anx_reader/providers/sync.dart';
+import 'package:cubebook/dao/base_dao.dart';
+import 'package:cubebook/dao/book.dart';
+import 'package:cubebook/enums/sync_direction.dart';
+import 'package:cubebook/enums/sync_trigger.dart';
+import 'package:cubebook/models/book.dart';
+import 'package:cubebook/models/reading_time.dart';
+import 'package:cubebook/providers/sync.dart';
 
 class ReadingTimeDao extends BaseDao {
   ReadingTimeDao();

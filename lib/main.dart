@@ -1,22 +1,22 @@
-import 'package:anx_reader/utils/platform_utils.dart';
+import 'package:cubebook/utils/platform_utils.dart';
 
-import 'package:anx_reader/config/shared_preference_provider.dart';
-import 'package:anx_reader/dao/database.dart';
-import 'package:anx_reader/enums/sync_direction.dart';
-import 'package:anx_reader/enums/sync_trigger.dart';
-import 'package:anx_reader/l10n/generated/L10n.dart';
-import 'package:anx_reader/models/window_info.dart';
-import 'package:anx_reader/page/home_page.dart';
-import 'package:anx_reader/page/migration_page.dart';
-import 'package:anx_reader/service/book_player/book_player_server.dart';
-import 'package:anx_reader/service/tts/tts_handler.dart';
-import 'package:anx_reader/utils/get_path/macos_migration.dart';
-import 'package:anx_reader/utils/color_scheme.dart';
-import 'package:anx_reader/utils/error/common.dart';
-import 'package:anx_reader/utils/get_path/get_base_path.dart';
-import 'package:anx_reader/utils/log/common.dart';
-import 'package:anx_reader/utils/window_position_validator.dart';
-import 'package:anx_reader/providers/sync.dart';
+import 'package:cubebook/config/shared_preference_provider.dart';
+import 'package:cubebook/dao/database.dart';
+import 'package:cubebook/enums/sync_direction.dart';
+import 'package:cubebook/enums/sync_trigger.dart';
+import 'package:cubebook/l10n/generated/L10n.dart';
+import 'package:cubebook/models/window_info.dart';
+import 'package:cubebook/page/home_page.dart';
+import 'package:cubebook/page/migration_page.dart';
+import 'package:cubebook/service/book_player/book_player_server.dart';
+import 'package:cubebook/service/tts/tts_handler.dart';
+import 'package:cubebook/utils/get_path/macos_migration.dart';
+import 'package:cubebook/utils/color_scheme.dart';
+import 'package:cubebook/utils/error/common.dart';
+import 'package:cubebook/utils/get_path/get_base_path.dart';
+import 'package:cubebook/utils/log/common.dart';
+import 'package:cubebook/utils/window_position_validator.dart';
+import 'package:cubebook/providers/sync.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -61,8 +61,8 @@ Future<void> main() async {
   audioHandler = await AudioService.init(
     builder: () => TtsHandler(),
     config: const AudioServiceConfig(
-      androidNotificationChannelId: 'com.anx.reader.tts.channel.audio',
-      androidNotificationChannelName: 'ANX Reader TTS',
+      androidNotificationChannelId: 'com.arcaico.cubebook.tts.channel.audio',
+      androidNotificationChannelName: 'CubeBook TTS',
       androidNotificationOngoing: true,
       androidStopForegroundOnPause: true,
     ),
@@ -196,7 +196,7 @@ class _MyAppState extends ConsumerState<MyApp>
             localeListResolutionCallback: _resolveLocale,
             localizationsDelegates: L10n.localizationsDelegates,
             supportedLocales: L10n.supportedLocales,
-            title: 'Anx Reader',
+            title: 'CubeBook',
             themeMode: prefsNotifier.themeMode,
             theme: colorSchema(prefsNotifier, context, Brightness.light),
             darkTheme: colorSchema(prefsNotifier, context, Brightness.dark),

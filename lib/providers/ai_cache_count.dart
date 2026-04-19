@@ -1,4 +1,4 @@
-import 'package:anx_reader/service/ai/ai_cache.dart';
+import 'package:cubebook/service/ai/ai_cache.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'ai_cache_count.g.dart';
@@ -16,11 +16,11 @@ class AiCacheCount extends _$AiCacheCount {
 
   Future<void> clearCache() async {
     await AiCache.clearCache();
-    state = const AsyncValue.data(0);
+    state = AsyncData(0);
   }
 
   Future<void> refresh() async {
-    state = const AsyncValue.loading();
-    state = AsyncValue.data(await _getCacheCount());
+    state = AsyncLoading();
+    state = AsyncData(await _getCacheCount());
   }
 }

@@ -1,14 +1,13 @@
 import 'dart:async';
 
-import 'package:anx_reader/config/shared_preference_provider.dart';
-import 'package:anx_reader/l10n/generated/L10n.dart';
-import 'package:anx_reader/main.dart';
-import 'package:anx_reader/page/settings_page/developer/developer_options_page.dart';
-import 'package:anx_reader/utils/env_var.dart';
-import 'package:anx_reader/utils/toast/common.dart';
-import 'package:anx_reader/widgets/settings/link_icon.dart';
-import 'package:anx_reader/utils/check_update.dart';
-import 'package:anx_reader/widgets/settings/show_donate_dialog.dart';
+import 'package:cubebook/config/shared_preference_provider.dart';
+import 'package:cubebook/l10n/generated/L10n.dart';
+import 'package:cubebook/main.dart';
+import 'package:cubebook/page/settings_page/developer/developer_options_page.dart';
+import 'package:cubebook/utils/env_var.dart';
+import 'package:cubebook/utils/toast/common.dart';
+import 'package:cubebook/widgets/settings/link_icon.dart';
+import 'package:cubebook/widgets/settings/show_donate_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -115,7 +114,7 @@ Future<void> openAboutDialog() async {
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                   child: Center(
                     child: Text(
-                      'Anx',
+                      'CubeBook',
                       style: TextStyle(
                         fontSize: 50,
                         fontWeight: FontWeight.bold,
@@ -134,10 +133,6 @@ Future<void> openAboutDialog() async {
                     _handleDeveloperUnlockTap(context);
                   },
                 ),
-                if (EnvVar.enableCheckUpdate)
-                  ListTile(
-                      title: Text(L10n.of(context).aboutCheckForUpdates),
-                      onTap: () => checkUpdate(true)),
                 if (EnvVar.enableDonation)
                   ListTile(
                     title: Text(L10n.of(context).appDonate),
@@ -150,7 +145,7 @@ Future<void> openAboutDialog() async {
                   onTap: () {
                     showLicensePage(
                       context: context,
-                      applicationName: 'Anx',
+                      applicationName: 'CubeBook',
                       applicationVersion: version,
                     );
                   },

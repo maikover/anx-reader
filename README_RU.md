@@ -3,9 +3,9 @@
 <br>
 
 <p align="center">
-  <img src="./docs/images/Anx-logo.jpg" alt="Anx-logo" width="100" />
+  <img src="./docs/images/CubeBook-logo.jpg" alt="CubeBook-logo" width="100" />
 </p>
-<h1 align="center">Anx Reader</h1>
+<h1 align="center">CubeBook</h1>
 <p align="center"><a href="https://trendshift.io/repositories/10329" target="_blank"><img src="https://trendshift.io/api/badge/repositories/10329" alt="Anxcye%2Fanx-reader | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a></p>
 
 <p align="center">
@@ -22,7 +22,7 @@
   <a href="https://github.com/anxcye/anx-reader/stargazers"><img src="https://img.shields.io/github/stars/anxcye/anx-reader" alt="звёзды"></a>
 </p>
 
-Anx Reader — продуманная читалка электронных книг для любителей чтения. Оснащена мощными возможностями искусственного интеллекта и поддерживает различные форматы электронных книг, делая чтение умнее и сосредоточеннее. Благодаря современному дизайну интерфейса мы стремимся подарить вам чистое удовольствие от чтения.
+CubeBook — продуманная читалка электронных книг для любителей чтения. Оснащена мощными возможностями искусственного интеллекта и поддерживает различные форматы электронных книг, делая чтение умнее и сосредоточеннее. Благодаря современному дизайну интерфейса мы стремимся подарить вам чистое удовольствие от чтения.
 
 ![](./docs/images/main.jpg)
 
@@ -104,12 +104,12 @@ Anx Reader — продуманная читалка электронных кн
 | ![](./docs/images/mobile7.png) | ![](./docs/images/mobile8.png) | ![](./docs/images/mobile9.png) |
 
 ## Пожертвования  
-Если вам нравится Anx Reader, пожалуйста, рассмотрите возможность поддержки проекта пожертвованиями. Ваша помощь поможет поддерживать и развивать проект.
+Если вам нравится CubeBook, пожалуйста, рассмотрите возможность поддержки проекта пожертвованиями. Ваша помощь поможет поддерживать и развивать проект.
 
 ❤️ [Пожертвовать](https://anxcye.com/home/7)
 
 ## Сборка  
-Хотите собрать Anx Reader из исходников? Пожалуйста, выполните следующие шаги:  
+Хотите собрать CubeBook из исходников? Пожалуйста, выполните следующие шаги:  
 - Установите [Flutter](https://flutter.dev).  
 - Клонируйте репозиторий и перейдите в каталог проекта.  
 - Выполните `flutter pub get`.  
@@ -132,7 +132,7 @@ Anx Reader — продуманная читалка электронных кн
 ## Лицензия  
 Этот проект лицензирован под [MIT License](./LICENSE).
 
-Начиная с версии 1.1.4, лицензия проекта Anx Reader была изменена с MIT License на GNU General Public License версии 3 (GPLv3).
+Начиная с версии 1.1.4, лицензия проекта CubeBook была изменена с MIT License на GNU General Public License версии 3 (GPLv3).
 
 После версии 1.2.6 функция выделения и подсветки была переписана, и лицензия была изменена с GPL-3.0 на MIT License. Все участники согласны с этим изменением (#116).
 

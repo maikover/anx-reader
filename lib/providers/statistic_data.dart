@@ -1,9 +1,9 @@
-import 'package:anx_reader/dao/reading_time.dart';
-import 'package:anx_reader/enums/chart_mode.dart';
-import 'package:anx_reader/l10n/generated/L10n.dart';
-import 'package:anx_reader/main.dart';
-import 'package:anx_reader/models/book.dart';
-import 'package:anx_reader/models/statistic_data_model.dart';
+import 'package:cubebook/dao/reading_time.dart';
+import 'package:cubebook/enums/chart_mode.dart';
+import 'package:cubebook/l10n/generated/L10n.dart';
+import 'package:cubebook/main.dart';
+import 'package:cubebook/models/book.dart';
+import 'package:cubebook/models/statistic_data_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -16,12 +16,12 @@ class StatisticData extends _$StatisticData {
     bool? isSelectingDay,
     DateTime? date,
   }) async {
-    final currentState = state.valueOrNull!;
+    final currentState = state.value!;
     final newMode = mode ?? currentState.mode;
     final newIsSelectingDay = isSelectingDay ?? currentState.isSelectingDay;
     final newDate = date ?? currentState.date;
 
-    state = AsyncValue.data(await _fetchData(
+    state = AsyncData(await _fetchData(
       newMode,
       newIsSelectingDay,
       newDate,
@@ -37,7 +37,7 @@ class StatisticData extends _$StatisticData {
   Future<void> setDate(DateTime date) => _updateState(date: date);
 
   Future<void> touchMonth(int index) async {
-    final date = state.valueOrNull!.date;
+    final date = state.value!.date;
     final newDate = DateTime(date.year, index + 1, 1);
     const mode = ChartMode.month;
     const isSelectingDay = false;
@@ -47,7 +47,7 @@ class StatisticData extends _$StatisticData {
 
   Future<void> touchDay(int days, int index) async {
     bool isWeek = days == 7;
-    final date = state.valueOrNull!.date;
+    final date = state.value!.date;
     final newDate = isWeek
         ? date.subtract(Duration(days: date.weekday - 1 - index))
         : DateTime(date.year, date.month, index + 1);

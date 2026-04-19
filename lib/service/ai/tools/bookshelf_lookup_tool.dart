@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:anx_reader/l10n/generated/L10n.dart';
-import 'package:anx_reader/service/ai/tools/ai_tool_registry.dart';
-import 'package:anx_reader/service/ai/tools/input/bookshelf_lookup_input.dart';
-import 'package:anx_reader/service/ai/tools/repository/books_repository.dart';
+import 'package:cubebook/l10n/generated/L10n.dart';
+import 'package:cubebook/service/ai/tools/ai_tool_registry.dart';
+import 'package:cubebook/service/ai/tools/input/bookshelf_lookup_input.dart';
+import 'package:cubebook/service/ai/tools/repository/books_repository.dart';
 
 import 'base_tool.dart';
 

@@ -1,4 +1,4 @@
-import 'package:anx_reader/dao/reading_time.dart';
+import 'package:cubebook/dao/reading_time.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'total_reading_time.g.dart';
@@ -15,7 +15,7 @@ class TotalReadingTime extends _$TotalReadingTime {
   }
 
   Future<void> refresh() async {
-    state = const AsyncValue.loading();
-    state = AsyncValue.data(await _getTotalReadingTime());
+    state = AsyncLoading();
+    state = AsyncData(await _getTotalReadingTime());
   }
 }

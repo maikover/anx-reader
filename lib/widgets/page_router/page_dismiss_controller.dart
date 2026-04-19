@@ -43,7 +43,7 @@ class PageDismissController extends ChangeNotifier {
     if (_state == DismissalState.dragging) {
       return Offset(0, -_currentVerticalOffset);
     }
-    // During animation, _animation.value gives the interpolated offset
+    // During animation, _animation.valueOrNull gives the interpolated offset
     // It's important that the Tween's 'end' is set correctly before animation starts.
     return _animation.value;
   }

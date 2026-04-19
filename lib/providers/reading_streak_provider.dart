@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:anx_reader/dao/reading_time.dart';
+import 'package:cubebook/dao/reading_time.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'reading_streak_provider.g.dart';
@@ -96,7 +96,7 @@ class ReadingStreak extends _$ReadingStreak {
   }
 
   Future<void> refresh() async {
-    state = const AsyncValue.loading();
-    state = AsyncValue.data(await _calculateStreak());
+    state = AsyncLoading();
+    state = AsyncData(await _calculateStreak());
   }
 }

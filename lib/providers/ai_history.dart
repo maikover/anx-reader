@@ -1,4 +1,4 @@
-import 'package:anx_reader/service/ai/ai_history.dart';
+import 'package:cubebook/service/ai/ai_history.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final aiHistoryProvider = StateNotifierProvider<AiHistoryNotifier,
@@ -8,21 +8,21 @@ final aiHistoryProvider = StateNotifierProvider<AiHistoryNotifier,
 
 class AiHistoryNotifier
     extends StateNotifier<AsyncValue<List<AiChatHistoryEntry>>> {
-  AiHistoryNotifier() : super(const AsyncValue.loading()) {
+  AiHistoryNotifier() : super(AsyncLoading()) {
     _load();
   }
 
   Future<void> _load() async {
     try {
       final history = await AiHistoryStore.readHistory();
-      state = AsyncValue.data(history);
+      state = AsyncData(history);
     } catch (error, stack) {
-      state = AsyncValue.error(error, stack);
+      state = AsyncError(error, stack);
     }
   }
 
   Future<void> refresh() async {
-    state = const AsyncValue.loading();
+    state = AsyncLoading();
     await _load();
   }
 
@@ -38,7 +38,7 @@ class AiHistoryNotifier
 
   Future<void> clear() async {
     await AiHistoryStore.clear();
-    state = const AsyncValue.data([]);
+    state = AsyncData([]);
   }
 
   AiChatHistoryEntry? findById(String id) {

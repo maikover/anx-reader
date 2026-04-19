@@ -3,9 +3,9 @@
 <br>
 
 <p align="center">
-  <img src="./docs/images/Anx-logo.jpg" alt="Anx-logo" width="100" />
+  <img src="./docs/images/CubeBook-logo.jpg" alt="CubeBook-logo" width="100" />
 </p>
-<h1 align="center">Anx Reader</h1>
+<h1 align="center">CubeBook</h1>
 <p align="center"><a href="https://trendshift.io/repositories/10329" target="_blank"><img src="https://trendshift.io/api/badge/repositories/10329" alt="Anxcye%2Fanx-reader | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a></p>
 
 <p align="center">
@@ -22,7 +22,7 @@
   <a href="https://github.com/anxcye/anx-reader/stargazers"><img src="https://img.shields.io/github/stars/anxcye/anx-reader" alt="stars"></a>
 </p>
 
-Anx Reader, a thoughtfully crafted e-book reader for book lovers. Featuring powerful AI capabilities and supporting various e-book formats, it makes reading smarter and more focused. With its modern interface design, we're committed to delivering pure reading pleasure.
+CubeBook, a thoughtfully crafted e-book reader for book lovers. Featuring powerful AI capabilities and supporting various e-book formats, it makes reading smarter and more focused. With its modern interface design, we're committed to delivering pure reading pleasure.
 
 
 ![](./docs/images/main.jpg)
@@ -122,12 +122,12 @@ QQ Group：1042905699
 | ![](./docs/images/mobile7.png) | ![](./docs/images/mobile8.png) | ![](./docs/images/mobile9.png) |
 
 ## Donations
-If you like Anx Reader, please consider supporting the project by donating. Your donation will help me maintain and improve the project.
+If you like CubeBook, please consider supporting the project by donating. Your donation will help me maintain and improve the project.
 
 ❤️ [Donate](https://anxcye.com/home/7)
 
 ## Building
-Want to build Anx Reader from source? Please follow these steps:
+Want to build CubeBook from source? Please follow these steps:
 - Install [Flutter](https://flutter.dev).
 - Clone and enter the project directory.
 - Run `flutter pub get`.
@@ -152,7 +152,7 @@ You may encounter Flutter version incompatibility issues. Please refer to the [F
 ## License
 This project is licensed under the [MIT License](./LICENSE).
 
-Starting from version 1.1.4, the open source license for the Anx Reader project has been changed from the MIT License to the GNU General Public License version 3 (GPLv3).
+Starting from version 1.1.4, the open source license for the CubeBook project has been changed from the MIT License to the GNU General Public License version 3 (GPLv3).
 
 After version 1.2.6, the selection and highlight feature has been rewritten, and the open source license has been changed from the GPL-3.0 License to the MIT License. All contributors agree to this change(#116).
 

@@ -1,20 +1,20 @@
-import 'package:anx_reader/config/shared_preference_provider.dart';
-import 'package:anx_reader/dao/book.dart';
-import 'package:anx_reader/l10n/generated/L10n.dart';
-import 'package:anx_reader/models/md5_statistics.dart';
-import 'package:anx_reader/page/settings_page/subpage/chapter_split_rules_page.dart';
-import 'package:anx_reader/page/settings_page/subpage/log_page.dart';
-import 'package:anx_reader/page/changelog_screen.dart';
-import 'package:anx_reader/page/onboarding_screen.dart';
-import 'package:anx_reader/utils/app_version.dart';
-import 'package:anx_reader/service/md5_service.dart';
-import 'package:anx_reader/utils/toast/common.dart';
-import 'package:anx_reader/widgets/settings/settings_section.dart';
-import 'package:anx_reader/widgets/settings/settings_tile.dart';
-import 'package:anx_reader/widgets/settings/settings_title.dart';
+import 'package:cubebook/config/shared_preference_provider.dart';
+import 'package:cubebook/dao/book.dart';
+import 'package:cubebook/l10n/generated/L10n.dart';
+import 'package:cubebook/models/md5_statistics.dart';
+import 'package:cubebook/page/settings_page/subpage/chapter_split_rules_page.dart';
+import 'package:cubebook/page/settings_page/subpage/log_page.dart';
+import 'package:cubebook/page/changelog_screen.dart';
+import 'package:cubebook/page/onboarding_screen.dart';
+import 'package:cubebook/utils/app_version.dart';
+import 'package:cubebook/service/md5_service.dart';
+import 'package:cubebook/utils/toast/common.dart';
+import 'package:cubebook/widgets/settings/settings_section.dart';
+import 'package:cubebook/widgets/settings/settings_tile.dart';
+import 'package:cubebook/widgets/settings/settings_title.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:anx_reader/main.dart';
+import 'package:cubebook/main.dart';
 
 class AdvancedSetting extends StatefulWidget {
   const AdvancedSetting({super.key});

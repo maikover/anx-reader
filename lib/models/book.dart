@@ -1,4 +1,4 @@
-import 'package:anx_reader/utils/get_path/get_base_path.dart';
+import 'package:cubebook/utils/get_path/get_base_path.dart';
 
 class Book {
   int id;
@@ -40,7 +40,7 @@ class Book {
       filePath: '',
       lastReadPosition: '',
       readingPercentage: 0.78,
-      author: 'Anx',
+      author: 'CubeBook',
       isDeleted: false,
       rating: 0,
       createTime: DateTime.now(),

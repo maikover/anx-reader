@@ -1,5 +1,5 @@
-import 'package:anx_reader/dao/book.dart';
-import 'package:anx_reader/models/book.dart';
+import 'package:cubebook/dao/book.dart';
+import 'package:cubebook/models/book.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'reading_completion_provider.g.dart';
@@ -26,7 +26,7 @@ class ReadingCompletion extends _$ReadingCompletion {
   }
 
   Future<void> refresh() async {
-    state = const AsyncValue.loading();
-    state = AsyncValue.data(await _fetch());
+    state = AsyncLoading();
+    state = AsyncData(await _fetch());
   }
 }

@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:anx_reader/service/convert_to_epub/generate_toc.dart';
-import 'package:anx_reader/service/convert_to_epub/section.dart';
-import 'package:anx_reader/utils/get_path/get_temp_dir.dart';
-import 'package:anx_reader/utils/log/common.dart';
+import 'package:cubebook/service/convert_to_epub/generate_toc.dart';
+import 'package:cubebook/service/convert_to_epub/section.dart';
+import 'package:cubebook/utils/get_path/get_temp_dir.dart';
+import 'package:cubebook/utils/log/common.dart';
 import 'package:archive/archive_io.dart';
 import 'package:uuid/uuid.dart';
 

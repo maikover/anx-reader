@@ -1,5 +1,5 @@
-import 'package:anx_reader/dao/database.dart';
-import 'package:anx_reader/models/tb_group.dart';
+import 'package:cubebook/dao/database.dart';
+import 'package:cubebook/models/tb_group.dart';
 
 class GroupsRepository {
   const GroupsRepository();

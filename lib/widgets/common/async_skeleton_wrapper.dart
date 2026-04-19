@@ -1,4 +1,4 @@
-import 'package:anx_reader/utils/log/common.dart';
+import 'package:cubebook/utils/log/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -119,9 +119,9 @@ class AsyncSkeletonWrapper<T> extends StatelessWidget {
 /// Combines multiple AsyncValues into a single AsyncValue<List>.
 ///
 /// This helper function simplifies handling multiple providers:
-/// - If ANY provider is loading, returns AsyncValue.loading()
-/// - If ANY provider has an error, returns that AsyncValue.error()
-/// - If ALL providers have data, returns AsyncValue.data([...])
+/// - If ANY provider is loading, returns AsyncLoading()
+/// - If ANY provider has an error, returns that AsyncError()
+/// - If ALL providers have data, returns AsyncData([...])
 ///
 /// Usage:
 /// ```dart
@@ -141,17 +141,17 @@ class AsyncSkeletonWrapper<T> extends StatelessWidget {
 AsyncValue<List<dynamic>> combineAsyncValues(List<AsyncValue> values) {
   // Check if any is loading
   if (values.any((v) => v.isLoading && !v.hasValue)) {
-    return const AsyncValue.loading();
+    return AsyncLoading();
   }
 
   // Check for errors and return the first one found
   for (final value in values) {
     if (value.hasError) {
-      return AsyncValue.error(value.error!, value.stackTrace!);
+      return AsyncError(value.error!, value.stackTrace!);
     }
   }
 
   // All have data, extract values
   final data = values.map((v) => v.requireValue).toList();
-  return AsyncValue.data(data);
+  return AsyncData(data);
 }

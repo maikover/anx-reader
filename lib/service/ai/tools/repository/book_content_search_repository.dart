@@ -2,15 +2,15 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:anx_reader/models/book.dart';
-import 'package:anx_reader/page/home_page.dart';
-import 'package:anx_reader/service/ai/tools/input/book_content_search_input.dart';
-import 'package:anx_reader/service/ai/tools/repository/books_repository.dart';
-import 'package:anx_reader/service/book_player/book_player_server.dart';
-import 'package:anx_reader/utils/log/common.dart';
-import 'package:anx_reader/utils/webView/gererate_url.dart';
-import 'package:anx_reader/utils/webView/webview_console_message.dart';
-import 'package:anx_reader/utils/webView/anx_headless_webview.dart';
+import 'package:cubebook/models/book.dart';
+import 'package:cubebook/page/home_page.dart';
+import 'package:cubebook/service/ai/tools/input/book_content_search_input.dart';
+import 'package:cubebook/service/ai/tools/repository/books_repository.dart';
+import 'package:cubebook/service/book_player/book_player_server.dart';
+import 'package:cubebook/utils/log/common.dart';
+import 'package:cubebook/utils/webView/gererate_url.dart';
+import 'package:cubebook/utils/webView/webview_console_message.dart';
+import 'package:cubebook/utils/webView/anx_headless_webview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 

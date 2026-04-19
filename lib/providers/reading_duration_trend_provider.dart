@@ -1,4 +1,4 @@
-import 'package:anx_reader/dao/reading_time.dart';
+import 'package:cubebook/dao/reading_time.dart';
 import 'package:intl/intl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -114,7 +114,7 @@ class ReadingDurationTrend extends _$ReadingDurationTrend {
   }
 
   Future<void> refresh() async {
-    state = const AsyncValue.loading();
-    state = AsyncValue.data(await _fetchData());
+    state = AsyncLoading();
+    state = AsyncData(await _fetchData());
   }
 }

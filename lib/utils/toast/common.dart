@@ -1,5 +1,5 @@
-import 'package:anx_reader/main.dart';
-import 'package:anx_reader/widgets/common/container/filled_container.dart';
+import 'package:cubebook/main.dart';
+import 'package:cubebook/widgets/common/container/filled_container.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 

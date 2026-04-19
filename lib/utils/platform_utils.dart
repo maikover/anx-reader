@@ -5,34 +5,72 @@ import 'package:flutter/foundation.dart';
 enum AnxPlatformEnum { android, ios, macos, windows, ohos }
 
 class AnxPlatform {
+  static AnxPlatformEnum? _cachedType;
+
   static AnxPlatformEnum get type {
-    if (Platform.isAndroid && !kIsWeb) {
-      return AnxPlatformEnum.android;
-    }
-    if (Platform.isIOS && !kIsWeb) {
-      return AnxPlatformEnum.ios;
-    }
-    if (Platform.isMacOS && !kIsWeb) {
-      return AnxPlatformEnum.macos;
-    }
-    if (Platform.isWindows && !kIsWeb) {
-      return AnxPlatformEnum.windows;
-    }
-    try {
-      if (Platform.operatingSystem == 'ohos') {
-        return AnxPlatformEnum.ohos;
+    if (_cachedType != null) return _cachedType!;
+
+    if (!kIsWeb) {
+      if (Platform.isAndroid) {
+        return _cachedType = AnxPlatformEnum.android;
       }
-    } catch (_) {
-      // Platform.operatingSystem might throw if not available in some environments
+      if (Platform.isIOS) {
+        return _cachedType = AnxPlatformEnum.ios;
+      }
+      if (Platform.isMacOS) {
+        return _cachedType = AnxPlatformEnum.macos;
+      }
+      if (Platform.isWindows) {
+        return _cachedType = AnxPlatformEnum.windows;
+      }
+      try {
+        if (Platform.operatingSystem == 'ohos') {
+          return _cachedType = AnxPlatformEnum.ohos;
+        }
+      } catch (_) {}
     }
     throw UnsupportedError('Unsupported platform');
   }
 
-  static bool get isAndroid => type == AnxPlatformEnum.android;
-  static bool get isIOS => type == AnxPlatformEnum.ios;
-  static bool get isMacOS => type == AnxPlatformEnum.macos;
-  static bool get isWindows => type == AnxPlatformEnum.windows;
-  static bool get isOhos => type == AnxPlatformEnum.ohos;
+  static bool get isAndroid {
+    try {
+      return type == AnxPlatformEnum.android;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  static bool get isIOS {
+    try {
+      return type == AnxPlatformEnum.ios;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  static bool get isMacOS {
+    try {
+      return type == AnxPlatformEnum.macos;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  static bool get isWindows {
+    try {
+      return type == AnxPlatformEnum.windows;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  static bool get isOhos {
+    try {
+      return type == AnxPlatformEnum.ohos;
+    } catch (_) {
+      return false;
+    }
+  }
 
   static bool get isMobile => isAndroid || isIOS || isOhos;
 

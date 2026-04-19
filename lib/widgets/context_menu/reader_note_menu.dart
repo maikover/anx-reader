@@ -1,7 +1,7 @@
-import 'package:anx_reader/dao/book_note.dart';
-import 'package:anx_reader/l10n/generated/L10n.dart';
-import 'package:anx_reader/models/book_note.dart';
-import 'package:anx_reader/widgets/common/axis_flex.dart';
+import 'package:cubebook/dao/book_note.dart';
+import 'package:cubebook/l10n/generated/L10n.dart';
+import 'package:cubebook/models/book_note.dart';
+import 'package:cubebook/widgets/common/axis_flex.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 

@@ -1,10 +1,10 @@
-import 'package:anx_reader/l10n/generated/L10n.dart';
-import 'package:anx_reader/config/shared_preference_provider.dart';
-import 'package:anx_reader/enums/lang_list.dart';
-import 'package:anx_reader/main.dart';
-import 'package:anx_reader/service/config/config_item.dart';
-import 'package:anx_reader/service/translate/index.dart';
-import 'package:anx_reader/utils/log/common.dart';
+import 'package:cubebook/l10n/generated/L10n.dart';
+import 'package:cubebook/config/shared_preference_provider.dart';
+import 'package:cubebook/enums/lang_list.dart';
+import 'package:cubebook/main.dart';
+import 'package:cubebook/service/config/config_item.dart';
+import 'package:cubebook/service/translate/index.dart';
+import 'package:cubebook/utils/log/common.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 

@@ -1,0 +1,91 @@
+﻿Running Gradle task 'assembleDebug'...                          
+flutter : lib/providers/bgimg.dart:108:49: Error: Member not found: 'FilePicker.pickFiles'.
+En línea: 1 Carácter: 1
++ flutter build apk --debug 2>&1 | Out-File -FilePath gradle_error.txt  ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (lib/providers/b...ker.pickFiles'.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    FilePickerResult? result = await FilePicker.pickFiles(
+                                                ^^^^^^^^^
+lib/providers/bgimg.dart:131:49: Error: Member not found: 'FilePicker.pickFiles'.
+    FilePickerResult? result = await FilePicker.pickFiles(
+                                                ^^^^^^^^^
+lib/page/book_detail.dart:170:40: Error: Member not found: 'FilePicker.pickFiles'.
+                      await FilePicker.pickFiles(
+                                       ^^^^^^^^^
+lib/page/settings_page/sync.dart:210:49: Error: Member not found: 'FilePicker.pickFiles'.
+    FilePickerResult? result = await FilePicker.pickFiles(
+                                                ^^^^^^^^^
+lib/page/settings_page/sync.dart:357:34: Error: The method 'decodeStream' isn't defined for the type 'ZipDecoder'.
+ - 'ZipDecoder' is from 'package:archive/src/zip_decoder.dart' 
+('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/archive-3.6.1/lib/src/zip_decoder.dart').
+Try correcting the name to the name of an existing method, or defining a method named 'decodeStream'.
+    final archive = ZipDecoder().decodeStream(input);
+                                 ^^^^^^^^^^^^
+lib/utils/save_file_to_download.dart:30:45: Error: Member not found: 'FilePicker.saveFile'.
+      String? outputFile = await FilePicker.saveFile(
+                                            ^^^^^^^^
+lib/page/settings_page/storege.dart:62:37: Error: Member not found: 'FilePicker.getDirectoryPath'.
+    final result = await FilePicker.getDirectoryPath();
+                                    ^^^^^^^^^^^^^^^^
+lib/service/tts/tts_handler.dart:84:51: Error: Can't use an expression of type 'PlaybackState?' as a function because 
+it's potentially null.
+ - 'PlaybackState' is from 'package:audio_service/audio_service.dart' 
+('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/audio_service-0.18.17/lib/audio_service.dart').
+Try calling using ?.call instead.
+      playbackState.add(playbackState.valueOrNull.copyWith(
+                                                  ^
+lib/service/tts/tts_handler.dart:105:49: Error: Can't use an expression of type 'PlaybackState?' as a function because 
+it's potentially null.
+ - 'PlaybackState' is from 'package:audio_service/audio_service.dart' 
+('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/audio_service-0.18.17/lib/audio_service.dart').
+Try calling using ?.call instead.
+    playbackState.add(playbackState.valueOrNull.copyWith(
+                                                ^
+lib/service/tts/tts_handler.dart:131:37: Error: Property 'isNotEmpty' cannot be accessed on 'List<MediaItem>?' because 
+it is potentially null.
+ - 'List' is from 'dart:core'.
+ - 'MediaItem' is from 'package:audio_service/audio_service.dart' 
+('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/audio_service-0.18.17/lib/audio_service.dart').
+Try accessing using ?. instead.
+      queueIndex: queue.valueOrNull.isNotEmpty ? 0 : null,
+                                    ^^^^^^^^^^
+lib/service/tts/tts_handler.dart:129:49: Error: Can't use an expression of type 'PlaybackState?' as a function because 
+it's potentially null.
+ - 'PlaybackState' is from 'package:audio_service/audio_service.dart' 
+('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/audio_service-0.18.17/lib/audio_service.dart').
+Try calling using ?.call instead.
+    playbackState.add(playbackState.valueOrNull.copyWith(
+                                                ^
+lib/service/tts/tts_handler.dart:142:49: Error: Can't use an expression of type 'PlaybackState?' as a function because 
+it's potentially null.
+ - 'PlaybackState' is from 'package:audio_service/audio_service.dart' 
+('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/audio_service-0.18.17/lib/audio_service.dart').
+Try calling using ?.call instead.
+    playbackState.add(playbackState.valueOrNull.copyWith(
+                                                ^
+lib/service/notes/export_notes.dart:90:22: Error: Method not found: 'Csv'.
+      final string = Csv().encoder.convert(list);
+                     ^^^
+lib/service/font.dart:10:47: Error: Member not found: 'FilePicker.pickFiles'.
+  FilePickerResult? result = await FilePicker.pickFiles(
+                                              ^^^^^^^^^
+Target kernel_snapshot_program failed: Exception
+
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileFlutterBuildDebug'.
+> Process 'command 'C:\Users\maima\flutter\bin\flutter.bat'' finished with non-zero exit value 1
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 13s
+Running Gradle task 'assembleDebug'...                             13.9s
+Gradle task assembleDebug failed with exit code 1

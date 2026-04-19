@@ -1,6 +1,6 @@
 #!/bin/bash
 
-APP_PATH="build/macos/Build/Products/Release/Anx Reader.app"
+APP_PATH="build/macos/Build/Products/Release/CubeBook.app"
 
 OPT_APP_FORMAT=""
 OPT_DEPLOYMENT=""

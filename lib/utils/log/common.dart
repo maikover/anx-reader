@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:anx_reader/config/shared_preference_provider.dart';
-import 'package:anx_reader/utils/log/string_to_level.dart';
-import 'package:anx_reader/utils/get_path/log_file.dart';
+import 'package:cubebook/config/shared_preference_provider.dart';
+import 'package:cubebook/utils/log/string_to_level.dart';
+import 'package:cubebook/utils/get_path/log_file.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';

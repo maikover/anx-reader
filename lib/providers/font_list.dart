@@ -1,8 +1,8 @@
-import 'package:anx_reader/l10n/generated/L10n.dart';
-import 'package:anx_reader/main.dart';
-import 'package:anx_reader/models/font_model.dart';
-import 'package:anx_reader/utils/font_parser.dart';
-import 'package:anx_reader/utils/get_path/get_base_path.dart';
+import 'package:cubebook/l10n/generated/L10n.dart';
+import 'package:cubebook/main.dart';
+import 'package:cubebook/models/font_model.dart';
+import 'package:cubebook/utils/font_parser.dart';
+import 'package:cubebook/utils/get_path/get_base_path.dart';
 import 'package:flutter/services.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'dart:io';

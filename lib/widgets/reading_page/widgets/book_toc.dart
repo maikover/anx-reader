@@ -1,10 +1,10 @@
-import 'package:anx_reader/main.dart';
-import 'package:anx_reader/models/search_result_model.dart';
-import 'package:anx_reader/models/toc_item.dart';
-import 'package:anx_reader/page/book_player/epub_player.dart';
-import 'package:anx_reader/providers/book_toc.dart';
-import 'package:anx_reader/providers/toc_search.dart';
-import 'package:anx_reader/widgets/common/container/filled_container.dart';
+import 'package:cubebook/main.dart';
+import 'package:cubebook/models/search_result_model.dart';
+import 'package:cubebook/models/toc_item.dart';
+import 'package:cubebook/page/book_player/epub_player.dart';
+import 'package:cubebook/providers/book_toc.dart';
+import 'package:cubebook/providers/toc_search.dart';
+import 'package:cubebook/widgets/common/container/filled_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';

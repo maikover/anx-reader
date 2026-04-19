@@ -1,13 +1,13 @@
-import 'package:anx_reader/l10n/generated/L10n.dart';
-import 'package:anx_reader/models/book.dart';
-import 'package:anx_reader/page/book_notes_page.dart';
-import 'package:anx_reader/providers/notes_page_current_book.dart';
-import 'package:anx_reader/providers/notes_statistics.dart';
-import 'package:anx_reader/utils/date/convert_seconds.dart';
-import 'package:anx_reader/widgets/bookshelf/book_cover.dart';
-import 'package:anx_reader/widgets/common/container/filled_container.dart';
-import 'package:anx_reader/widgets/highlight_digit.dart';
-import 'package:anx_reader/widgets/tips/notes_tips.dart';
+import 'package:cubebook/l10n/generated/L10n.dart';
+import 'package:cubebook/models/book.dart';
+import 'package:cubebook/page/book_notes_page.dart';
+import 'package:cubebook/providers/notes_page_current_book.dart';
+import 'package:cubebook/providers/notes_statistics.dart';
+import 'package:cubebook/utils/date/convert_seconds.dart';
+import 'package:cubebook/widgets/bookshelf/book_cover.dart';
+import 'package:cubebook/widgets/common/container/filled_container.dart';
+import 'package:cubebook/widgets/highlight_digit.dart';
+import 'package:cubebook/widgets/tips/notes_tips.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

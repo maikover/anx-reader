@@ -1,8 +1,8 @@
-import 'package:anx_reader/dao/base_dao.dart';
-import 'package:anx_reader/l10n/generated/L10n.dart';
-import 'package:anx_reader/main.dart';
-import 'package:anx_reader/models/read_theme.dart';
-import 'package:anx_reader/utils/toast/common.dart';
+import 'package:cubebook/dao/base_dao.dart';
+import 'package:cubebook/l10n/generated/L10n.dart';
+import 'package:cubebook/main.dart';
+import 'package:cubebook/models/read_theme.dart';
+import 'package:cubebook/utils/toast/common.dart';
 
 class ThemeDao extends BaseDao {
   ThemeDao();

@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import 'package:anx_reader/models/storege_info_model.dart';
-import 'package:anx_reader/providers/font_list.dart';
-import 'package:anx_reader/utils/get_path/databases_path.dart';
-import 'package:anx_reader/utils/get_path/get_base_path.dart';
-import 'package:anx_reader/utils/get_path/get_cache_dir.dart';
-import 'package:anx_reader/utils/get_path/log_file.dart';
-import 'package:anx_reader/utils/log/common.dart';
+import 'package:cubebook/models/storege_info_model.dart';
+import 'package:cubebook/providers/font_list.dart';
+import 'package:cubebook/utils/get_path/databases_path.dart';
+import 'package:cubebook/utils/get_path/get_base_path.dart';
+import 'package:cubebook/utils/get_path/get_cache_dir.dart';
+import 'package:cubebook/utils/get_path/log_file.dart';
+import 'package:cubebook/utils/log/common.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'storage_info.g.dart';

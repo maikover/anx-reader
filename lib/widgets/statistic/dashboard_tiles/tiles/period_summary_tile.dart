@@ -1,13 +1,13 @@
-import 'package:anx_reader/enums/chart_mode.dart';
-import 'package:anx_reader/l10n/generated/L10n.dart';
-import 'package:anx_reader/models/statistic_data_model.dart';
-import 'package:anx_reader/widgets/statistic/dashboard_tiles/dashboard_tile_registry.dart';
-import 'package:anx_reader/providers/statistic_data.dart';
-import 'package:anx_reader/providers/total_reading_time.dart';
-import 'package:anx_reader/utils/date/convert_seconds.dart';
-import 'package:anx_reader/widgets/common/async_skeleton_wrapper.dart';
-import 'package:anx_reader/widgets/statistic/dashboard_tiles/dashboard_tile_base.dart';
-import 'package:anx_reader/widgets/statistic/dashboard_tiles/dashboard_tile_metadata.dart';
+import 'package:cubebook/enums/chart_mode.dart';
+import 'package:cubebook/l10n/generated/L10n.dart';
+import 'package:cubebook/models/statistic_data_model.dart';
+import 'package:cubebook/widgets/statistic/dashboard_tiles/dashboard_tile_registry.dart';
+import 'package:cubebook/providers/statistic_data.dart';
+import 'package:cubebook/providers/total_reading_time.dart';
+import 'package:cubebook/utils/date/convert_seconds.dart';
+import 'package:cubebook/widgets/common/async_skeleton_wrapper.dart';
+import 'package:cubebook/widgets/statistic/dashboard_tiles/dashboard_tile_base.dart';
+import 'package:cubebook/widgets/statistic/dashboard_tiles/dashboard_tile_metadata.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

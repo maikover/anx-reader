@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:anx_reader/enums/bgimg_alignment.dart';
-import 'package:anx_reader/enums/bgimg_type.dart';
-import 'package:anx_reader/models/bgimg.dart';
-import 'package:anx_reader/utils/get_path/get_base_path.dart';
-import 'package:anx_reader/utils/log/common.dart';
+import 'package:cubebook/enums/bgimg_alignment.dart';
+import 'package:cubebook/enums/bgimg_type.dart';
+import 'package:cubebook/models/bgimg.dart';
+import 'package:cubebook/utils/get_path/get_base_path.dart';
+import 'package:cubebook/utils/log/common.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -12,7 +12,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'bgimg.g.dart';
 
 final bgimgTimestampProvider =
-    StateProvider<int>((ref) => DateTime.now().millisecondsSinceEpoch);
+    StateProvider.autoDispose<int>((ref) => DateTime.now().millisecondsSinceEpoch);
 
 @Riverpod(keepAlive: true)
 class Bgimg extends _$Bgimg {

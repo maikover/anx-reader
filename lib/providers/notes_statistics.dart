@@ -1,7 +1,7 @@
-import 'package:anx_reader/dao/book.dart';
-import 'package:anx_reader/dao/book_note.dart';
-import 'package:anx_reader/dao/reading_time.dart';
-import 'package:anx_reader/models/book.dart';
+import 'package:cubebook/dao/book.dart';
+import 'package:cubebook/dao/book_note.dart';
+import 'package:cubebook/dao/reading_time.dart';
+import 'package:cubebook/models/book.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'notes_statistics.g.dart';
@@ -18,8 +18,8 @@ class NotesStatistics extends _$NotesStatistics {
   }
 
   Future<void> refresh() async {
-    state = const AsyncValue.loading();
-    state = AsyncValue.data(await _getNotesStatistics());
+    state = AsyncLoading();
+    state = AsyncData(await _getNotesStatistics());
   }
 }
 
@@ -50,8 +50,8 @@ class BookIdAndNotes extends _$BookIdAndNotes {
   }
 
   Future<void> refresh() async {
-    state = const AsyncValue.loading();
-    state = AsyncValue.data(await _getBookIdAndNotes());
+    state = AsyncLoading();
+    state = AsyncData(await _getBookIdAndNotes());
   }
 }
 
@@ -67,7 +67,7 @@ class BookReadingTime extends _$BookReadingTime {
   }
 
   Future<void> refresh(int bookId) async {
-    state = const AsyncValue.loading();
-    state = AsyncValue.data(await _getBookReadingTime(bookId));
+    state = AsyncLoading();
+    state = AsyncData(await _getBookReadingTime(bookId));
   }
 }

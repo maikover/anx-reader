@@ -1,6 +1,6 @@
 {
-    "name": "anx_reader",
-    "short_name": "anx_reader",
+    "name": "CubeBook",
+    "short_name": "CubeBook",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#hexcode",

@@ -1,12 +1,12 @@
-import 'package:anx_reader/utils/platform_utils.dart';
+import 'package:cubebook/utils/platform_utils.dart';
 
 import 'package:in_app_purchase/in_app_purchase.dart';
 
-import 'package:anx_reader/service/iap/app_store_iap_service.dart';
-import 'package:anx_reader/service/iap/base_iap_service.dart';
-import 'package:anx_reader/service/iap/play_store_iap_service.dart';
+import 'package:cubebook/service/iap/app_store_iap_service.dart';
+import 'package:cubebook/service/iap/base_iap_service.dart';
+import 'package:cubebook/service/iap/play_store_iap_service.dart';
 
-export 'package:anx_reader/service/iap/base_iap_service.dart'
+export 'package:cubebook/service/iap/base_iap_service.dart'
     show IAPStatus, IapPlatformSnapshot, IapStatusTitle;
 
 class NoopIAPService extends BaseIAPService {

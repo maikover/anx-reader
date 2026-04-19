@@ -1,9 +1,9 @@
-import 'package:anx_reader/l10n/generated/L10n.dart';
-import 'package:anx_reader/main.dart';
-import 'package:anx_reader/page/reading_page.dart';
-import 'package:anx_reader/widgets/reading_page/more_settings/other_settings.dart';
-import 'package:anx_reader/widgets/reading_page/more_settings/reading_settings.dart';
-import 'package:anx_reader/widgets/reading_page/more_settings/style_settings.dart';
+import 'package:cubebook/l10n/generated/L10n.dart';
+import 'package:cubebook/main.dart';
+import 'package:cubebook/page/reading_page.dart';
+import 'package:cubebook/widgets/reading_page/more_settings/other_settings.dart';
+import 'package:cubebook/widgets/reading_page/more_settings/reading_settings.dart';
+import 'package:cubebook/widgets/reading_page/more_settings/style_settings.dart';
 import 'package:contentsize_tabbarview/contentsize_tabbarview.dart';
 import 'package:flutter/material.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';

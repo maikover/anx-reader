@@ -1,18 +1,18 @@
-import 'package:anx_reader/config/shared_preference_provider.dart';
-import 'package:anx_reader/l10n/generated/L10n.dart';
-import 'package:anx_reader/providers/dashboard_tiles_provider.dart';
-import 'package:anx_reader/providers/total_reading_time.dart';
-import 'package:anx_reader/widgets/common/anx_button.dart';
-import 'package:anx_reader/widgets/common/async_skeleton_wrapper.dart';
-import 'package:anx_reader/widgets/common/container/filled_container.dart';
-import 'package:anx_reader/widgets/highlight_digit.dart';
-import 'package:anx_reader/widgets/statistic/dashboard_tiles/dashboard_tile_registry.dart';
+import 'package:cubebook/config/shared_preference_provider.dart';
+import 'package:cubebook/l10n/generated/L10n.dart';
+import 'package:cubebook/providers/dashboard_tiles_provider.dart';
+import 'package:cubebook/providers/total_reading_time.dart';
+import 'package:cubebook/widgets/common/anx_button.dart';
+import 'package:cubebook/widgets/common/async_skeleton_wrapper.dart';
+import 'package:cubebook/widgets/common/container/filled_container.dart';
+import 'package:cubebook/widgets/highlight_digit.dart';
+import 'package:cubebook/widgets/statistic/dashboard_tiles/dashboard_tile_registry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
 // Provider to track current page index in IntroductionScreen
-final _currentPageIndexProvider = StateProvider<int>((ref) => 0);
+final _currentPageIndexProvider = StateProvider.autoDispose<int>((ref) => 0);
 
 class StatisticsDashboardTitle extends ConsumerStatefulWidget {
   const StatisticsDashboardTitle({super.key});

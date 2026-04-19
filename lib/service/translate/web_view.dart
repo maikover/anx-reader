@@ -1,6 +1,6 @@
-import 'package:anx_reader/l10n/generated/L10n.dart';
-import 'package:anx_reader/enums/lang_list.dart';
-import 'package:anx_reader/service/translate/index.dart';
+import 'package:cubebook/l10n/generated/L10n.dart';
+import 'package:cubebook/enums/lang_list.dart';
+import 'package:cubebook/service/translate/index.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';

@@ -1,7 +1,7 @@
-import 'package:anx_reader/dao/book.dart';
-import 'package:anx_reader/dao/book_note.dart';
-import 'package:anx_reader/models/book.dart';
-import 'package:anx_reader/models/book_note.dart';
+import 'package:cubebook/dao/book.dart';
+import 'package:cubebook/dao/book_note.dart';
+import 'package:cubebook/models/book.dart';
+import 'package:cubebook/models/book_note.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'random_highlight_provider.g.dart';
@@ -38,7 +38,7 @@ class RandomHighlight extends _$RandomHighlight {
   }
 
   Future<void> refresh() async {
-    state = const AsyncValue.loading();
-    state = AsyncValue.data(await _load());
+    state = AsyncLoading();
+    state = AsyncData(await _load());
   }
 }

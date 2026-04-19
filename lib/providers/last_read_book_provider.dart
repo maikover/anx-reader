@@ -1,6 +1,6 @@
-import 'package:anx_reader/dao/book.dart';
-import 'package:anx_reader/dao/reading_time.dart';
-import 'package:anx_reader/models/book.dart';
+import 'package:cubebook/dao/book.dart';
+import 'package:cubebook/dao/reading_time.dart';
+import 'package:cubebook/models/book.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'last_read_book_provider.g.dart';
@@ -63,7 +63,7 @@ class LastReadBook extends _$LastReadBook {
   }
 
   Future<void> refresh() async {
-    state = const AsyncValue.loading();
-    state = AsyncValue.data(await _load());
+    state = AsyncLoading();
+    state = AsyncData(await _load());
   }
 }

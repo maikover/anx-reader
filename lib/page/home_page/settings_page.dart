@@ -1,12 +1,12 @@
-import 'package:anx_reader/l10n/generated/L10n.dart';
-import 'package:anx_reader/page/iap_page.dart';
-import 'package:anx_reader/page/settings_page/more_settings_page.dart';
-import 'package:anx_reader/providers/iap.dart';
-import 'package:anx_reader/service/iap/iap_service.dart';
-import 'package:anx_reader/utils/env_var.dart';
-import 'package:anx_reader/widgets/settings/about.dart';
-import 'package:anx_reader/widgets/settings/theme_mode.dart';
-import 'package:anx_reader/widgets/settings/webdav_switch.dart';
+import 'package:cubebook/l10n/generated/L10n.dart';
+import 'package:cubebook/page/iap_page.dart';
+import 'package:cubebook/page/settings_page/more_settings_page.dart';
+import 'package:cubebook/providers/iap.dart';
+import 'package:cubebook/service/iap/iap_service.dart';
+import 'package:cubebook/utils/env_var.dart';
+import 'package:cubebook/widgets/settings/about.dart';
+import 'package:cubebook/widgets/settings/theme_mode.dart';
+import 'package:cubebook/widgets/settings/webdav_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -37,15 +37,19 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                   padding: const EdgeInsets.fromLTRB(0, 60, 0, 20),
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
-                    child: Container(
-                      constraints: const BoxConstraints(maxWidth: 500),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: MediaQuery.of(context).size.width * 0.8,
+                      ),
                       child: Text(
-                        'Anx',
+                        'CubeBook',
                         style: TextStyle(
-                          fontSize: 130,
+                          fontSize: 100,
                           fontWeight: FontWeight.bold,
                           color: Theme.of(context).colorScheme.primary,
                         ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ),
