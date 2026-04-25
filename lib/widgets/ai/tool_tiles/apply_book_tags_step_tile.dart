@@ -151,7 +151,7 @@ class _ApplyBookTagsStepTileState extends State<ApplyBookTagsStepTile> {
               child: FilledContainer(
                 width: double.infinity,
                 padding: const EdgeInsets.all(8),
-                radius: 10,
+                radius: 0,
                 color: theme.colorScheme.surfaceContainer,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

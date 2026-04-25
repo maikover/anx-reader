@@ -129,7 +129,7 @@ class _MindmapStepTileState extends State<MindmapStepTile> {
         FilledContainer(
           width: double.infinity,
           height: 360,
-          radius: 12,
+          radius: 0,
           child: LayoutBuilder(
             builder: (context, constraints) {
               final width =

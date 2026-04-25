@@ -3,10 +3,12 @@ import 'package:cubebook/models/book.dart';
 import 'package:cubebook/page/book_notes_page.dart';
 import 'package:cubebook/providers/notes_page_current_book.dart';
 import 'package:cubebook/providers/notes_statistics.dart';
+import 'package:cubebook/theme/neo_colors.dart';
 import 'package:cubebook/utils/date/convert_seconds.dart';
 import 'package:cubebook/widgets/bookshelf/book_cover.dart';
 import 'package:cubebook/widgets/common/container/filled_container.dart';
 import 'package:cubebook/widgets/highlight_digit.dart';
+import 'package:cubebook/widgets/neo/neo_background.dart';
 import 'package:cubebook/widgets/tips/notes_tips.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,40 +28,49 @@ class _NotesPageState extends ConsumerState<NotesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      bottom: false,
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          if (constraints.maxWidth > 600) {
-            return Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      notesStatistic(),
-                      bookNotesList(false),
-                    ],
+    return NeoBackground(
+      pattern: NeoBackgroundPattern.mesh,
+      opacity: 0.04,
+      child: SafeArea(
+        bottom: false,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            if (constraints.maxWidth > 600) {
+              return Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        notesStatistic(),
+                        const NeoSectionDivider(),
+                        Expanded(child: bookNotesList(false)),
+                      ],
+                    ),
                   ),
-                ),
-                const VerticalDivider(thickness: 1, width: 1),
-                const Expanded(
-                  flex: 2,
-                  child: NotesDetail(),
-                ),
-              ],
-            );
-          } else {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                notesStatistic(),
-                bookNotesList(true),
-              ],
-            );
-          }
-        },
+                  Container(
+                    width: 4,
+                    color: NeoBrutalColors.ink,
+                  ),
+                  const Expanded(
+                    flex: 2,
+                    child: NotesDetail(),
+                  ),
+                ],
+              );
+            } else {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  notesStatistic(),
+                  const NeoSectionDivider(),
+                  Expanded(child: bookNotesList(true)),
+                ],
+              );
+            }
+          },
+        ),
       ),
     );
   }
@@ -80,21 +91,26 @@ class _NotesPageState extends ConsumerState<NotesPage> {
           bottom: false,
           child: Padding(
             padding: const EdgeInsets.all(10.0),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              highlightDigit(
-                context,
-                L10n.of(context).notesNotesAcross(data['numberOfNotes']!),
-                textStyle,
-                digitStyle,
+            child: FilledContainer(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  highlightDigit(
+                    context,
+                    L10n.of(context).notesNotesAcross(data['numberOfNotes']!),
+                    textStyle,
+                    digitStyle,
+                  ),
+                  highlightDigit(
+                    context,
+                    L10n.of(context).notesBooks(data['numberOfBooks']!),
+                    textStyle,
+                    digitStyle,
+                  ),
+                ],
               ),
-              highlightDigit(
-                context,
-                L10n.of(context).notesBooks(data['numberOfBooks']!),
-                textStyle,
-                digitStyle,
-              ),
-            ]),
+            ),
           ),
         );
       },
@@ -224,7 +240,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                 book: book,
                 height: 130,
                 width: 90,
-                radius: 20,
+                radius: 0,
               ),
             ),
           ],

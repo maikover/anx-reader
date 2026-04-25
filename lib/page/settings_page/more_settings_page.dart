@@ -10,6 +10,7 @@ import 'package:cubebook/page/settings_page/settings_page.dart';
 import 'package:cubebook/page/settings_page/storege.dart';
 import 'package:cubebook/page/settings_page/sync.dart';
 import 'package:cubebook/page/settings_page/translate.dart';
+import 'package:cubebook/theme/neo_colors.dart';
 import 'package:cubebook/utils/env_var.dart';
 import 'package:cubebook/widgets/settings/about.dart';
 import 'package:flutter/cupertino.dart';
@@ -55,19 +56,24 @@ class _SubMoreSettingsState extends State<SubMoreSettings> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return AnimatedBuilder(
       animation: Prefs(),
       builder: (context, _) {
         final showDeveloperEntry = Prefs().developerOptionsEnabled;
         return Scaffold(
           appBar: AppBar(
+            backgroundColor: NeoBrutalColors.cardColor(isDark),
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
+              icon: Icon(Icons.arrow_back, color: NeoBrutalColors.borderColor(isDark)),
               onPressed: () {
                 Navigator.pop(context);
               },
             ),
-            title: Text(L10n.of(context).settingsMoreSettings),
+            title: Text(
+              L10n.of(context).settingsMoreSettings,
+              style: TextStyle(color: NeoBrutalColors.borderColor(isDark)),
+            ),
           ),
           body: LayoutBuilder(builder: (context, constraints) {
             List<Map<String, dynamic>> settings = [

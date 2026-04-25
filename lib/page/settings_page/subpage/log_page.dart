@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cubebook/l10n/generated/L10n.dart';
+import 'package:cubebook/theme/neo_colors.dart';
 import 'package:cubebook/utils/save_file_to_download.dart';
 import 'package:cubebook/utils/get_path/log_file.dart';
 import 'package:cubebook/utils/toast/common.dart';
@@ -33,19 +34,25 @@ class _LogPageState extends State<LogPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
+      backgroundColor: NeoBrutalColors.cardColor(isDark),
       appBar: AppBar(
-        title: Text(L10n.of(context).settingsAdvancedLog),
+        backgroundColor: NeoBrutalColors.cardColor(isDark),
+        title: Text(
+          L10n.of(context).settingsAdvancedLog,
+          style: TextStyle(color: NeoBrutalColors.borderColor(isDark)),
+        ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh),
+            icon: Icon(Icons.refresh, color: NeoBrutalColors.borderColor(isDark)),
             onPressed: () {
               initData();
             },
           ),
           IconButton(
               onPressed: () => showMoreAction(context),
-              icon: const Icon(Icons.more_vert)),
+              icon: Icon(Icons.more_vert, color: NeoBrutalColors.borderColor(isDark))),
         ],
       ),
       body: ListView(

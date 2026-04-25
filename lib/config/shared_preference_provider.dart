@@ -207,7 +207,10 @@ class Prefs extends ChangeNotifier {
 
   Future<void> saveThemeModeToPrefs(String themeMode) async {
     await prefs.setString('themeMode', themeMode);
+    print('DEBUG: Theme mode saved to: $themeMode');
+    print('DEBUG: Calling notifyListeners()');
     notifyListeners();
+    print('DEBUG: notifyListeners() called');
   }
 
   Future<void> saveBookStyleToPrefs(BookStyle bookStyle) async {

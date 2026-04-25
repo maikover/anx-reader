@@ -463,7 +463,7 @@ Widget searchResultWidget({
                 margin: EdgeInsets.only(bottom: 5),
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                radius: 10,
+                radius: 0,
                 child: InkWell(
                   onTap: () {
                     hideAppBarAndBottomBar(false);

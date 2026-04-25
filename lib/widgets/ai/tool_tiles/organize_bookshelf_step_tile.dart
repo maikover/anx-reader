@@ -226,7 +226,7 @@ class _OrganizeBookshelfStepTileState
       color: theme.colorScheme.surfaceContainer,
       padding: const EdgeInsets.all(8),
       margin: const EdgeInsets.only(bottom: 8),
-      radius: 10,
+      radius: 0,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -278,7 +278,7 @@ class _OrganizeBookshelfStepTileState
     return FilledContainer(
       color: theme.colorScheme.surface,
       padding: const EdgeInsets.all(8),
-      radius: 10,
+      radius: 0,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -306,7 +306,7 @@ class _OrganizeBookshelfStepTileState
     return FilledContainer(
       color: theme.colorScheme.surfaceContainer,
       padding: const EdgeInsets.all(8),
-      radius: 10,
+      radius: 0,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

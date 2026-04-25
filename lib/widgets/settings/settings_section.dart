@@ -1,5 +1,5 @@
-import 'package:cubebook/widgets/common/container/filled_container.dart';
 import 'package:cubebook/widgets/settings/settings_tile.dart';
+import 'package:cubebook/theme/neo_colors.dart';
 import 'package:flutter/material.dart';
 
 abstract class AbstractSettingsSection extends StatelessWidget {
@@ -24,38 +24,85 @@ class SettingsSection extends AbstractSettingsSection {
   }
 
   Widget buildSectionBody(BuildContext context) {
-    const scaleFactor = 0.5;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final tileList = buildTileList();
 
     if (title == null) {
-      return tileList;
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+        child: _buildNeoContainer(
+          context: context,
+          child: tileList,
+          isDark: isDark,
+        ),
+      );
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsetsDirectional.only(
-            top: 24 * scaleFactor,
-            bottom: 10 * scaleFactor,
-            start: 24,
-            end: 24,
-          ),
-          child: DefaultTextStyle(
-            style: TextStyle(
-              color: Theme.of(context).primaryColor,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Section title with yellow highlight bar
+          Padding(
+            padding: const EdgeInsetsDirectional.only(
+              top: 20,
+              bottom: 0,
+              start: 16,
+              end: 16,
             ),
-            child: title!,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                color: NeoBrutalColors.adaptiveYellow(isDark),
+                border: Border(
+                  bottom: BorderSide(width: 4, color: NeoBrutalColors.borderColor(isDark)),
+                  top: BorderSide(width: 4, color: NeoBrutalColors.borderColor(isDark)),
+                  left: BorderSide(width: 4, color: NeoBrutalColors.borderColor(isDark)),
+                  right: BorderSide(width: 4, color: NeoBrutalColors.borderColor(isDark)),
+                ),
+              ),
+              child: DefaultTextStyle(
+                style: TextStyle(
+                  fontFamily: 'Space Grotesk',
+                  fontSize: 12,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 0.2,
+                  color: NeoBrutalColors.borderColor(isDark),
+                ),
+                child: title!,
+              ),
+            ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: FilledContainer(
-            padding: EdgeInsetsGeometry.zero,
-            child: tileList,
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+            child: _buildNeoContainer(
+              context: context,
+              child: tileList,
+              isDark: isDark,
+            ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNeoContainer({
+    required BuildContext context,
+    required Widget child,
+    required bool isDark,
+  }) {
+    // Adaptive container with 4px border + hard shadow
+    return Container(
+      decoration: BoxDecoration(
+        color: NeoBrutalColors.cardColor(isDark),
+        border: Border.all(
+          width: 4,
+          color: NeoBrutalColors.borderColor(isDark),
         ),
-      ],
+        boxShadow: NeoBrutalColors.adaptiveShadowMedium(isDark),
+      ),
+      child: child,
     );
   }
 

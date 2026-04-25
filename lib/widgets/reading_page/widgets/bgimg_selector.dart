@@ -299,9 +299,9 @@ class _BgimgSelectorState extends ConsumerState<BgimgSelector> {
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black26,
-                              blurRadius: 4,
-                              offset: Offset(0, 2),
+                              color: Colors.black,
+                              blurRadius: 0,
+                              offset: Offset(4, 4),
                             ),
                           ],
                         ),

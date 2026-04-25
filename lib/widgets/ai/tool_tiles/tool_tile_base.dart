@@ -58,7 +58,7 @@ class _ToolTileBaseState extends State<ToolTileBase> {
 
     return OutlinedContainer(
       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
-      radius: 14,
+      radius: 0,
       child: InkWell(
         onTap: widget.expandable ? _toggle : null,
         child: Column(

@@ -6,6 +6,7 @@ import 'package:cubebook/models/book.dart';
 import 'package:cubebook/models/search_note_group.dart';
 import 'package:cubebook/providers/search.dart';
 import 'package:cubebook/service/book.dart';
+import 'package:cubebook/theme/neo_colors.dart';
 import 'package:cubebook/utils/error_handler.dart';
 import 'package:cubebook/widgets/book_notes/book_note_tile.dart';
 import 'package:cubebook/widgets/bookshelf/book_item.dart';
@@ -227,28 +228,35 @@ class _SearchNoteResult extends ConsumerWidget {
                 style: Theme.of(context).textTheme.titleSmall,
               ),
               SizedBox(height: 4),
-              FilledContainer(
-                  radius: 16,
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  child: Column(
-                    children: [
-                      ...item.notes.map(
-                        (note) => Padding(
-                          padding: const EdgeInsets.only(bottom: 12),
-                          child: BookNoteTile(
-                            backgroundColor:
-                                Theme.of(context).scaffoldBackgroundColor,
-                            note: note,
-                            margin: EdgeInsets.zero,
-                            onTap: () {
-                              pushToReadingPage(ref, context, item.book,
-                                  cfi: note.cfi);
-                            },
-                          ),
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
+                  border: Border.all(
+                    width: 4,
+                    color: NeoBrutalColors.ink,
+                  ),
+                  boxShadow: NeoBrutalColors.hardShadowSmall(),
+                ),
+                child: Column(
+                  children: [
+                    ...item.notes.map(
+                      (note) => Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: BookNoteTile(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.surface,
+                          note: note,
+                          margin: EdgeInsets.zero,
+                          onTap: () {
+                            pushToReadingPage(ref, context, item.book,
+                                cfi: note.cfi);
+                          },
                         ),
                       ),
-                    ],
-                  )),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ))
     ]);

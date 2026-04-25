@@ -27,8 +27,8 @@ class BookCover extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double effectiveRadius = radius ?? 8;
-    final BorderRadius borderRadius = BorderRadius.circular(effectiveRadius);
+    // Neo-brutalist style: sharp corners by default (radius = 0)
+    final double effectiveRadius = radius ?? 0;
     final File file = File(book.coverFullPath);
 
     Widget child;
@@ -122,27 +122,21 @@ class BookCover extends StatelessWidget {
       );
     }
 
-    final RoundedSuperellipseBorder borderShape = RoundedSuperellipseBorder(
-      borderRadius: borderRadius,
-      side: const BorderSide(
-        width: 0.3,
-        color: Colors.grey,
-      ),
-    );
+    if (effectiveRadius > 0) {
+      return SizedBox(
+        height: height,
+        width: width,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(effectiveRadius),
+          child: child,
+        ),
+      );
+    }
 
     return SizedBox(
       height: height,
       width: width,
-      child: DecoratedBox(
-        position: DecorationPosition.foreground,
-        decoration: ShapeDecoration(
-          shape: borderShape,
-        ),
-        child: ClipRSuperellipse(
-          borderRadius: borderRadius,
-          child: child,
-        ),
-      ),
+      child: child,
     );
   }
 }

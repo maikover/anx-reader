@@ -1,4 +1,6 @@
 import 'package:cubebook/page/settings_page/appearance.dart';
+import 'package:cubebook/theme/neo_colors.dart';
+import 'package:cubebook/widgets/neo/neo_background.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:cubebook/l10n/generated/L10n.dart';
@@ -25,73 +27,145 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return IntroductionScreen(
-      key: _introKey,
-      globalBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      allowImplicitScrolling: true,
-      infiniteAutoScroll: false,
-      globalHeader: Align(
-        alignment: Alignment.topRight,
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 16, right: 16),
-            child: _buildSkipButton(),
+    return NeoBackground(
+      pattern: NeoBackgroundPattern.halftone,
+      opacity: 0.03,
+      child: IntroductionScreen(
+        key: _introKey,
+        globalBackgroundColor: Colors.transparent,
+        allowImplicitScrolling: true,
+        infiniteAutoScroll: false,
+        globalHeader: Align(
+          alignment: Alignment.topRight,
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 16, right: 16),
+              child: _buildSkipButton(),
+            ),
           ),
         ),
-      ),
-      pages: [
-        _buildWelcomePage(),
-        _buildAppearancePage(),
-        _buildSyncPage(),
-        _buildAIPage(),
-        _buildCompletePage(),
-      ],
-      onDone: _onIntroEnd,
-      onSkip: _onIntroEnd,
-      showSkipButton: false, // We handle skip in globalHeader
-      showBackButton: true,
-      showNextButton: true,
-      skipOrBackFlex: 0,
-      nextFlex: 0,
-      showBottomPart: true,
-      curve: Curves.fastLinearToSlowEaseIn,
-      controlsMargin: const EdgeInsets.all(16),
-      controlsPadding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
-      dotsDecorator: DotsDecorator(
-        size: const Size(10.0, 10.0),
-        color: Theme.of(context).colorScheme.surfaceContainerHighest,
-        activeSize: const Size(22.0, 10.0),
-        activeColor: Theme.of(context).colorScheme.primary,
-        activeShape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(25.0)),
+        pages: [
+          _buildWelcomePage(),
+          _buildAppearancePage(),
+          _buildSyncPage(),
+          _buildAIPage(),
+          _buildCompletePage(),
+        ],
+        onDone: _onIntroEnd,
+        onSkip: _onIntroEnd,
+        showSkipButton: false,
+        showBackButton: true,
+        showNextButton: true,
+        skipOrBackFlex: 0,
+        nextFlex: 0,
+        showBottomPart: true,
+        curve: Curves.fastLinearToSlowEaseIn,
+        controlsMargin: const EdgeInsets.all(8),
+        controlsPadding: const EdgeInsets.fromLTRB(4.0, 4.0, 4.0, 4.0),
+        dotsDecorator: DotsDecorator(
+          size: const Size(12.0, 12.0),
+          color: NeoBrutalColors.ink.withAlpha(80),
+          activeSize: const Size(28.0, 12.0),
+          activeColor: NeoBrutalColors.red,
+          activeShape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.zero,
+            side: const BorderSide(color: NeoBrutalColors.ink, width: 2),
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.zero,
+            side: const BorderSide(color: NeoBrutalColors.ink, width: 2),
+          ),
         ),
-      ),
-      next: Icon(
-        Icons.arrow_forward,
-        color: Theme.of(context).colorScheme.primary,
-      ),
-      back: Icon(
-        Icons.arrow_back,
-        color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
-      ),
-      done: Text(
-        L10n.of(context).onboardingDone,
-        style: TextStyle(
-          fontWeight: FontWeight.w600,
-          color: Theme.of(context).colorScheme.primary,
-        ),
+        next: _buildNeoNextButton(),
+        back: _buildNeoBackButton(),
+        done: _buildNeoDoneButton(),
       ),
     );
   }
 
   Widget _buildSkipButton() {
-    return TextButton(
-      onPressed: _onIntroEnd,
-      child: Text(
-        L10n.of(context).onboardingSkip,
-        style: TextStyle(
-          color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
-          fontWeight: FontWeight.w600,
+    return GestureDetector(
+      onTap: _onIntroEnd,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          color: NeoBrutalColors.white,
+          border: Border.all(width: 3, color: NeoBrutalColors.ink),
+          boxShadow: NeoBrutalColors.hardShadowSmall(),
+        ),
+        child: Text(
+          L10n.of(context).onboardingSkip.toUpperCase(),
+          style: const TextStyle(
+            fontFamily: 'Space Grotesk',
+            fontWeight: FontWeight.bold,
+            fontSize: 12,
+            color: NeoBrutalColors.ink,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNeoNextButton() {
+    return Container(
+      width: 48,
+      height: 48,
+      decoration: BoxDecoration(
+        color: NeoBrutalColors.red,
+        border: Border.all(width: 3, color: NeoBrutalColors.ink),
+        boxShadow: NeoBrutalColors.hardShadowSmall(),
+      ),
+      child: IconButton(
+        onPressed: () => _introKey.currentState?.next(),
+        icon: const Icon(
+          Icons.arrow_forward,
+          color: NeoBrutalColors.white,
+          size: 22,
+        ),
+        padding: EdgeInsets.zero,
+      ),
+    );
+  }
+
+  Widget _buildNeoBackButton() {
+    return Container(
+      width: 48,
+      height: 48,
+      decoration: BoxDecoration(
+        color: NeoBrutalColors.white,
+        border: Border.all(width: 3, color: NeoBrutalColors.ink),
+        boxShadow: NeoBrutalColors.hardShadowSmall(),
+      ),
+      child: IconButton(
+        onPressed: () => _introKey.currentState?.previous(),
+        icon: const Icon(
+          Icons.arrow_back,
+          color: NeoBrutalColors.ink,
+          size: 22,
+        ),
+        padding: EdgeInsets.zero,
+      ),
+    );
+  }
+
+  Widget _buildNeoDoneButton() {
+    return GestureDetector(
+      onTap: _onIntroEnd,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        decoration: BoxDecoration(
+          color: NeoBrutalColors.yellow,
+          border: Border.all(width: 3, color: NeoBrutalColors.ink),
+          boxShadow: NeoBrutalColors.hardShadowSmall(),
+        ),
+        child: Text(
+          L10n.of(context).onboardingDone.toUpperCase(),
+          style: const TextStyle(
+            fontFamily: 'Space Grotesk',
+            fontWeight: FontWeight.bold,
+            fontSize: 12,
+            color: NeoBrutalColors.ink,
+          ),
         ),
       ),
     );
@@ -150,31 +224,34 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Widget _buildIconPage(IconData icon) {
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primaryContainer.withAlpha(50),
-        shape: BoxShape.circle,
+        color: NeoBrutalColors.yellow,
+        border: Border.all(width: 4, color: NeoBrutalColors.ink),
+        boxShadow: NeoBrutalColors.hardShadowMedium(),
       ),
       padding: const EdgeInsets.all(40),
       child: Icon(
         icon,
-        size: 120,
-        color: Theme.of(context).colorScheme.primary,
+        size: 100,
+        color: NeoBrutalColors.ink,
       ),
     );
   }
 
   PageDecoration _getPageDecoration() {
     return PageDecoration(
-      titleTextStyle: TextStyle(
+      titleTextStyle: const TextStyle(
         fontSize: 28.0,
-        fontWeight: FontWeight.w700,
-        color: Theme.of(context).colorScheme.onSurface,
+        fontWeight: FontWeight.bold,
+        fontFamily: 'Space Grotesk',
+        color: NeoBrutalColors.ink,
       ),
-      bodyTextStyle: TextStyle(
-        fontSize: 19.0,
-        color: Theme.of(context).colorScheme.onSurface.withAlpha(200),
+      bodyTextStyle: const TextStyle(
+        fontSize: 18.0,
+        fontFamily: 'SourceHanSerif',
+        color: NeoBrutalColors.ink,
       ),
       bodyPadding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-      pageColor: Theme.of(context).scaffoldBackgroundColor,
+      pageColor: Colors.transparent,
       imagePadding: const EdgeInsets.symmetric(vertical: 40.0),
     );
   }
@@ -192,18 +269,26 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         children: [
           Row(
             children: [
-              Icon(
-                Icons.language,
-                color: Theme.of(context).colorScheme.primary,
-                size: 20,
+              Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: NeoBrutalColors.white,
+                  border: Border.all(width: 2, color: NeoBrutalColors.ink),
+                ),
+                child: Icon(
+                  Icons.language,
+                  color: NeoBrutalColors.ink,
+                  size: 20,
+                ),
               ),
               const SizedBox(width: 8),
               Text(
                 L10n.of(context).settingsAppearanceLanguage,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Theme.of(context).colorScheme.onSurface,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Space Grotesk',
+                  color: NeoBrutalColors.ink,
                 ),
               ),
             ],
@@ -212,10 +297,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
             decoration: BoxDecoration(
+              color: NeoBrutalColors.white,
               border: Border.all(
-                color: Theme.of(context).colorScheme.outline.withAlpha(100),
+                color: NeoBrutalColors.ink,
+                width: 3,
               ),
-              borderRadius: BorderRadius.circular(8),
             ),
             child: DropdownButton<String>(
               isExpanded: true,
@@ -269,18 +355,26 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         children: [
           Row(
             children: [
-              Icon(
-                Icons.palette,
-                color: Theme.of(context).colorScheme.primary,
-                size: 20,
+              Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: NeoBrutalColors.white,
+                  border: Border.all(width: 2, color: NeoBrutalColors.ink),
+                ),
+                child: Icon(
+                  Icons.palette,
+                  color: NeoBrutalColors.ink,
+                  size: 20,
+                ),
               ),
               const SizedBox(width: 8),
               Text(
                 L10n.of(context).settingsAppearanceThemeColor,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Theme.of(context).colorScheme.onSurface,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Space Grotesk',
+                  color: NeoBrutalColors.ink,
                 ),
               ),
             ],
@@ -319,16 +413,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withAlpha(30),
-                        blurRadius: 2,
-                        offset: const Offset(0, 1),
+                        color: Colors.black,
+                        blurRadius: 0,
+                        offset: const Offset(4, 4),
                       ),
-                      if (isSelected)
-                        BoxShadow(
-                          color: color.withAlpha(100),
-                          blurRadius: 8,
-                          spreadRadius: 1,
-                        ),
                     ],
                   ),
                   child: isSelected
@@ -356,39 +444,36 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               Column(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .primaryContainer
-                          .withAlpha(50),
-                      shape: BoxShape.circle,
+                      color: NeoBrutalColors.yellow,
+                      border: Border.all(width: 4, color: NeoBrutalColors.ink),
+                      boxShadow: NeoBrutalColors.hardShadowMedium(),
                     ),
                     child: Icon(
                       Icons.palette_outlined,
                       size: 48,
-                      color: Theme.of(context).colorScheme.primary,
+                      color: NeoBrutalColors.ink,
                     ),
                   ),
                   const SizedBox(height: 16),
                   Text(
                     L10n.of(context).settingsAppearance,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 24,
-                      fontWeight: FontWeight.w700,
-                      color: Theme.of(context).colorScheme.onSurface,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Space Grotesk',
+                      color: NeoBrutalColors.ink,
                     ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 8),
                   Text(
                     L10n.of(context).customizeYourExperience,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withAlpha(150),
+                      fontFamily: 'SourceHanSerif',
+                      color: NeoBrutalColors.ink,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -399,10 +484,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               const SizedBox(height: 12),
               Row(
                 children: [
-                  Icon(
-                    Icons.contrast,
-                    color: Theme.of(context).colorScheme.primary,
-                    size: 20,
+                  Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: NeoBrutalColors.white,
+                      border: Border.all(width: 2, color: NeoBrutalColors.ink),
+                    ),
+                    child: Icon(
+                      Icons.contrast,
+                      color: NeoBrutalColors.ink,
+                      size: 20,
+                    ),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
@@ -411,20 +503,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       children: [
                         Text(
                           L10n.of(context).eInkMode,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Theme.of(context).colorScheme.onSurface,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Space Grotesk',
+                            color: NeoBrutalColors.ink,
                           ),
                         ),
                         Text(
                           L10n.of(context).optimizedForEInkDisplays,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 12,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withAlpha(150),
+                            fontFamily: 'SourceHanSerif',
+                            color: NeoBrutalColors.ink,
                           ),
                         ),
                       ],
@@ -449,32 +540,36 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .surfaceContainerHighest
-                      .withAlpha(50),
-                  borderRadius: BorderRadius.circular(12),
+                  color: NeoBrutalColors.white,
+                  borderRadius: BorderRadius.zero,
                   border: Border.all(
-                    color: Theme.of(context).colorScheme.outline.withAlpha(50),
+                    color: NeoBrutalColors.ink,
+                    width: 3,
                   ),
+                  boxShadow: NeoBrutalColors.hardShadowSmall(),
                 ),
                 child: Row(
                   children: [
-                    Icon(
-                      Icons.info_outline,
-                      color: Theme.of(context).colorScheme.primary,
-                      size: 18,
+                    Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: NeoBrutalColors.yellow,
+                        border: Border.all(width: 2, color: NeoBrutalColors.ink),
+                      ),
+                      child: Icon(
+                        Icons.info_outline,
+                        color: NeoBrutalColors.ink,
+                        size: 18,
+                      ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: 12),
                     Expanded(
                       child: Text(
                         L10n.of(context).moreDisplayOptionsTip,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 13,
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSurface
-                              .withAlpha(150),
+                          fontFamily: 'Space Grotesk',
+                          color: NeoBrutalColors.ink,
                         ),
                       ),
                     ),
@@ -495,9 +590,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       children: [
         Text(
           bodyText,
-          style: TextStyle(
-            fontSize: 19.0,
-            color: Theme.of(context).colorScheme.onSurface.withAlpha(200),
+          style: const TextStyle(
+            fontSize: 18.0,
+            fontFamily: 'SourceHanSerif',
+            color: NeoBrutalColors.ink,
           ),
           textAlign: TextAlign.center,
         ),
@@ -505,30 +601,36 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Theme.of(context)
-                .colorScheme
-                .surfaceContainerHighest
-                .withAlpha(50),
-            borderRadius: BorderRadius.circular(12),
+            color: NeoBrutalColors.white,
+            borderRadius: BorderRadius.zero,
             border: Border.all(
-              color: Theme.of(context).colorScheme.outline.withAlpha(50),
+              color: NeoBrutalColors.ink,
+              width: 3,
             ),
+            boxShadow: NeoBrutalColors.hardShadowSmall(),
           ),
           child: Row(
             children: [
-              Icon(
-                Icons.info_outline,
-                color: Theme.of(context).colorScheme.primary,
-                size: 18,
+              Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: NeoBrutalColors.yellow,
+                  border: Border.all(width: 2, color: NeoBrutalColors.ink),
+                ),
+                child: const Icon(
+                  Icons.info_outline,
+                  color: NeoBrutalColors.ink,
+                  size: 18,
+                ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 12),
               Expanded(
                 child: Text(
                   tipText,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 13,
-                    color:
-                        Theme.of(context).colorScheme.onSurface.withAlpha(150),
+                    fontFamily: 'Space Grotesk',
+                    color: NeoBrutalColors.ink,
                   ),
                 ),
               ),

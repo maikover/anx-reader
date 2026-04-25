@@ -137,7 +137,7 @@ class _BookFolderState extends ConsumerState<BookFolder> {
             color: Colors.transparent,
             outlineColor: Theme.of(context).colorScheme.outlineVariant,
             padding: const EdgeInsets.all(6),
-            radius: 10,
+            radius: 0,
             child: GridView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,

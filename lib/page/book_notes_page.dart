@@ -69,7 +69,7 @@ class _BookNotesPageState extends ConsumerState<BookNotesPage> {
                     book: book,
                     height: 180,
                     width: 120,
-                    radius: 20,
+                    radius: 0,
                   )),
             ],
           );
@@ -101,7 +101,7 @@ class _BookNotesPageState extends ConsumerState<BookNotesPage> {
                         book: book,
                         height: 180,
                         width: 120,
-                        radius: 20,
+                        radius: 0,
                       )),
                 ],
               ),

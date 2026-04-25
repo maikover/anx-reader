@@ -90,7 +90,7 @@ class _ExpandableField extends StatelessWidget {
           color: theme.colorScheme.primaryContainer,
           width: double.infinity,
           padding: const EdgeInsets.all(8),
-          radius: 6,
+          radius: 0,
           child: Container(
             constraints: const BoxConstraints(maxHeight: 200),
             child: SelectableText(

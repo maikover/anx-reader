@@ -2,6 +2,7 @@ import 'package:cubebook/l10n/generated/L10n.dart';
 import 'package:cubebook/models/book.dart';
 import 'package:cubebook/providers/last_read_book_provider.dart';
 import 'package:cubebook/service/book.dart';
+import 'package:cubebook/theme/neo_colors.dart';
 import 'package:cubebook/utils/date/relative_time_formatter.dart';
 import 'package:cubebook/widgets/bookshelf/book_cover.dart';
 import 'package:cubebook/widgets/common/async_skeleton_wrapper.dart';
@@ -71,8 +72,6 @@ class ContinueReadingTile extends StatisticsDashboardTileBase {
     final book = data?.book;
     if (book == null) return;
     final heroTag = 'continue_reading_${book.id}';
-    // Don't pass cfi parameter, let the book open from its saved position
-    // This allows reading progress to be saved (same behavior as bookshelf)
     pushToReadingPage(ref, context, book, heroTag: heroTag);
   }
 }
@@ -90,54 +89,88 @@ class _ContinueReadingContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final subtitle = lastReadDate == null
         ? L10n.of(context).tileContinueReadingNoTimestamp
         : RelativeTimeFormatter.format(lastReadDate!);
 
-    return Row(
-      children: [
-        Hero(
-          tag: heroTag,
-          child: BookCover(
-            book: book,
-            width: 60,
-            radius: 8,
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                book.title,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.titleMedium,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final coverWidth = constraints.maxHeight * 0.5;
+        final progressHeight = constraints.maxHeight * 0.08;
+
+        return Row(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(width: 2, color: NeoBrutalColors.ink),
+                boxShadow: NeoBrutalColors.hardShadowSmall(),
               ),
-              const SizedBox(height: 4),
-              Text(
-                book.author,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.bodySmall,
+              child: Hero(
+                tag: heroTag,
+                child: BookCover(
+                  book: book,
+                  width: coverWidth.clamp(40.0, 60.0),
+                  radius: 0,
+                ),
               ),
-              const SizedBox(height: 4),
-              Text(
-                subtitle,
-                style: theme.textTheme.labelSmall,
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    book.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontFamily: 'SourceHanSerif',
+                      fontWeight: FontWeight.bold,
+                      color: isDark ? NeoBrutalColors.white : NeoBrutalColors.ink,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    book.author,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: isDark ? NeoBrutalColors.lightText : Colors.grey[600],
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                      fontSize: 9,
+                      color: isDark ? NeoBrutalColors.lightText : Colors.grey[600],
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Container(
+                    height: progressHeight.clamp(4.0, 8.0),
+                    decoration: BoxDecoration(
+                      color: isDark ? NeoBrutalColors.darkSurface : NeoBrutalColors.cream,
+                      border: Border.all(width: 2, color: NeoBrutalColors.ink),
+                    ),
+                    child: FractionallySizedBox(
+                      alignment: Alignment.centerLeft,
+                      widthFactor: book.readingPercentage.clamp(0, 1),
+                      child: Container(
+                        color: NeoBrutalColors.red,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 6),
-              LinearProgressIndicator(
-                value: book.readingPercentage.clamp(0, 1),
-                minHeight: 6,
-              ),
-            ],
-          ),
-        ),
-      ],
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -149,21 +182,44 @@ class _EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = L10n.of(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Icon(Icons.menu_book_outlined, size: 32),
-        const SizedBox(height: 8),
+        Icon(
+          Icons.menu_book_outlined,
+          size: 28,
+          color: isDark ? NeoBrutalColors.lightText : Colors.grey[600],
+        ),
+        const SizedBox(height: 6),
         Text(
           l10n.tileContinueReadingEmptyState,
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: TextStyle(
+            fontSize: 11,
+            color: isDark ? NeoBrutalColors.lightText : Colors.grey[600],
+          ),
           textAlign: TextAlign.center,
         ),
-        TextButton.icon(
-          onPressed: onRefresh,
-          icon: const Icon(Icons.refresh),
-          label: Text(l10n.commonRefresh),
+        const SizedBox(height: 4),
+        GestureDetector(
+          onTap: onRefresh,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: NeoBrutalColors.yellow,
+              border: Border.all(width: 2, color: NeoBrutalColors.ink),
+            ),
+            child: Text(
+              l10n.commonRefresh,
+              style: const TextStyle(
+                fontFamily: 'Space Grotesk',
+                fontWeight: FontWeight.bold,
+                fontSize: 10,
+                color: NeoBrutalColors.ink,
+              ),
+            ),
+          ),
         ),
       ],
     );

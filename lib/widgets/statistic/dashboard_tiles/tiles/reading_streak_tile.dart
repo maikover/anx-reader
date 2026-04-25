@@ -1,5 +1,6 @@
 import 'package:cubebook/l10n/generated/L10n.dart';
 import 'package:cubebook/providers/reading_streak_provider.dart';
+import 'package:cubebook/theme/neo_colors.dart';
 import 'package:cubebook/widgets/common/async_skeleton_wrapper.dart';
 import 'package:cubebook/widgets/statistic/dashboard_tiles/dashboard_tile_base.dart';
 import 'package:cubebook/widgets/statistic/dashboard_tiles/dashboard_tile_metadata.dart';
@@ -124,8 +125,12 @@ class _StatPill extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(20),
+        color: theme.colorScheme.surface,
+        border: Border.all(
+          width: 4,
+          color: NeoBrutalColors.ink,
+        ),
+        boxShadow: NeoBrutalColors.hardShadowSmall(),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

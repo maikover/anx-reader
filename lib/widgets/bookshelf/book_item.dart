@@ -3,6 +3,7 @@ import 'package:cubebook/enums/book_sync_status.dart';
 import 'package:cubebook/models/book.dart';
 import 'package:cubebook/providers/sync_status.dart';
 import 'package:cubebook/service/book.dart';
+import 'package:cubebook/theme/neo_colors.dart';
 import 'package:cubebook/widgets/bookshelf/book_bottom_sheet.dart';
 import 'package:cubebook/widgets/bookshelf/book_cover.dart';
 import 'package:cubebook/widgets/bookshelf/book_sync_status_icon.dart';
@@ -19,6 +20,8 @@ class BookItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     Future<void> handleLongPress(BuildContext context) async {
       showModalBottomSheet(
           context: context,
@@ -65,15 +68,11 @@ class BookItem extends ConsumerWidget {
               tag: book.coverFullPath,
               child: Container(
                 decoration: BoxDecoration(
-                  boxShadow: [
-                    if (!Prefs().eInkMode)
-                      BoxShadow(
-                        color: Colors.grey.withAlpha(100),
-                        spreadRadius: 5,
-                        blurRadius: 10,
-                        offset: const Offset(0, 2),
-                      ),
-                  ],
+                  border: Border.all(
+                    width: 3,
+                    color: NeoBrutalColors.borderColor(isDark),
+                  ),
+                  boxShadow: NeoBrutalColors.adaptiveShadowMedium(isDark),
                 ),
                 child: Row(
                   children: [
@@ -99,7 +98,8 @@ class BookItem extends ConsumerWidget {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
-                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Space Grotesk',
+                          fontWeight: FontWeight.w900,
                           fontSize: 13,
                         ),
                       ),

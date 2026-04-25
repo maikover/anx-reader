@@ -1,9 +1,10 @@
 import 'package:cubebook/enums/chart_mode.dart';
 import 'package:cubebook/l10n/generated/L10n.dart';
 import 'package:cubebook/providers/statistic_data.dart';
+import 'package:cubebook/theme/neo_colors.dart';
 import 'package:cubebook/utils/date/week_of_year.dart';
-import 'package:cubebook/widgets/common/container/filled_container.dart';
 import 'package:cubebook/widgets/common/anx_segmented_button.dart';
+import 'package:cubebook/widgets/neo/neo_background.dart';
 import 'package:cubebook/widgets/statistic/heatmap_chart.dart';
 import 'package:cubebook/widgets/statistic/statistic_chart.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +45,7 @@ class StatisticCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final statisticData = ref.watch(statisticDataProvider);
 
     final segmentButtonItems = <SegmentButtonItem<ChartMode>>[
@@ -91,14 +93,15 @@ class StatisticCard extends ConsumerWidget {
             children: [
               Row(
                 children: [
-                  IconButton(
+                  NeoIconButton(
                     onPressed: () =>
                         _changeDate(ref, false, data.mode, data.date),
-                    icon: const Icon(EvaIcons.arrow_ios_back_outline),
+                    icon: EvaIcons.arrow_ios_back_outline,
+                    size: 36,
                   ),
                   const Spacer(),
-                  TextButton(
-                    onPressed: () async {
+                  GestureDetector(
+                    onTap: () async {
                       final newDate = await showDatePicker(
                         context: context,
                         initialEntryMode: DatePickerEntryMode.calendarOnly,
@@ -112,19 +115,33 @@ class StatisticCard extends ConsumerWidget {
                             .setDate(newDate);
                       }
                     },
-                    child: Text(
-                      data.mode == ChartMode.week
-                          ? weekOfYear(data.date)
-                          : data.mode == ChartMode.month
-                              ? '${data.date.year}.${data.date.month}'
-                              : data.date.year.toString(),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: NeoBrutalColors.cardColor(isDark),
+                        border: Border.all(width: 3, color: NeoBrutalColors.borderColor(isDark)),
+                      ),
+                      child: Text(
+                        data.mode == ChartMode.week
+                            ? weekOfYear(data.date)
+                            : data.mode == ChartMode.month
+                                ? '${data.date.year}.${data.date.month}'
+                                : data.date.year.toString(),
+                        style: TextStyle(
+                          fontFamily: 'Space Grotesk',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          color: NeoBrutalColors.borderColor(isDark),
+                        ),
+                      ),
                     ),
                   ),
                   const Spacer(),
-                  IconButton(
+                  NeoIconButton(
                     onPressed: () =>
                         _changeDate(ref, true, data.mode, data.date),
-                    icon: const Icon(EvaIcons.arrow_ios_forward_outline),
+                    icon: EvaIcons.arrow_ios_forward_outline,
+                    size: 36,
                   ),
                 ],
               ),
@@ -150,8 +167,13 @@ class StatisticCard extends ConsumerWidget {
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeOutBack,
       alignment: Alignment.topCenter,
-      child: FilledContainer(
+      child: Container(
         padding: const EdgeInsets.fromLTRB(10, 0, 10, 5),
+        decoration: BoxDecoration(
+          color: NeoBrutalColors.cardColor(isDark),
+          border: Border.all(width: 4, color: NeoBrutalColors.borderColor(isDark)),
+          boxShadow: NeoBrutalColors.adaptiveShadowMedium(isDark),
+        ),
         child: statisticData.when(
             data: (data) => Column(
                   children: [

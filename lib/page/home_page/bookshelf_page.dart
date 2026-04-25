@@ -8,14 +8,12 @@ import 'package:cubebook/enums/sort_order.dart';
 import 'package:cubebook/l10n/generated/L10n.dart';
 import 'package:cubebook/main.dart';
 import 'package:cubebook/models/book.dart';
-import 'package:cubebook/models/tag.dart';
 import 'package:cubebook/providers/book_list.dart';
 import 'package:cubebook/providers/book_filters.dart';
 import 'package:cubebook/providers/tags.dart';
 import 'package:cubebook/service/book.dart';
 import 'package:cubebook/page/search/search_page.dart';
 import 'package:cubebook/utils/get_path/get_temp_dir.dart';
-import 'package:cubebook/utils/color/hash_color.dart';
 import 'package:cubebook/utils/platform_utils.dart';
 import 'package:cubebook/utils/log/common.dart';
 import 'package:cubebook/widgets/bookshelf/book_bottom_sheet.dart';
@@ -26,6 +24,9 @@ import 'package:cubebook/widgets/common/tag_chip.dart';
 import 'package:cubebook/widgets/hint/hint_banner.dart';
 import 'package:cubebook/widgets/common/anx_segmented_button.dart';
 import 'package:cubebook/widgets/tips/bookshelf_tips.dart';
+import 'package:cubebook/widgets/neo/cube_book_logo.dart';
+import 'package:cubebook/widgets/neo/neo_background.dart';
+import 'package:cubebook/theme/neo_colors.dart';
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -100,272 +101,107 @@ class BookshelfPageState extends ConsumerState<BookshelfPage>
     importBookList(fileList, context, ref);
   }
 
+  Future<void> _showTagMenu(BuildContext context, WidgetRef ref) async {
+    final tags = ref.read(tagListProvider).whenOrNull(data: (value) => value) ?? [];
+    final selectedTags = ref.read(tagSelectionProvider);
+    final renderBox = _tagButtonKey.currentContext?.findRenderObject() as RenderBox?;
+    final overlay = Overlay.of(context).context.findRenderObject() as RenderBox?;
+    if (renderBox == null || overlay == null) return;
+
+    final position = RelativeRect.fromRect(
+      Rect.fromPoints(
+        renderBox.localToGlobal(Offset.zero, ancestor: overlay),
+        renderBox.localToGlobal(renderBox.size.bottomRight(Offset.zero), ancestor: overlay),
+      ),
+      Offset.zero & overlay.size,
+    );
+
+    final boxMaxWidth = max(MediaQuery.of(context).size.width * 0.8, 500.0);
+
+    await showMenu<int>(
+      color: Colors.transparent,
+      shadowColor: Colors.transparent,
+      context: context,
+      position: position,
+      constraints: BoxConstraints(maxHeight: 360, maxWidth: boxMaxWidth),
+      items: [
+        PopupMenuItem<int>(
+          enabled: false,
+          padding: EdgeInsets.zero,
+          child: Align(
+            alignment: Alignment.topRight,
+            child: FilledContainer(
+              constraints: BoxConstraints(maxHeight: 340, maxWidth: boxMaxWidth),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+              child: StatefulBuilder(
+                builder: (context, setStateMenu) {
+                  final liveSelected = {...selectedTags};
+                  return SingleChildScrollView(
+                    child: Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        if (tags.isEmpty)
+                          Text(
+                            L10n.of(context).tagsEmptyHint,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        if (tags.isNotEmpty)
+                          TagChip(
+                            label: L10n.of(context).noTagFilter,
+                            color: Colors.grey,
+                            selected: liveSelected.contains(kNoTagFilterId),
+                            onTap: () {
+                              setStateMenu(() {
+                                if (liveSelected.contains(kNoTagFilterId)) {
+                                  liveSelected.remove(kNoTagFilterId);
+                                } else {
+                                  liveSelected.clear();
+                                  liveSelected.add(kNoTagFilterId);
+                                }
+                              });
+                              ref.read(tagSelectionProvider.notifier).toggle(kNoTagFilterId);
+                              ref.read(bookListProvider.notifier).refresh();
+                            },
+                            dense: false,
+                          ),
+                        for (final tag in tags)
+                          TagChip(
+                            label: tag.name,
+                            color: tag.color,
+                            selected: liveSelected.contains(tag.id),
+                            onTap: () {
+                              setStateMenu(() {
+                                if (liveSelected.contains(tag.id)) {
+                                  liveSelected.remove(tag.id);
+                                } else {
+                                  liveSelected.remove(kNoTagFilterId);
+                                  liveSelected.add(tag.id);
+                                }
+                              });
+                              ref.read(tagSelectionProvider.notifier).toggle(tag.id);
+                              ref.read(bookListProvider.notifier).refresh();
+                            },
+                            dense: false,
+                          ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
     final statusFilter = ref.watch(readingStatusFilterNotifierProvider);
     final selectedTags = ref.watch(tagSelectionProvider);
     final tagsAsync = ref.watch(tagListProvider);
-
-    Widget buildFilterBar() {
-      final statusChips = [
-        _StatusChip(
-          label: L10n.of(context).bookshelfFilterFinished,
-          selected: statusFilter == ReadingStatusFilter.finished,
-          onTap: () {
-            ref
-                .read(readingStatusFilterNotifierProvider.notifier)
-                .toggle(ReadingStatusFilter.finished);
-            ref.read(bookListProvider.notifier).refresh();
-          },
-        ),
-        _StatusChip(
-          label: L10n.of(context).bookshelfFilterReading,
-          selected: statusFilter == ReadingStatusFilter.reading,
-          onTap: () {
-            ref
-                .read(readingStatusFilterNotifierProvider.notifier)
-                .toggle(ReadingStatusFilter.reading);
-            ref.read(bookListProvider.notifier).refresh();
-          },
-        ),
-        _StatusChip(
-          label: L10n.of(context).bookshelfFilterNotStarted,
-          selected: statusFilter == ReadingStatusFilter.notStarted,
-          onTap: () {
-            ref
-                .read(readingStatusFilterNotifierProvider.notifier)
-                .toggle(ReadingStatusFilter.notStarted);
-            ref.read(bookListProvider.notifier).refresh();
-          },
-        ),
-      ];
-
-      Future<void> showTagEditDialog(Tag tag) async {
-        await TagChip.showEditDialog(
-          context: context,
-          initialName: tag.name,
-          initialColor: tag.color ?? hashColor(tag.name),
-          onRename: (newName) async {
-            await ref
-                .read(tagListProvider.notifier)
-                .updateTag(tag.id, newName: newName);
-            ref.read(bookListProvider.notifier).refresh();
-          },
-          onColorChange: (color) async {
-            await ref
-                .read(tagListProvider.notifier)
-                .updateTag(tag.id, color: color);
-            ref.read(bookListProvider.notifier).refresh();
-          },
-          onDelete: () async {
-            await ref.read(tagListProvider.notifier).deleteTag(tag.id);
-            if (selectedTags.contains(tag.id)) {
-              ref.read(tagSelectionProvider.notifier).toggle(tag.id);
-            }
-            ref.read(bookListProvider.notifier).refresh();
-          },
-        );
-      }
-
-      Future<void> showTagMenu() async {
-        final tags = tagsAsync.when(
-          data: (value) => value,
-          loading: () => const <Tag>[],
-          error: (_, __) => const <Tag>[],
-        );
-
-        if (!context.mounted) return;
-
-        final renderBox =
-            _tagButtonKey.currentContext?.findRenderObject() as RenderBox?;
-        final overlay =
-            Overlay.of(context).context.findRenderObject() as RenderBox?;
-        if (renderBox == null || overlay == null) return;
-
-        final position = RelativeRect.fromRect(
-          Rect.fromPoints(
-            renderBox.localToGlobal(Offset.zero, ancestor: overlay),
-            renderBox.localToGlobal(
-              renderBox.size.bottomRight(Offset.zero),
-              ancestor: overlay,
-            ),
-          ),
-          Offset.zero & overlay.size,
-        );
-
-        final liveSelected = {...selectedTags};
-
-        final boxMaxWidth = max(MediaQuery.of(context).size.width * 0.8, 500.0);
-
-        await showMenu<int>(
-          color: Colors.transparent,
-          shadowColor: Colors.transparent,
-          context: context,
-          position: position,
-          constraints: BoxConstraints(maxHeight: 360, maxWidth: boxMaxWidth),
-          items: [
-            PopupMenuItem<int>(
-              enabled: false,
-              padding: EdgeInsets.zero,
-              child: Align(
-                alignment: Alignment.topRight,
-                child: FilledContainer(
-                  constraints:
-                      BoxConstraints(maxHeight: 340, maxWidth: boxMaxWidth),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                  child: StatefulBuilder(
-                    builder: (context, setStateMenu) {
-                      return SingleChildScrollView(
-                        child: Wrap(
-                          spacing: 8,
-                          runSpacing: 8,
-                          children: [
-                            if (tags.isEmpty)
-                              Text(
-                                L10n.of(context).tagsEmptyHint,
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                            // "No tag" virtual option - only show when there are tags
-                            if (tags.isNotEmpty)
-                              TagChip(
-                                label: L10n.of(context).noTagFilter,
-                                color: Colors.grey,
-                                selected: liveSelected.contains(kNoTagFilterId),
-                                onTap: () {
-                                  setStateMenu(() {
-                                    if (liveSelected.contains(kNoTagFilterId)) {
-                                      liveSelected.remove(kNoTagFilterId);
-                                    } else {
-                                      // Mutual exclusion: clear other tags when selecting "no tag"
-                                      liveSelected.clear();
-                                      liveSelected.add(kNoTagFilterId);
-                                    }
-                                  });
-                                  ref
-                                      .read(tagSelectionProvider.notifier)
-                                      .toggle(kNoTagFilterId);
-                                  ref.read(bookListProvider.notifier).refresh();
-                                },
-                                dense: false,
-                              ),
-                            for (final tag in tags)
-                              TagChip(
-                                label: tag.name,
-                                color: tag.color,
-                                selected: liveSelected.contains(tag.id),
-                                onTap: () {
-                                  setStateMenu(() {
-                                    if (liveSelected.contains(tag.id)) {
-                                      liveSelected.remove(tag.id);
-                                    } else {
-                                      // Mutual exclusion: clear "no tag" when selecting a regular tag
-                                      liveSelected.remove(kNoTagFilterId);
-                                      liveSelected.add(tag.id);
-                                    }
-                                  });
-                                  ref
-                                      .read(tagSelectionProvider.notifier)
-                                      .toggle(tag.id);
-                                  ref.read(bookListProvider.notifier).refresh();
-                                },
-                                onLongPress: () {
-                                  Navigator.of(context).pop();
-                                  Future.microtask(
-                                      () => showTagEditDialog(tag));
-                                },
-                                dense: false,
-                              ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
-            ),
-          ],
-        );
-      }
-
-      final selectedTagWidgets = tagsAsync.when(
-        data: (tags) {
-          final tagMap = {for (final t in tags) t.id: t};
-          final List<Widget> chips = [];
-
-          // Display "no tag" chip
-          if (selectedTags.contains(kNoTagFilterId)) {
-            chips.add(Padding(
-              padding: const EdgeInsets.only(left: 8),
-              child: TagChip(
-                label: L10n.of(context).noTagFilter,
-                color: Colors.grey,
-                selected: true,
-                onTap: () {
-                  ref
-                      .read(tagSelectionProvider.notifier)
-                      .toggle(kNoTagFilterId);
-                  ref.read(bookListProvider.notifier).refresh();
-                },
-                dense: true,
-              ),
-            ));
-          }
-
-          // Display regular tag chips
-          chips.addAll(selectedTags
-              .where((id) => id != kNoTagFilterId)
-              .map((id) => tagMap[id])
-              .whereType<Tag>()
-              .map((tag) => Padding(
-                    padding: const EdgeInsets.only(left: 8),
-                    child: TagChip(
-                      label: tag.name,
-                      color: tag.color,
-                      selected: true,
-                      onTap: () {
-                        ref.read(tagSelectionProvider.notifier).toggle(tag.id);
-                        ref.read(bookListProvider.notifier).refresh();
-                      },
-                      dense: true,
-                    ),
-                  )));
-
-          return Row(children: chips);
-        },
-        loading: () => const SizedBox.shrink(),
-        error: (_, __) => const SizedBox.shrink(),
-      );
-
-      return Container(
-        height: 40,
-        padding: const EdgeInsets.fromLTRB(12, 0, 12, 5),
-        child: Row(
-          children: [
-            const SizedBox(width: 8),
-            Expanded(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    ...statusChips,
-                    selectedTagWidgets,
-                  ],
-                ),
-              ),
-            ),
-            IconButton(
-              key: _tagButtonKey,
-              icon: const Icon(EvaIcons.pricetags_outline, size: 22),
-              tooltip: L10n.of(context).bookshelfFilterTagsTooltip,
-              onPressed: showTagMenu,
-            ),
-          ],
-        ),
-      );
-    }
-
     void handleBottomSheet(BuildContext context, Book book) {
       showBottomSheet(
         context: context,
@@ -470,7 +306,215 @@ class BookshelfPageState extends ConsumerState<BookshelfPage>
 
     Widget body = Column(
       children: [
-        buildFilterBar(),
+        // Logo centered at top
+        SafeArea(
+          bottom: false,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const CubeBookLogo(fontSize: 24),
+              ],
+            ),
+          ),
+        ),
+        // Search bar + Sync/Sort buttons
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Row(
+            children: [
+              Expanded(
+                child: Container(
+                  height: 40,
+                  constraints: const BoxConstraints(maxWidth: 400),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const SearchPage(),
+                        ),
+                      );
+                    },
+                    child: FilledContainer(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      color: Theme.of(context).colorScheme.surface.withAlpha(80),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.search, color: Colors.grey),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              L10n.of(context).searchBooksOrNotes,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(color: Theme.of(context).hintColor),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              const SyncButton(),
+              const SizedBox(width: 8),
+              NeoIconButton(
+                icon: Icons.sort,
+                onPressed: () {
+                  showMenu(
+                    context: context,
+                    position: RelativeRect.fromLTRB(
+                      MediaQuery.of(context).size.width,
+                      MediaQuery.of(context).padding.top + 100,
+                      0.0,
+                      0.0,
+                    ),
+                    items: [
+                      for (var sortField in SortFieldEnum.values)
+                        PopupMenuItem(
+                            child: Text(
+                              sortField.getL10n(context),
+                              style: TextStyle(
+                                color: sortField == Prefs().sortField
+                                    ? Theme.of(context).colorScheme.primary
+                                    : Theme.of(context).colorScheme.onSurface,
+                              ),
+                            ),
+                            onTap: () {
+                              Prefs().sortField = sortField;
+                              ref.read(bookListProvider.notifier).refresh();
+                            }),
+                      PopupMenuItem(
+                        enabled: false,
+                        child: StatefulBuilder(builder: (_, setState) {
+                          return Row(
+                            children: [
+                              Expanded(
+                                child: AnxSegmentedButton<SortOrderEnum>(
+                                  onSelectionChanged: (value) {
+                                    Prefs().sortOrder = value.first;
+                                    ref.read(bookListProvider.notifier).refresh();
+                                    setState(() {});
+                                  },
+                                  segments: SortOrderEnum.values
+                                      .map(
+                                        (e) => SegmentButtonItem(
+                                          value: e,
+                                          label: e.getL10n(
+                                              navigatorKey.currentContext!),
+                                        ),
+                                      )
+                                      .toList(),
+                                  selected: {Prefs().sortOrder},
+                                ),
+                              ),
+                            ],
+                          );
+                        }),
+                      )
+                    ],
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+        // Status filter chips
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      _StatusChip(
+                        label: L10n.of(context).bookshelfFilterFinished,
+                        selected: statusFilter == ReadingStatusFilter.finished,
+                        onTap: () {
+                          ref
+                              .read(readingStatusFilterNotifierProvider.notifier)
+                              .toggle(ReadingStatusFilter.finished);
+                          ref.read(bookListProvider.notifier).refresh();
+                        },
+                      ),
+                      const SizedBox(width: 8),
+                      _StatusChip(
+                        label: L10n.of(context).bookshelfFilterReading,
+                        selected: statusFilter == ReadingStatusFilter.reading,
+                        onTap: () {
+                          ref
+                              .read(readingStatusFilterNotifierProvider.notifier)
+                              .toggle(ReadingStatusFilter.reading);
+                          ref.read(bookListProvider.notifier).refresh();
+                        },
+                      ),
+                      const SizedBox(width: 8),
+                      _StatusChip(
+                        label: L10n.of(context).bookshelfFilterNotStarted,
+                        selected: statusFilter == ReadingStatusFilter.notStarted,
+                        onTap: () {
+                          ref
+                              .read(readingStatusFilterNotifierProvider.notifier)
+                              .toggle(ReadingStatusFilter.notStarted);
+                          ref.read(bookListProvider.notifier).refresh();
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              NeoIconButton(
+                key: _tagButtonKey,
+                icon: EvaIcons.pricetags_outline,
+                onPressed: () => _showTagMenu(context, ref),
+                size: 40,
+              ),
+            ],
+          ),
+        ),
+        // Tags row
+        if (selectedTags.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: selectedTags
+                    .where((id) => id != kNoTagFilterId)
+                    .map((id) {
+                  final tag = tagsAsync.whenOrNull(data: (tags) =>
+                      {for (final t in tags) t.id: t}[id]);
+                  if (tag == null) return const SizedBox.shrink();
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: TagChip(
+                      label: tag.name,
+                      color: tag.color,
+                      selected: true,
+                      onTap: () {
+                        ref.read(tagSelectionProvider.notifier).toggle(tag.id);
+                        ref.read(bookListProvider.notifier).refresh();
+                      },
+                      dense: true,
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
+        // Neo-brutalist divider
+        Container(
+          height: 4,
+          margin: const EdgeInsets.symmetric(vertical: 8),
+          color: NeoBrutalColors.ink,
+        ),
         Expanded(
           child: DropTarget(
             onDragDone: (detail) async {
@@ -527,123 +571,32 @@ class BookshelfPageState extends ConsumerState<BookshelfPage>
       ],
     );
 
+    // Minimal AppBar - just for the scaffold, no content
     PreferredSizeWidget appBar = AppBar(
       forceMaterialTransparency: true,
-      title: Container(
-          height: 34,
-          constraints: const BoxConstraints(maxWidth: 400),
-          child: InkWell(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const SearchPage(),
-                ),
-              );
-            },
-            child: FilledContainer(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              color: Theme.of(context).colorScheme.surface.withAlpha(80),
-              child: Row(
-                children: [
-                  const Icon(Icons.search, color: Colors.grey),
-                  SizedBox(width: 8),
-                  Expanded(
-                    child: Text(L10n.of(context).searchBooksOrNotes,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(color: Theme.of(context).hintColor),
-                        overflow: TextOverflow.ellipsis),
-                  )
-                ],
-              ),
-            ),
-          )),
-      actions: [
-        const SyncButton(),
-        IconButton(
-          icon: const Icon(Icons.add),
-          onPressed: _importBook,
-        ),
-        IconButton(
-            icon: const Icon(Icons.sort),
-            onPressed: () {
-              showMenu(
-                context: context,
-                position: RelativeRect.fromLTRB(
-                  MediaQuery.of(context).size.width,
-                  MediaQuery.of(context).padding.top + kToolbarHeight,
-                  0.0,
-                  0.0,
-                ),
-                items: [
-                  for (var sortField in SortFieldEnum.values)
-                    PopupMenuItem(
-                        child: Text(
-                          sortField.getL10n(context),
-                          style: TextStyle(
-                            color: sortField == Prefs().sortField
-                                ? Theme.of(context).colorScheme.primary
-                                : Theme.of(context).colorScheme.onSurface,
-                          ),
-                        ),
-                        onTap: () {
-                          Prefs().sortField = sortField;
-                          ref.read(bookListProvider.notifier).refresh();
-                        }),
-                  PopupMenuItem(
-                    enabled: false,
-                    child: StatefulBuilder(builder: (_, setState) {
-                      return Row(
-                        children: [
-                          Expanded(
-                            child: AnxSegmentedButton<SortOrderEnum>(
-                              onSelectionChanged: (value) {
-                                Prefs().sortOrder = value.first;
-                                ref.read(bookListProvider.notifier).refresh();
-                                setState(() {});
-                              },
-                              segments: SortOrderEnum.values
-                                  .map(
-                                    (e) => SegmentButtonItem(
-                                      value: e,
-                                      label: e.getL10n(
-                                          navigatorKey.currentContext!),
-                                    ),
-                                  )
-                                  .toList(),
-                              selected: {Prefs().sortOrder},
-                            ),
-                          ),
-                        ],
-                      );
-                    }),
-                  )
-                ],
-              );
-            }),
-      ],
+      toolbarHeight: 0,
+      elevation: 0,
     );
 
-    return Container(
-        decoration: Prefs().eInkMode
-            ? null
-            : BoxDecoration(
-                gradient: RadialGradient(
-                  tileMode: TileMode.clamp,
-                  center: Alignment.topRight,
-                  radius: 1,
-                  colors: [
-                    Theme.of(context).colorScheme.primary.withAlpha(5),
-                    Theme.of(context).scaffoldBackgroundColor,
-                  ],
-                ),
-              ),
+    return NeoBackground(
+        pattern: NeoBackgroundPattern.mesh,
+        opacity: 0.04,
         child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: appBar,
           body: body,
-        ));
+          floatingActionButton: Padding(
+            padding: EdgeInsets.only(bottom: 90),
+            child: NeoIconButton(
+              icon: Icons.add,
+              onPressed: _importBook,
+              size: 56,
+              color: NeoBrutalColors.red,
+            ),
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        ),
+      );
   }
 }
 
@@ -662,14 +615,11 @@ class _StatusChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(right: 8),
-      child: FilterChip(
-        labelPadding: const EdgeInsets.all(0),
-        padding: const EdgeInsets.symmetric(horizontal: 4),
-        label: Text(label),
+      child: NeoFilterChip(
+        label: label,
         selected: selected,
-        onSelected: (_) => onTap(),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        checkmarkColor: Theme.of(context).colorScheme.primary,
+        onTap: onTap,
+        color: Theme.of(context).colorScheme.secondary,
       ),
     );
   }

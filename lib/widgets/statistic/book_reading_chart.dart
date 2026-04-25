@@ -1,3 +1,4 @@
+import 'package:cubebook/theme/neo_colors.dart';
 import 'package:cubebook/utils/date/convert_seconds.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -28,9 +29,12 @@ class BookReadingChart extends StatefulWidget {
 class _BookReadingChartState extends State<BookReadingChart> {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final primaryColor = theme.colorScheme.primary;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final formatter = DateFormat('M/d');
+
+    // Neo-brutalist colors
+    final lineColor = isDark ? NeoBrutalColors.white : NeoBrutalColors.ink;
+    final areaColor = isDark ? NeoBrutalColors.red : NeoBrutalColors.yellow;
 
     final dataLength = widget.cumulativeValues.length;
     final effectiveMaxY = widget.maxY ??
@@ -53,8 +57,9 @@ class _BookReadingChartState extends State<BookReadingChart> {
                   return LineTooltipItem(
                     '$label · ${convertSeconds(daily)}',
                     TextStyle(
-                      color: primaryColor,
+                      color: lineColor,
                       fontWeight: FontWeight.bold,
+                      fontFamily: 'Space Grotesk',
                       fontSize: 12,
                     ),
                   );
@@ -80,21 +85,25 @@ class _BookReadingChartState extends State<BookReadingChart> {
                 widget.cumulativeValues[index].toDouble(),
               ),
             ),
-            isCurved: true,
-            color: primaryColor,
-            barWidth: 2,
+            isCurved: false, // Neo-brutalist: sharp lines, not curved
+            color: lineColor,
+            barWidth: 3, // Thicker line for neo-brutalist look
             isStrokeCapRound: true,
-            dotData: FlDotData(show: false),
+            dotData: FlDotData(
+              show: true,
+              getDotPainter: (spot, percent, barData, index) {
+                return FlDotCirclePainter(
+                  radius: 4,
+                  color: areaColor,
+                  strokeWidth: 2,
+                  strokeColor: lineColor,
+                );
+              },
+            ),
             belowBarData: BarAreaData(
               show: true,
-              gradient: LinearGradient(
-                colors: [
-                  primaryColor.withAlpha(75),
-                  primaryColor.withAlpha(0),
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
+              // Neo-brutalist: solid color with opacity, not gradient
+              color: areaColor.withAlpha(100),
             ),
           ),
         ],

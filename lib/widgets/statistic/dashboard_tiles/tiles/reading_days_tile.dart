@@ -1,4 +1,5 @@
 import 'package:cubebook/providers/statictics_summary_value.dart';
+import 'package:cubebook/theme/neo_colors.dart';
 import 'package:cubebook/widgets/common/async_skeleton_wrapper.dart';
 import 'package:cubebook/widgets/statistic/dashboard_tiles/dashboard_tile_base.dart';
 import 'package:cubebook/widgets/statistic/dashboard_tiles/dashboard_tile_metadata.dart';
@@ -31,10 +32,34 @@ class ReadingDaysTile extends StatisticsDashboardTileBase {
     return AsyncSkeletonWrapper<int>(
       asyncValue: asyncValue,
       mock: 28,
-      builder: (count, _) => DashboardMiniMetric(
-        value: count,
-        label: l10nLocal.tileReadingDaysUnit,
-        icon: metadata.icon,
+      builder: (count, _) => LayoutBuilder(
+        builder: (context, constraints) {
+          final iconSize = constraints.maxHeight * 0.4;
+          return Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: NeoBrutalColors.yellow,
+                  border: Border.all(width: 2, color: NeoBrutalColors.ink),
+                ),
+                child: Icon(
+                  metadata.icon,
+                  size: iconSize.clamp(16.0, 24.0),
+                  color: NeoBrutalColors.ink,
+                ),
+              ),
+              const SizedBox(width: 6),
+              Expanded(
+                child: DashboardMiniMetric(
+                  value: count,
+                  label: l10nLocal.tileReadingDaysUnit,
+                  icon: metadata.icon,
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

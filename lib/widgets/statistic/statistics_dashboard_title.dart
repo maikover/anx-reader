@@ -184,7 +184,7 @@ class _AddTileSheetContentState extends ConsumerState<AddTileSheetContent> {
                 color: Colors.black26,
                 spacing: const EdgeInsets.symmetric(horizontal: 3.0),
                 activeShape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25.0),
+                  borderRadius: BorderRadius.zero,
                 ),
               ),
             ),

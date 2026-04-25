@@ -1,4 +1,5 @@
 import 'package:cubebook/providers/sync.dart';
+import 'package:cubebook/theme/neo_colors.dart';
 import 'package:cubebook/widgets/bookshelf/sync_status_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -43,19 +44,39 @@ class _SyncButtonState extends ConsumerState<SyncButton>
     });
 
     final isSyncing = ref.watch(syncProvider.select((s) => s.isSyncing));
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return IconButton(
-      icon: isSyncing
-          ? RepaintBoundary(
-              child: RotationTransition(
-                turns: _animation,
-                child: const Icon(Icons.sync),
-              ),
-            )
-          : const Icon(Icons.sync),
-      onPressed: () {
+    return GestureDetector(
+      onTap: () {
         showSyncStatusBottomSheet(context);
       },
+      child: Container(
+        width: 44,
+        height: 44,
+        decoration: BoxDecoration(
+          color: NeoBrutalColors.cardColor(isDark),
+          border: Border.all(width: 3, color: NeoBrutalColors.borderColor(isDark)),
+          boxShadow: [
+            BoxShadow(offset: const Offset(4, 4), blurRadius: 0, color: NeoBrutalColors.borderColor(isDark)),
+          ],
+        ),
+        child: Center(
+          child: isSyncing
+              ? RotationTransition(
+                  turns: _animation,
+                  child: Icon(
+                    Icons.sync,
+                    size: 22,
+                    color: NeoBrutalColors.borderColor(isDark),
+                  ),
+                )
+              : Icon(
+                  Icons.sync,
+                  size: 22,
+                  color: NeoBrutalColors.borderColor(isDark),
+                ),
+        ),
+      ),
     );
   }
 }

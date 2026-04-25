@@ -1,5 +1,5 @@
-import 'package:cubebook/main.dart';
 import 'package:cubebook/providers/statistic_data.dart';
+import 'package:cubebook/theme/neo_colors.dart';
 import 'package:cubebook/utils/date/convert_seconds.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -18,22 +18,19 @@ class StatisticChart extends ConsumerStatefulWidget {
 
 class _StatisticChartState extends ConsumerState<StatisticChart> {
   int? touchedIndex;
-  final Color bottomColor =
-      Theme.of(navigatorKey.currentState!.context).colorScheme.primary;
-
-  final Color topColor = Theme.of(navigatorKey.currentState!.context)
-      .colorScheme
-      .primary
-      .withOpacity(0.5);
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    // Neo-brutalist adaptive color for bars
+    final barColor = NeoBrutalColors.adaptiveRed(isDark);
+
     return BarChart(
       BarChartData(
-        barTouchData: barTouchData,
-        titlesData: titlesData,
+        barTouchData: barTouchData(barColor, isDark),
+        titlesData: titlesData(isDark),
         borderData: borderData,
-        barGroups: barGroups,
+        barGroups: barGroups(barColor, isDark),
         gridData: const FlGridData(show: false),
         alignment: BarChartAlignment.spaceAround,
         maxY: widget.readingTime
@@ -43,20 +40,22 @@ class _StatisticChartState extends ConsumerState<StatisticChart> {
     );
   }
 
-  BarTouchData get barTouchData {
+  BarTouchData barTouchData(Color barColor, bool isDark) {
     return BarTouchData(
       enabled: true,
       touchTooltipData: BarTouchTooltipData(
         getTooltipColor: (BarChartGroupData group) {
-          return Colors.white.withAlpha(0);
+          return Colors.transparent;
         },
         getTooltipItem: (group, groupIndex, rod, rodIndex) {
           if (touchedIndex != null && group.x.toInt() == touchedIndex) {
             return BarTooltipItem(
               convertSeconds(widget.readingTime[group.x.toInt()]),
               TextStyle(
-                color: topColor,
+                color: NeoBrutalColors.borderColor(isDark),
                 fontWeight: FontWeight.bold,
+                fontFamily: 'Space Grotesk',
+                fontSize: 12,
               ),
             );
           }
@@ -84,13 +83,13 @@ class _StatisticChartState extends ConsumerState<StatisticChart> {
     );
   }
 
-  FlTitlesData get titlesData => FlTitlesData(
+  FlTitlesData titlesData(bool isDark) => FlTitlesData(
         show: true,
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
             reservedSize: 30,
-            getTitlesWidget: getTitles,
+            getTitlesWidget: (value, meta) => getTitles(value, meta, isDark),
           ),
         ),
         leftTitles: const AxisTitles(
@@ -108,16 +107,7 @@ class _StatisticChartState extends ConsumerState<StatisticChart> {
         show: false,
       );
 
-  LinearGradient get _barsGradient => LinearGradient(
-        colors: [
-          bottomColor,
-          topColor,
-        ],
-        begin: Alignment.bottomCenter,
-        end: Alignment.topCenter,
-      );
-
-  List<BarChartGroupData> get barGroups {
+  List<BarChartGroupData> barGroups(Color barColor, bool isDark) {
     List<BarChartGroupData> barGroups = [];
     for (int i = 0; i < widget.readingTime.length; i++) {
       barGroups.add(
@@ -126,7 +116,19 @@ class _StatisticChartState extends ConsumerState<StatisticChart> {
           barRods: [
             BarChartRodData(
               toY: widget.readingTime[i].toDouble(),
-              gradient: _barsGradient,
+              // Neo-brutalist: solid red color with sharp corners
+              color: barColor,
+              width: 16,
+              borderRadius: BorderRadius.zero,
+              backDrawRodData: BackgroundBarChartRodData(
+                show: true,
+                toY: widget.readingTime.reduce(
+                            (value, element) =>
+                                value > element ? value : element) *
+                        1.2 *
+                        0.1,
+                color: (isDark ? NeoBrutalColors.darkSurface : NeoBrutalColors.cream).withAlpha(128),
+              ),
             ),
           ],
           showingTooltipIndicators: [0],
@@ -136,11 +138,12 @@ class _StatisticChartState extends ConsumerState<StatisticChart> {
     return barGroups;
   }
 
-  SideTitleWidget getTitles(double value, TitleMeta meta) {
-    var style = TextStyle(
-      color: bottomColor,
+  SideTitleWidget getTitles(double value, TitleMeta meta, bool isDark) {
+    final style = TextStyle(
+      color: NeoBrutalColors.borderColor(isDark),
       fontWeight: FontWeight.bold,
-      fontSize: 14,
+      fontSize: 12,
+      fontFamily: 'Space Grotesk',
     );
     return SideTitleWidget(
         meta: meta,

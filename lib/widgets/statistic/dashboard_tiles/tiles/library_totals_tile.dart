@@ -1,5 +1,6 @@
 import 'package:cubebook/l10n/generated/L10n.dart';
 import 'package:cubebook/providers/statictics_summary_value.dart';
+import 'package:cubebook/theme/neo_colors.dart';
 import 'package:cubebook/widgets/common/async_skeleton_wrapper.dart';
 import 'package:cubebook/widgets/statistic/dashboard_tiles/dashboard_tile_base.dart';
 import 'package:cubebook/widgets/statistic/dashboard_tiles/dashboard_tile_metadata.dart';
@@ -81,8 +82,12 @@ class _NumberTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+        color: Theme.of(context).colorScheme.surface,
+        border: Border.all(
+          width: 4,
+          color: NeoBrutalColors.ink,
+        ),
+        boxShadow: NeoBrutalColors.hardShadowSmall(),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

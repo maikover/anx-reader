@@ -43,17 +43,16 @@ class ExcerptShareCard extends StatelessWidget {
         width: 500,
         decoration: BoxDecoration(
           color: backgroundColor,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.zero,
           boxShadow: [
             BoxShadow(
-              color: Colors.black45,
-              blurRadius: 10,
-              offset: const Offset(0, 5),
+              color: Colors.black,
+              blurRadius: 0,
+              offset: const Offset(8, 8),
             ),
           ],
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(8),
+        child: ClipRect(
           child: child,
         ),
       ),

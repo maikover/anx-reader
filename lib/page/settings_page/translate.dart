@@ -43,7 +43,7 @@ class _TranslateSettingState extends State<TranslateSetting> {
               child: FilledContainer(
                 margin: const EdgeInsets.all(2.0),
                 color: Theme.of(context).cardColor,
-                radius: 28,
+                radius: 0,
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Column(
@@ -86,7 +86,7 @@ class _TranslateSettingState extends State<TranslateSetting> {
               child: FilledContainer(
                 margin: const EdgeInsets.all(2.0),
                 color: Theme.of(context).cardColor,
-                radius: 28,
+                radius: 0,
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Column(

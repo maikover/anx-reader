@@ -8,6 +8,7 @@ import 'package:cubebook/l10n/generated/L10n.dart';
 import 'package:cubebook/models/window_info.dart';
 import 'package:cubebook/page/home_page.dart';
 import 'package:cubebook/page/migration_page.dart';
+import 'package:cubebook/page/splash_page.dart';
 import 'package:cubebook/service/book_player/book_player_server.dart';
 import 'package:cubebook/service/tts/tts_handler.dart';
 import 'package:cubebook/utils/get_path/macos_migration.dart';
@@ -91,6 +92,7 @@ class MyApp extends ConsumerStatefulWidget {
 class _MyAppState extends ConsumerState<MyApp>
     with WidgetsBindingObserver, WindowListener {
   static const Locale _englishFallbackLocale = Locale('en');
+  bool _splashComplete = false;
 
   @override
   void initState() {
@@ -177,6 +179,7 @@ class _MyAppState extends ConsumerState<MyApp>
       ],
       child: provider.Consumer<Prefs>(
         builder: (context, prefsNotifier, child) {
+          print('DEBUG Consumer: Rebuilding with themeMode=${prefsNotifier.themeMode}');
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             scrollBehavior: ScrollConfiguration.of(context).copyWith(
@@ -200,10 +203,16 @@ class _MyAppState extends ConsumerState<MyApp>
             themeMode: prefsNotifier.themeMode,
             theme: colorSchema(prefsNotifier, context, Brightness.light),
             darkTheme: colorSchema(prefsNotifier, context, Brightness.dark),
-            home: _needsMigration
-                ? _MigrationWrapper(
-                    migrationCheckResult: _migrationCheckResult!)
-                : const HomePage(),
+            home: _splashComplete
+                ? (_needsMigration
+                    ? _MigrationWrapper(
+                        migrationCheckResult: _migrationCheckResult!)
+                    : const HomePage())
+                : SplashPage(onComplete: () {
+                    setState(() {
+                      _splashComplete = true;
+                    });
+                  }),
           );
         },
       ),

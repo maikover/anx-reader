@@ -1,8 +1,8 @@
 import 'package:cubebook/config/shared_preference_provider.dart';
 import 'package:cubebook/enums/hint_key.dart';
 import 'package:cubebook/l10n/generated/L10n.dart';
+import 'package:cubebook/theme/neo_colors.dart';
 import 'package:cubebook/utils/toast/common.dart';
-import 'package:cubebook/widgets/common/container/filled_container.dart';
 import 'package:flutter/material.dart';
 
 class HintBanner extends StatefulWidget {
@@ -56,18 +56,23 @@ class _HintBannerState extends State<HintBanner>
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final borderColor = colorScheme.primary;
-    final backgroundColor = colorScheme.primary.withAlpha(30);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return AnimatedSize(
       duration: const Duration(milliseconds: 250),
       curve: Curves.easeInOut,
       alignment: Alignment.topCenter,
       child: _visible
-          ? FilledContainer(
+          ? Container(
               margin: widget.margin,
-              color: backgroundColor,
+              decoration: BoxDecoration(
+                color: NeoBrutalColors.red,
+                border: Border.all(
+                  width: 4,
+                  color: NeoBrutalColors.ink,
+                ),
+                boxShadow: NeoBrutalColors.hardShadowMedium(),
+              ),
               child: Stack(
                 children: [
                   Padding(
@@ -78,12 +83,22 @@ class _HintBannerState extends State<HintBanner>
                         if (widget.icon != null) ...[
                           IconTheme(
                             data: IconTheme.of(context)
-                                .copyWith(color: borderColor.withAlpha(220)),
+                                .copyWith(color: NeoBrutalColors.white),
                             child: widget.icon!,
                           ),
                           const SizedBox(width: 12),
                         ],
-                        Expanded(child: widget.child),
+                        Expanded(
+                          child: DefaultTextStyle(
+                            style: TextStyle(
+                              fontFamily: 'Space Grotesk',
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
+                              color: NeoBrutalColors.white,
+                            ),
+                            child: widget.child,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -95,7 +110,7 @@ class _HintBannerState extends State<HintBanner>
                       icon: Icon(
                         Icons.close,
                         size: 18,
-                        color: borderColor.withAlpha(220),
+                        color: NeoBrutalColors.white,
                       ),
                       padding: EdgeInsets.zero,
                       constraints:

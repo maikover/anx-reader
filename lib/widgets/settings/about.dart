@@ -4,9 +4,12 @@ import 'package:cubebook/config/shared_preference_provider.dart';
 import 'package:cubebook/l10n/generated/L10n.dart';
 import 'package:cubebook/main.dart';
 import 'package:cubebook/page/settings_page/developer/developer_options_page.dart';
+import 'package:cubebook/theme/neo_colors.dart';
 import 'package:cubebook/utils/env_var.dart';
 import 'package:cubebook/utils/toast/common.dart';
-import 'package:cubebook/widgets/settings/link_icon.dart';
+import 'package:cubebook/widgets/common/container/filled_container.dart';
+import 'package:cubebook/widgets/neo/cube_book_logo.dart';
+import 'package:cubebook/widgets/neo/neo_background.dart';
 import 'package:cubebook/widgets/settings/show_donate_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -98,35 +101,38 @@ Future<void> openAboutDialog() async {
   showDialog(
     context: navigatorKey.currentContext!,
     builder: (BuildContext context) {
-      return AlertDialog(
-          content: ConstrainedBox(
-        constraints: const BoxConstraints(
-          maxWidth: 500,
-          minWidth: 300,
-        ),
-        child: SingleChildScrollView(
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.8,
+      return Dialog(
+        backgroundColor: Colors.transparent,
+        child: FilledContainer(
+          radius: 0,
+          constraints: const BoxConstraints(
+            maxWidth: 500,
+            minWidth: 300,
+          ),
+          child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                // Logo section
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+                  padding: const EdgeInsets.all(16.0),
                   child: Center(
-                    child: Text(
-                      'CubeBook',
-                      style: TextStyle(
-                        fontSize: 50,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary,
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: NeoBrutalColors.white,
+                        border: Border.all(width: 3, color: NeoBrutalColors.ink),
                       ),
+                      child: const CubeBookLogo(fontSize: 40),
                     ),
                   ),
                 ),
-                const Divider(),
-                ListTile(
-                  title: Text(L10n.of(context).appVersion),
-                  subtitle: Text(version + (kDebugMode ? ' (debug)' : '')),
+                const NeoSectionDivider(),
+                // Menu items
+                _NeoMenuItem(
+                  title: L10n.of(context).appVersion,
+                  subtitle: version + (kDebugMode ? ' (debug)' : ''),
+                  icon: Icons.info_outline,
                   onTap: () {
                     Clipboard.setData(ClipboardData(text: version));
                     AnxToast.show(L10n.of(context).notesPageCopied);
@@ -134,14 +140,16 @@ Future<void> openAboutDialog() async {
                   },
                 ),
                 if (EnvVar.enableDonation)
-                  ListTile(
-                    title: Text(L10n.of(context).appDonate),
+                  _NeoMenuItem(
+                    title: L10n.of(context).appDonate,
+                    icon: Icons.volunteer_activism,
                     onTap: () {
                       showDonateDialog(context);
                     },
                   ),
-                ListTile(
-                  title: Text(L10n.of(context).appLicense),
+                _NeoMenuItem(
+                  title: L10n.of(context).appLicense,
+                  icon: Icons.description,
                   onTap: () {
                     showLicensePage(
                       context: context,
@@ -150,8 +158,9 @@ Future<void> openAboutDialog() async {
                     );
                   },
                 ),
-                ListTile(
-                  title: Text(L10n.of(context).appAuthor),
+                _NeoMenuItem(
+                  title: L10n.of(context).appAuthor,
+                  icon: EvaIcons.people,
                   onTap: () {
                     launchUrl(
                       Uri.parse(
@@ -160,8 +169,9 @@ Future<void> openAboutDialog() async {
                     );
                   },
                 ),
-                ListTile(
-                  title: Text(L10n.of(context).aboutPrivacyPolicy),
+                _NeoMenuItem(
+                  title: L10n.of(context).aboutPrivacyPolicy,
+                  icon: Icons.privacy_tip,
                   onTap: () async {
                     launchUrl(
                       Uri.parse('https://anx.anxcye.com/privacy'),
@@ -169,8 +179,9 @@ Future<void> openAboutDialog() async {
                     );
                   },
                 ),
-                ListTile(
-                  title: Text(L10n.of(context).aboutTermsOfUse),
+                _NeoMenuItem(
+                  title: L10n.of(context).aboutTermsOfUse,
+                  icon: Icons.article,
                   onTap: () async {
                     launchUrl(
                       Uri.parse('https://anx.anxcye.com/terms'),
@@ -178,8 +189,9 @@ Future<void> openAboutDialog() async {
                     );
                   },
                 ),
-                ListTile(
-                  title: Text(L10n.of(context).aboutHelp),
+                _NeoMenuItem(
+                  title: L10n.of(context).aboutHelp,
+                  icon: Icons.help,
                   onTap: () async {
                     launchUrl(
                       Uri.parse('https://anx.anxcye.com/docs'),
@@ -187,64 +199,76 @@ Future<void> openAboutDialog() async {
                     );
                   },
                 ),
-                const Divider(),
+                const NeoSectionDivider(),
                 if (EnvVar.showBeian) ...[
                   GestureDetector(
                     onTap: () {
                       launchUrl(Uri.parse('https://beian.miit.gov.cn/'),
                           mode: LaunchMode.externalApplication);
                     },
-                    child: const Text('闽ICP备2025091402号-1A'),
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      child: const Text(
+                        '闽ICP备2025091402号-1A',
+                        style: TextStyle(
+                          fontFamily: 'Space Grotesk',
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
                   ),
-                  const Divider(),
+                  const NeoSectionDivider(),
                 ],
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
+                // Social links
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      linkIcon(
+                      _NeoLinkButton(
+                        icon: Icon(
+                          IonIcons.earth,
+                          color: NeoBrutalColors.ink,
+                        ),
+                        url: 'https://anx.anxcye.com',
+                      ),
+                      const SizedBox(width: 8),
+                      _NeoLinkButton(
+                        icon: Icon(
+                          IonIcons.logo_github,
+                          color: NeoBrutalColors.ink,
+                        ),
+                        url: 'https://github.com/Anxcye/anx-reader',
+                      ),
+                      if (EnvVar.showTelegramLink) ...[
+                        const SizedBox(width: 8),
+                        _NeoLinkButton(
                           icon: Icon(
-                            IonIcons.earth,
-                            color: Theme.of(context).colorScheme.secondary,
+                            Icons.telegram,
+                            color: NeoBrutalColors.ink,
                           ),
-                          url: 'https://anx.anxcye.com',
-                          mode: LaunchMode.externalApplication),
-                      linkIcon(
-                          icon: Icon(
-                            IonIcons.logo_github,
-                            color: Theme.of(context).colorScheme.secondary,
+                          url: 'https://t.me/AnxReader',
+                        ),
+                      ],
+                      const SizedBox(width: 8),
+                      _NeoLinkButton(
+                        icon: Image.asset(
+                          'assets/images/xiaohongshu.png',
+                          color: NeoBrutalColors.ink,
+                        ),
+                        url: 'https://www.xiaohongshu.com/user/profile/5d403f3e00000000100151ff',
+                      ),
+                      const SizedBox(width: 8),
+                      _NeoLinkButton(
+                        icon: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Image.asset(
+                            'assets/images/qq.png',
+                            color: NeoBrutalColors.ink,
                           ),
-                          url: 'https://github.com/Anxcye/anx-reader',
-                          mode: LaunchMode.externalApplication),
-                      if (EnvVar.showTelegramLink)
-                        linkIcon(
-                            icon: Icon(
-                              Icons.telegram,
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
-                            url: 'https://t.me/AnxReader',
-                            mode: LaunchMode.externalApplication),
-                      linkIcon(
-                          icon: Image.asset(
-                            'assets/images/xiaohongshu.png',
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                          url:
-                              'https://www.xiaohongshu.com/user/profile/5d403f3e00000000100151ff',
-                          mode: LaunchMode.externalApplication),
-                      linkIcon(
-                          icon: Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: Image.asset(
-                              'assets/images/qq.png',
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
-                          ),
-                          // qq group url is so crazy
-                          url:
-                              'http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=8BYItJOMz4RCQJoHAAei7FV-nGB0iT8O&authKey=MD6a7gI%2FENiMr32rQRTLx2BpzTaa1wO9Qfmhx9ETcaLS%2FdcOFeptvVH9FWfvUpL2&noverify=0&group_code=1042905699',
-                          mode: LaunchMode.externalApplication),
+                        ),
+                        url: 'http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=8BYItJOMz4RCQJoHAAei7FV-nGB0iT8O&authKey=MD6a7gI%2FENiMr32rQRTLx2BpzTaa1wO9Qfmhx9ETcaLS%2FdcOFeptvVH9FWfvUpL2&noverify=0&group_code=1042905699',
+                      ),
                     ],
                   ),
                 ),
@@ -252,7 +276,159 @@ Future<void> openAboutDialog() async {
             ),
           ),
         ),
-      ));
+      );
     },
   );
+}
+
+/// Neo-brutalist menu item for the about dialog
+class _NeoMenuItem extends StatefulWidget {
+  const _NeoMenuItem({
+    required this.title,
+    required this.icon,
+    required this.onTap,
+    this.subtitle,
+  });
+
+  final String title;
+  final String? subtitle;
+  final IconData icon;
+  final VoidCallback onTap;
+
+  @override
+  State<_NeoMenuItem> createState() => _NeoMenuItemState();
+}
+
+class _NeoMenuItemState extends State<_NeoMenuItem> {
+  bool _isPressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) => setState(() => _isPressed = true),
+      onTapUp: (_) {
+        setState(() => _isPressed = false);
+        widget.onTap();
+      },
+      onTapCancel: () => setState(() => _isPressed = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 100),
+        transform: Matrix4.translationValues(
+          _isPressed ? 2.0 : 0.0,
+          _isPressed ? 2.0 : 0.0,
+          0,
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          color: _isPressed ? NeoBrutalColors.yellow : NeoBrutalColors.white,
+          border: Border.all(width: 3, color: NeoBrutalColors.ink),
+          boxShadow: _isPressed
+              ? []
+              : const [
+                  BoxShadow(
+                    offset: Offset(3, 3),
+                    blurRadius: 0,
+                    color: NeoBrutalColors.ink,
+                  ),
+                ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: NeoBrutalColors.yellow,
+                border: Border.all(width: 2, color: NeoBrutalColors.ink),
+              ),
+              child: Icon(widget.icon, size: 20, color: NeoBrutalColors.ink),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.title,
+                    style: const TextStyle(
+                      fontFamily: 'Space Grotesk',
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: NeoBrutalColors.ink,
+                    ),
+                  ),
+                  if (widget.subtitle != null)
+                    Text(
+                      widget.subtitle!,
+                      style: TextStyle(
+                        fontFamily: 'Space Grotesk',
+                        fontSize: 12,
+                        color: NeoBrutalColors.ink.withAlpha(180),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            const Icon(
+              Icons.chevron_right,
+              color: NeoBrutalColors.ink,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Neo-brutalist link button for social icons
+class _NeoLinkButton extends StatefulWidget {
+  const _NeoLinkButton({
+    required this.icon,
+    required this.url,
+  });
+
+  final Widget icon;
+  final String url;
+
+  @override
+  State<_NeoLinkButton> createState() => _NeoLinkButtonState();
+}
+
+class _NeoLinkButtonState extends State<_NeoLinkButton> {
+  bool _isPressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) => setState(() => _isPressed = true),
+      onTapUp: (_) {
+        setState(() => _isPressed = false);
+        launchUrl(Uri.parse(widget.url), mode: LaunchMode.externalApplication);
+      },
+      onTapCancel: () => setState(() => _isPressed = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 100),
+        width: 44,
+        height: 44,
+        transform: Matrix4.translationValues(
+          _isPressed ? 2.0 : 0.0,
+          _isPressed ? 2.0 : 0.0,
+          0,
+        ),
+        decoration: BoxDecoration(
+          color: NeoBrutalColors.white,
+          border: Border.all(width: 3, color: NeoBrutalColors.ink),
+          boxShadow: _isPressed
+              ? []
+              : const [
+                  BoxShadow(
+                    offset: Offset(3, 3),
+                    blurRadius: 0,
+                    color: NeoBrutalColors.ink,
+                  ),
+                ],
+        ),
+        child: Center(child: widget.icon),
+      ),
+    );
+  }
 }

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="420" viewBox="0 0 420 420">
+<!-- Fondo principal negro -->
+<rect width="420" height="420" fill="#000"/>
+
+<!-- Fila Superior: CUBE -->
+
+<!-- Letra C -->
+
+<rect x="0" y="0" width="105" height="210" fill="#FF6B6B" stroke="#000" stroke-width="8"/>
+<text x="52.5" y="105" font-family="'Space Grotesk', sans-serif" font-size="90" font-weight="900" text-anchor="middle" dominant-baseline="central" fill="#000">C</text>
+
+<!-- Letra U -->
+
+<rect x="105" y="0" width="105" height="210" fill="#FFD93D" stroke="#000" stroke-width="8"/>
+<text x="157.5" y="105" font-family="'Space Grotesk', sans-serif" font-size="90" font-weight="900" text-anchor="middle" dominant-baseline="central" fill="#000">U</text>
+
+<!-- Letra B -->
+
+<rect x="210" y="0" width="105" height="210" fill="#C4B5FD" stroke="#000" stroke-width="8"/>
+<text x="262.5" y="105" font-family="'Space Grotesk', sans-serif" font-size="90" font-weight="900" text-anchor="middle" dominant-baseline="central" fill="#000">B</text>
+
+<!-- Letra E -->
+
+<rect x="315" y="0" width="105" height="210" fill="#FF6B6B" stroke="#000" stroke-width="8"/>
+<text x="367.5" y="105" font-family="'Space Grotesk', sans-serif" font-size="90" font-weight="900" text-anchor="middle" dominant-baseline="central" fill="#000">E</text>
+
+<!-- Fila Inferior: BOOK -->
+
+<!-- Caja Amarilla Contenedora -->
+
+<rect x="20" y="230" width="380" height="170" fill="none" stroke="#FFD93D" stroke-width="12"/>
+
+<!-- Texto BOOK -->
+
+<text x="210" y="315" font-family="'Space Grotesk', sans-serif" font-size="85" font-weight="900" text-anchor="middle" dominant-baseline="central" fill="#FFF" letter-spacing="12">BOOK</text>
+
+<!-- Borde exterior del icono -->
+
+<rect x="6" y="6" width="408" height="408" fill="none" stroke="#000" stroke-width="12"/>
+</svg>

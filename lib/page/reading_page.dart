@@ -18,6 +18,7 @@ import 'package:cubebook/page/book_player/epub_player.dart';
 import 'package:cubebook/providers/sync.dart';
 import 'package:cubebook/service/ai/index.dart';
 import 'package:cubebook/service/ai/prompt_generate.dart';
+import 'package:cubebook/theme/neo_colors.dart';
 import 'package:cubebook/utils/env_var.dart';
 import 'package:cubebook/utils/toast/common.dart';
 import 'package:cubebook/utils/ui/status_bar.dart';
@@ -633,38 +634,6 @@ class ReadingPageState extends ConsumerState<ReadingPage>
 
   @override
   Widget build(BuildContext context) {
-    var aiButton = IconButton(
-      tooltip: L10n.of(context).aiChat,
-      icon: const Icon(Icons.auto_awesome),
-      onPressed: () async {
-        // Determine if should show as split based on display mode
-        final displayMode = Prefs().aiChatDisplayMode;
-        final screenWidth = MediaQuery.of(context).size.width;
-
-        bool shouldShowAsSplit = false;
-        switch (displayMode) {
-          case AiChatDisplayMode.adaptive:
-            shouldShowAsSplit = screenWidth >= 600;
-            break;
-          case AiChatDisplayMode.split:
-            shouldShowAsSplit = true;
-            break;
-          case AiChatDisplayMode.popup:
-            shouldShowAsSplit = false;
-            break;
-        }
-
-        if (shouldShowAsSplit && _aiChat != null) {
-          setState(() {
-            _aiChat = null;
-          });
-          return;
-        }
-
-        showOrHideAppBarAndBottomBar(false);
-        showAiChat();
-      },
-    );
     Offstage controller = Offstage(
       offstage: bottomBarOffstage,
       child: PointerInterceptor(
@@ -684,64 +653,126 @@ class ReadingPageState extends ConsumerState<ReadingPage>
             ),
             Column(
               children: [
-                AppBar(
-                  title: Text(_book.title, overflow: TextOverflow.ellipsis),
-                  leading: IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: () {
-                      // close reading page
-                      Navigator.pop(context);
-                    },
+                // Neo-brutalist top bar
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? NeoBrutalColors.white
+                        : NeoBrutalColors.cream,
+                    border: const Border(
+                      bottom: BorderSide(
+                        width: 4,
+                        color: NeoBrutalColors.ink,
+                      ),
+                    ),
                   ),
-                  actions: [
-                    if (EnvVar.enableAIFeature) aiButton,
-                    IconButton(
-                      icon: const Icon(Icons.copy),
-                      tooltip: L10n.of(context).readingPageCopyChapterContent,
-                      onPressed: () async {
-                        try {
-                          var content = await epubPlayerKey.currentState
-                              ?.theChapterContent();
-                          var len = content?.length ?? 0;
-                          if (len > 0) {
-                            await Clipboard.setData(
-                                ClipboardData(text: content!));
-                          }
-                          AnxToast.show(L10n.of(context)
-                              .readingPageCopiedCharacters(len));
-                        } catch (e) {
-                          AnxToast.show(
-                              L10n.of(context).readingPageErrorCopyingContent);
-                        }
-                      },
+                  child: SafeArea(
+                    bottom: false,
+                    child: SizedBox(
+                      height: 60,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Row(
+                          children: [
+                            _NeoTopBarButton(
+                              icon: Icons.arrow_back,
+                              onPressed: () => Navigator.pop(context),
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                _book.title,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontFamily: 'Space Grotesk',
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: NeoBrutalColors.ink,
+                                ),
+                              ),
+                            ),
+                            if (EnvVar.enableAIFeature) ...[
+                              _NeoTopBarButton(
+                                icon: Icons.auto_awesome,
+                                onPressed: () async {
+                                  final displayMode = Prefs().aiChatDisplayMode;
+                                  final screenWidth = MediaQuery.of(context).size.width;
+                                  bool shouldShowAsSplit = false;
+                                  switch (displayMode) {
+                                    case AiChatDisplayMode.adaptive:
+                                      shouldShowAsSplit = screenWidth >= 600;
+                                      break;
+                                    case AiChatDisplayMode.split:
+                                      shouldShowAsSplit = true;
+                                      break;
+                                    case AiChatDisplayMode.popup:
+                                      shouldShowAsSplit = false;
+                                      break;
+                                  }
+                                  if (shouldShowAsSplit && _aiChat != null) {
+                                    setState(() => _aiChat = null);
+                                    return;
+                                  }
+                                  showOrHideAppBarAndBottomBar(false);
+                                  showAiChat();
+                                },
+                              ),
+                              const SizedBox(width: 4),
+                            ],
+                            _NeoTopBarButton(
+                              icon: Icons.copy,
+                              tooltip: L10n.of(context).readingPageCopyChapterContent,
+                              onPressed: () async {
+                                try {
+                                  var content = await epubPlayerKey.currentState
+                                      ?.theChapterContent();
+                                  var len = content?.length ?? 0;
+                                  if (len > 0) {
+                                    await Clipboard.setData(
+                                        ClipboardData(text: content!));
+                                  }
+                                  AnxToast.show(L10n.of(context)
+                                      .readingPageCopiedCharacters(len));
+                                } catch (e) {
+                                  AnxToast.show(
+                                      L10n.of(context).readingPageErrorCopyingContent);
+                                }
+                              },
+                            ),
+                            const SizedBox(width: 4),
+                            _NeoTopBarButton(
+                              icon: bookmarkExists
+                                  ? Icons.bookmark
+                                  : Icons.bookmark_border,
+                              tooltip: L10n.of(context).readingPageBookmark,
+                              onPressed: () {
+                                if (bookmarkExists) {
+                                  epubPlayerKey.currentState!.removeAnnotation(
+                                    epubPlayerKey.currentState!.bookmarkCfi,
+                                  );
+                                } else {
+                                  epubPlayerKey.currentState!.addBookmarkHere();
+                                }
+                              },
+                            ),
+                            const SizedBox(width: 4),
+                            _NeoTopBarButton(
+                              icon: EvaIcons.more_vertical,
+                              tooltip: L10n.of(context).readingPageBookDetails,
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                    builder: (context) => BookDetail(book: widget.book),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                    IconButton(
-                        tooltip: L10n.of(context).readingPageBookmark,
-                        onPressed: () {
-                          if (bookmarkExists) {
-                            epubPlayerKey.currentState!.removeAnnotation(
-                              epubPlayerKey.currentState!.bookmarkCfi,
-                            );
-                          } else {
-                            epubPlayerKey.currentState!.addBookmarkHere();
-                          }
-                        },
-                        icon: bookmarkExists
-                            ? const Icon(Icons.bookmark)
-                            : const Icon(Icons.bookmark_border)),
-                    IconButton(
-                      tooltip: L10n.of(context).readingPageBookDetails,
-                      icon: const Icon(EvaIcons.more_vertical),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                            builder: (context) => BookDetail(book: widget.book),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
+                  ),
                 ),
                 const Spacer(),
                 BottomSheet(
@@ -750,6 +781,24 @@ class ReadingPageState extends ConsumerState<ReadingPage>
                   builder: (context) => SafeArea(
                     top: false,
                     child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? NeoBrutalColors.white
+                            : NeoBrutalColors.cream,
+                        border: const Border(
+                          top: BorderSide(
+                            width: 4,
+                            color: NeoBrutalColors.ink,
+                          ),
+                        ),
+                        boxShadow: const [
+                          BoxShadow(
+                            offset: Offset(0, -6),
+                            blurRadius: 0,
+                            color: NeoBrutalColors.ink,
+                          ),
+                        ],
+                      ),
                       constraints: const BoxConstraints(maxWidth: 600),
                       child: StatefulBuilder(
                         builder: (BuildContext context, StateSetter setState) {
@@ -762,33 +811,39 @@ class ReadingPageState extends ConsumerState<ReadingPage>
                                   Expanded(
                                     child: _currentPage,
                                   ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(Icons.toc),
-                                      onPressed: tocHandler,
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(EvaIcons.edit),
-                                      onPressed: noteHandler,
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.data_usage),
-                                      onPressed: progressHandler,
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.color_lens),
-                                      onPressed: () {
-                                        styleHandler(setState);
-                                      },
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(EvaIcons.headphones),
-                                      onPressed: ttsHandler,
-                                    ),
-                                  ],
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 4,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      _NeoToolbarButton(
+                                        icon: Icons.toc,
+                                        onPressed: tocHandler,
+                                      ),
+                                      _NeoToolbarButton(
+                                        icon: EvaIcons.edit,
+                                        onPressed: noteHandler,
+                                      ),
+                                      _NeoToolbarButton(
+                                        icon: Icons.data_usage,
+                                        onPressed: progressHandler,
+                                      ),
+                                      _NeoToolbarButton(
+                                        icon: Icons.color_lens,
+                                        onPressed: () {
+                                          styleHandler(setState);
+                                        },
+                                      ),
+                                      _NeoToolbarButton(
+                                        icon: EvaIcons.headphones,
+                                        onPressed: ttsHandler,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
@@ -979,12 +1034,135 @@ class ReadingPageState extends ConsumerState<ReadingPage>
                   if (bottomBarOffstage)
                     const Positioned(
                       right: 16,
-                      bottom: 24,
+                       bottom: 24,
                       child: TtsFab(),
                     ),
                 ],
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// A neo-brutalist toolbar button used in the reading page bottom bar.
+/// White background, 4px black border, hard offset shadow, push-on-press effect.
+class _NeoToolbarButton extends StatefulWidget {
+  const _NeoToolbarButton({
+    required this.icon,
+    required this.onPressed,
+  });
+
+  final IconData icon;
+  final VoidCallback onPressed;
+
+  @override
+  State<_NeoToolbarButton> createState() => _NeoToolbarButtonState();
+}
+
+class _NeoToolbarButtonState extends State<_NeoToolbarButton> {
+  bool _isPressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) => setState(() => _isPressed = true),
+      onTapUp: (_) {
+        setState(() => _isPressed = false);
+        widget.onPressed();
+      },
+      onTapCancel: () => setState(() => _isPressed = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 100),
+        width: 52,
+        height: 52,
+        transform: Matrix4.translationValues(
+          _isPressed ? 3.0 : 0.0,
+          _isPressed ? 3.0 : 0.0,
+          0,
+        ),
+        decoration: BoxDecoration(
+          color: NeoBrutalColors.white,
+          border: Border.all(width: 3, color: NeoBrutalColors.ink),
+          boxShadow: _isPressed
+              ? []
+              : const [
+                  BoxShadow(
+                    offset: Offset(4, 4),
+                    blurRadius: 0,
+                    color: NeoBrutalColors.ink,
+                  ),
+                ],
+        ),
+        child: Icon(
+          widget.icon,
+          size: 22,
+          color: NeoBrutalColors.ink,
+        ),
+      ),
+    );
+  }
+}
+
+/// A neo-brutalist button for the reading page top bar.
+/// Similar to _NeoToolbarButton but slightly smaller (48x48).
+class _NeoTopBarButton extends StatefulWidget {
+  const _NeoTopBarButton({
+    required this.icon,
+    required this.onPressed,
+    this.tooltip,
+  });
+
+  final IconData icon;
+  final VoidCallback onPressed;
+  final String? tooltip;
+
+  @override
+  State<_NeoTopBarButton> createState() => _NeoTopBarButtonState();
+}
+
+class _NeoTopBarButtonState extends State<_NeoTopBarButton> {
+  bool _isPressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: widget.tooltip ?? '',
+      child: GestureDetector(
+        onTapDown: (_) => setState(() => _isPressed = true),
+        onTapUp: (_) {
+          setState(() => _isPressed = false);
+          widget.onPressed();
+        },
+        onTapCancel: () => setState(() => _isPressed = false),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 100),
+          width: 44,
+          height: 44,
+          transform: Matrix4.translationValues(
+          _isPressed ? 2.0 : 0.0,
+          _isPressed ? 2.0 : 0.0,
+          0,
+        ),
+          decoration: BoxDecoration(
+            color: NeoBrutalColors.white,
+            border: Border.all(width: 3, color: NeoBrutalColors.ink),
+            boxShadow: _isPressed
+                ? []
+                : const [
+                    BoxShadow(
+                      offset: Offset(3, 3),
+                      blurRadius: 0,
+                      color: NeoBrutalColors.ink,
+                    ),
+                  ],
+          ),
+          child: Icon(
+            widget.icon,
+            size: 20,
+            color: NeoBrutalColors.ink,
           ),
         ),
       ),

@@ -4,7 +4,7 @@ import 'package:cubebook/l10n/generated/L10n.dart';
 import 'package:cubebook/main.dart';
 import 'package:cubebook/providers/dashboard_tiles_provider.dart';
 import 'package:cubebook/service/vibration_service.dart';
-import 'package:cubebook/widgets/common/container/filled_container.dart';
+import 'package:cubebook/theme/neo_colors.dart';
 import 'package:cubebook/widgets/common/fitted_text.dart';
 import 'package:cubebook/widgets/statistic/dashboard_tiles/dashboard_tile_detail_view.dart';
 import 'package:cubebook/widgets/statistic/dashboard_tiles/dashboard_tile_metadata.dart';
@@ -36,11 +36,15 @@ abstract class StatisticsDashboardTileBase {
   L10n get l10nLocal => L10n.of(navigatorKey.currentContext!);
 
   Widget buildTile(BuildContext context, WidgetRef ref) {
-    return FilledContainer(
-      width: double.infinity,
-      height: double.infinity,
-      radius: 16,
-      color: Theme.of(context).colorScheme.surfaceContainer,
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        border: Border.all(
+          width: 4,
+          color: NeoBrutalColors.ink,
+        ),
+        boxShadow: NeoBrutalColors.hardShadowMedium(),
+      ),
       child: Stack(
         children: [
           Positioned(
@@ -136,19 +140,33 @@ abstract class StatisticsDashboardTileBase {
     final theme = Theme.of(context);
     final spacing = 8.0;
 
-    return FilledContainer(
-      color: theme.scaffoldBackgroundColor,
+    return Container(
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        border: Border.all(
+          width: 4,
+          color: NeoBrutalColors.ink,
+        ),
+        boxShadow: NeoBrutalColors.hardShadowMedium(),
+      ),
       width: flipSize(context).width,
       height: flipSize(context).height,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          FilledContainer(
-            radius: 29,
+          Container(
             height: flipTitleSize - spacing - 5,
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-            color: theme.colorScheme.primaryContainer,
+            decoration: BoxDecoration(
+              color: theme.colorScheme.surface,
+              border: Border(
+                bottom: BorderSide(
+                  width: 4,
+                  color: NeoBrutalColors.ink,
+                ),
+              ),
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,

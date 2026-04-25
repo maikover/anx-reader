@@ -1,3 +1,4 @@
+import 'package:cubebook/theme/neo_colors.dart';
 import 'package:flutter/material.dart';
 
 /// Defines a single segment item used by [AnxSegmentedButton].
@@ -45,6 +46,8 @@ class AnxSegmentedButton<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return SegmentedButton<T>(
       segments: segments
           .map(
@@ -54,7 +57,11 @@ class AnxSegmentedButton<T> extends StatelessWidget {
               label: Text(
                 segment.label,
                 softWrap: false,
-                style: segment.labelStyle,
+                style: TextStyle(
+                  fontFamily: 'Space Grotesk',
+                  fontWeight: FontWeight.w700,
+                  fontSize: 12,
+                ),
                 maxLines: segment.maxLines ?? 1,
                 overflow: segment.overflow ?? TextOverflow.fade,
               ),
@@ -67,7 +74,34 @@ class AnxSegmentedButton<T> extends StatelessWidget {
       multiSelectionEnabled: multiSelectionEnabled,
       emptySelectionAllowed: emptySelectionAllowed,
       showSelectedIcon: showSelectedIcon,
-      style: style,
+      style: ButtonStyle(
+        backgroundColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return NeoBrutalColors.adaptiveRed(isDark);
+          }
+          return NeoBrutalColors.cardColor(isDark);
+        }),
+        foregroundColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return NeoBrutalColors.white;
+          }
+          return NeoBrutalColors.borderColor(isDark);
+        }),
+        side: WidgetStateProperty.all(
+          BorderSide(
+            width: 3,
+            color: NeoBrutalColors.borderColor(isDark),
+          ),
+        ),
+        shape: WidgetStateProperty.all(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.zero,
+          ),
+        ),
+        padding: WidgetStateProperty.all(
+          const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        ),
+      ),
     );
   }
 }

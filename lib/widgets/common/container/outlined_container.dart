@@ -1,3 +1,4 @@
+import 'package:cubebook/theme/neo_colors.dart';
 import 'package:cubebook/widgets/common/container/base_rounded_container.dart';
 import 'package:flutter/material.dart';
 
@@ -25,11 +26,12 @@ class OutlinedContainer extends BaseRoundedContainer {
     BuildContext context,
     BorderRadiusGeometry borderRadius,
   ) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return buildShapeDecoration(
-      color: color ?? Theme.of(context).colorScheme.surface,
+      color: color ?? NeoBrutalColors.cardColor(isDark),
       borderSide: BorderSide(
-          color: outlineColor ?? Theme.of(context).colorScheme.outline,
-          width: 1,
+          color: outlineColor ?? NeoBrutalColors.borderColor(isDark),
+          width: 4,
           strokeAlign: BorderSide.strokeAlignOutside),
       borderRadius: borderRadius,
     );

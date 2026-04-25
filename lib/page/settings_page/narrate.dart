@@ -572,7 +572,7 @@ class _NarrateSettingsState extends ConsumerState<NarrateSettings>
                     CircleAvatar(
                       backgroundColor:
                           Theme.of(context).colorScheme.primaryContainer,
-                      radius: 24,
+                      radius: 0,
                       child: Icon(
                         _getGenderIcon(_getCurrentModelGender()),
                         color: Theme.of(context).colorScheme.onPrimaryContainer,
@@ -655,7 +655,7 @@ class _NarrateSettingsState extends ConsumerState<NarrateSettings>
         Column(
           children: [
             FilledContainer(
-              radius: 5,
+              radius: 0,
               key: key,
               child: ListTile(
                 title: Text(

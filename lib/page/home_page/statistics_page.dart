@@ -6,10 +6,10 @@ import 'package:cubebook/l10n/generated/L10n.dart';
 import 'package:cubebook/models/book.dart';
 import 'package:cubebook/page/book_detail.dart';
 import 'package:cubebook/providers/statistic_data.dart';
+import 'package:cubebook/theme/neo_colors.dart';
 import 'package:cubebook/utils/date/convert_seconds.dart';
 import 'package:cubebook/utils/date/week_of_year.dart';
 import 'package:cubebook/widgets/bookshelf/book_cover.dart';
-import 'package:cubebook/widgets/common/container/filled_container.dart';
 import 'package:cubebook/widgets/common/container/outlined_container.dart';
 import 'package:cubebook/widgets/hint/hint_banner.dart';
 import 'package:cubebook/widgets/statistic/statistic_card.dart';
@@ -294,83 +294,127 @@ class BookStatisticItem extends StatelessWidget {
 
   final int bookId;
   final int readingTime;
-  final TextStyle bookTitleStyle = const TextStyle(
-    fontSize: 20,
-    fontFamily: 'SourceHanSerif',
-    fontWeight: FontWeight.bold,
-    overflow: TextOverflow.ellipsis,
-  );
-  final TextStyle bookAuthorStyle = const TextStyle(
-    fontSize: 12,
-    color: Colors.grey,
-    overflow: TextOverflow.ellipsis,
-  );
-  final TextStyle bookReadingTimeStyle = const TextStyle(
-    fontSize: 18,
-    fontWeight: FontWeight.bold,
-  );
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return FutureBuilder<Book>(
       future: bookDao.selectBookById(bookId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
+          final book = snapshot.data!;
           return GestureDetector(
             onTap: () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => BookDetail(book: snapshot.data!)));
+                      builder: (context) => BookDetail(book: book)));
             },
-            child: FilledContainer(
+            child: Container(
               margin: const EdgeInsets.only(bottom: 10),
               padding: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                color: isDark ? NeoBrutalColors.darkSurface : NeoBrutalColors.white,
+                border: Border.all(width: 4, color: NeoBrutalColors.ink),
+                boxShadow: NeoBrutalColors.hardShadowMedium(),
+              ),
               child: Row(
                 children: [
-                  Hero(
-                      tag: snapshot.data!.coverFullPath,
-                      child: BookCover(
-                        book: snapshot.data!,
-                        height: 130,
-                        width: 90,
-                        radius: 20,
-                      )),
-                  const SizedBox(width: 15),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(width: 3, color: NeoBrutalColors.ink),
+                      boxShadow: NeoBrutalColors.hardShadowSmall(),
+                    ),
+                    child: Hero(
+                        tag: book.coverFullPath,
+                        child: BookCover(
+                          book: book,
+                          height: 110,
+                          width: 75,
+                          radius: 0,
+                        )),
+                  ),
+                  const SizedBox(width: 12),
                   Flexible(
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(snapshot.data!.title, style: bookTitleStyle),
-                          const SizedBox(height: 10),
-                          Row(
-                            children: [
-                              Expanded(
-                                flex: 3,
-                                child: Text(snapshot.data!.author,
-                                    style: bookAuthorStyle),
-                              ),
-                              Text(
-                                  // getReadingTime(context),
-                                  convertSeconds(readingTime),
-                                  textAlign: TextAlign.end,
-                                  style: bookReadingTimeStyle),
-                            ],
+                          Text(
+                            book.title,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontFamily: 'SourceHanSerif',
+                              fontWeight: FontWeight.bold,
+                              color: isDark ? NeoBrutalColors.white : NeoBrutalColors.ink,
+                            ),
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 4),
+                          Text(
+                            book.author,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 11,
+                              color: isDark ? NeoBrutalColors.lightText : Colors.grey[600],
+                            ),
+                          ),
+                          const SizedBox(height: 8),
                           Row(
                             children: [
-                              Expanded(
-                                child: LinearProgressIndicator(
-                                  value: snapshot.data!.readingPercentage,
-                                  backgroundColor: Colors.grey[300],
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                      Theme.of(context).colorScheme.primary),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 3),
+                                decoration: BoxDecoration(
+                                  color: NeoBrutalColors.yellow,
+                                  border:
+                                      Border.all(width: 2, color: NeoBrutalColors.ink),
+                                ),
+                                child: Text(
+                                  convertSeconds(readingTime),
+                                  style: const TextStyle(
+                                    fontFamily: 'Space Grotesk',
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 11,
+                                    color: NeoBrutalColors.ink,
+                                  ),
                                 ),
                               ),
-                              const SizedBox(width: 10),
+                              const Spacer(),
                               Text(
-                                  '${(snapshot.data!.readingPercentage * 100).toInt()} %'),
+                                '${(book.readingPercentage * 100).toInt()}%',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: isDark ? NeoBrutalColors.white : NeoBrutalColors.ink,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  height: 8,
+                                  decoration: BoxDecoration(
+                                    color: isDark
+                                        ? NeoBrutalColors.darkSurface
+                                        : NeoBrutalColors.cream,
+                                    border: Border.all(
+                                        width: 2, color: NeoBrutalColors.ink),
+                                  ),
+                                  child: FractionallySizedBox(
+                                    alignment: Alignment.centerLeft,
+                                    widthFactor: book.readingPercentage.clamp(0, 1),
+                                    child: Container(
+                                      color: NeoBrutalColors.red,
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ]),

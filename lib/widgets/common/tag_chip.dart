@@ -53,24 +53,26 @@ class TagChip extends StatelessWidget {
     final foreground = isEink ? einkForeground : normalForeground;
 
     return InkWell(
-      borderRadius: BorderRadius.circular(999),
+      borderRadius: BorderRadius.zero,
       onTap: onTap,
       onLongPress: onLongPress,
       onSecondaryTap: onLongPress,
       child: Container(
         padding: dense
-            ? const EdgeInsets.symmetric(horizontal: 6, vertical: 2)
-            : const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+            ? const EdgeInsets.symmetric(horizontal: 8, vertical: 4)
+            : const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: bgColor,
-          borderRadius: BorderRadius.circular(999),
-          border: Border.all(color: normalBborderColor, width: 1),
+          color: selected ? baseColor : Colors.transparent,
+          borderRadius: BorderRadius.zero,
+          border: Border.all(color: baseColor, width: 2),
         ),
         child: Text(
           '# $label',
           style: TextStyle(
-            fontWeight: FontWeight.w600,
-            color: foreground,
+            fontFamily: 'Space Grotesk',
+            fontWeight: FontWeight.w700,
+            fontSize: dense ? 11 : 13,
+            color: selected ? Colors.white : baseColor,
           ),
         ),
       ),

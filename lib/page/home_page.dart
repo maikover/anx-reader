@@ -22,8 +22,8 @@ import 'package:cubebook/providers/iap.dart';
 import 'package:cubebook/config/shared_preference_provider.dart';
 import 'package:cubebook/utils/toast/common.dart';
 import 'package:cubebook/widgets/ai/ai_chat_stream.dart';
-import 'package:cubebook/widgets/common/container/filled_container.dart';
 import 'package:cubebook/widgets/settings/about.dart';
+import 'package:cubebook/theme/neo_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 import 'package:flutter/material.dart';
@@ -219,14 +219,13 @@ class _HomePageState extends ConsumerState<HomePage> {
               children: [
                 SafeArea(
                   bottom: false,
-                  child: FilledContainer(
+                  child: Container(
                     margin: const EdgeInsets.all(16),
-                    color: ElevationOverlay.applySurfaceTint(
-                      Theme.of(context).colorScheme.surface,
-                      Theme.of(context).colorScheme.primary,
-                      3,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surface,
+                      border: Border.all(width: 4, color: NeoBrutalColors.ink),
+                      boxShadow: NeoBrutalColors.hardShadowMedium(),
                     ),
-                    radius: 20,
                     child: SafeArea(
                       child: NavigationRail(
                         leading: InkWell(
@@ -236,7 +235,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                             child: Image.asset(
                               width: 32,
                               height: 32,
-                              'assets/icon/Anx-logo-tined.png',
+                              'assets/icon/CubeBook-logo.png',
                               color: Theme.of(context).colorScheme.secondary,
                             ),
                           ),
@@ -265,50 +264,35 @@ class _HomePageState extends ConsumerState<HomePage> {
           return Scaffold(
             extendBody: true,
             body: BottomBar(
-              width: 330,
+              width: 350,
               body: (_, controller) =>
                   pages(currentIndex, constraints, controller),
               hideOnScroll: Prefs().autoHideBottomBar,
               scrollOpposite: false,
-              curve: Curves.easeIn,
+              curve: Curves.easeOut,
               barColor: Colors.transparent,
-              iconDecoration: BoxDecoration(
-                color: Prefs().autoHideBottomBar
-                    ? Theme.of(context).colorScheme.primary
-                    : Colors.transparent,
-                borderRadius: BorderRadius.circular(500),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(32),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                  child: Container(
-                    height: 64,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .surfaceContainer
-                          .withAlpha(123),
-                      borderRadius: BorderRadius.circular(32),
-                      border: Border.all(
-                        color: Theme.of(context).colorScheme.outline,
-                        width: 0.5,
-                      ),
-                    ),
-                    child: BottomNavigationBar(
-                      selectedFontSize: 12,
-                      enableFeedback: true,
-                      type: BottomNavigationBarType.fixed,
-                      landscapeLayout:
-                          BottomNavigationBarLandscapeLayout.linear,
-                      currentIndex: currentIndex,
-                      onTap: (int index) => onBottomTap(index, false),
-                      items: bottomBarItems,
-                      backgroundColor: Colors.transparent,
-                      elevation: 0,
-                      // height: 64,
-                    ),
+              iconDecoration: const BoxDecoration(),
+              child: Container(
+                height: 72,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
+                  border: Border.all(
+                    width: 4,
+                    color: NeoBrutalColors.ink,
                   ),
+                  boxShadow: NeoBrutalColors.hardShadowMedium(),
+                ),
+                child: BottomNavigationBar(
+                  selectedFontSize: 12,
+                  enableFeedback: true,
+                  type: BottomNavigationBarType.fixed,
+                  landscapeLayout:
+                      BottomNavigationBarLandscapeLayout.linear,
+                  currentIndex: currentIndex,
+                  onTap: (int index) => onBottomTap(index, false),
+                  items: bottomBarItems,
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
                 ),
               ),
             ),

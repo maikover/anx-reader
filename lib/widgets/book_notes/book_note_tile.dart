@@ -1,5 +1,6 @@
 import 'package:cubebook/constants/note_annotations.dart';
 import 'package:cubebook/models/book_note.dart';
+import 'package:cubebook/theme/neo_colors.dart';
 import 'package:cubebook/utils/time_to_human.dart';
 import 'package:cubebook/widgets/common/container/filled_container.dart';
 import 'package:flutter/material.dart';
@@ -47,6 +48,7 @@ class BookNoteTile extends StatelessWidget {
         color: backgroundColor,
         padding: const EdgeInsets.all(8.0),
         margin: margin,
+        useNeoStyle: true,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

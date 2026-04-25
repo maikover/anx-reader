@@ -23,6 +23,8 @@ import 'package:cubebook/widgets/common/anx_button.dart';
 import 'package:cubebook/widgets/common/container/filled_container.dart';
 import 'package:cubebook/widgets/delete_confirm.dart';
 import 'package:cubebook/widgets/markdown/styled_markdown.dart';
+import 'package:cubebook/widgets/neo/neo_background.dart';
+import 'package:cubebook/theme/neo_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -222,7 +224,7 @@ class AiChatStreamState extends ConsumerState<AiChatStream> {
     return FilledContainer(
       margin: EdgeInsets.symmetric(horizontal: 8),
       padding: EdgeInsets.all(8),
-      radius: 15,
+      useNeoStyle: true,
       child: GestureDetector(
         onTap: () => _handleHistoryTap(context, entry),
         child: Column(
@@ -614,16 +616,24 @@ class AiChatStreamState extends ConsumerState<AiChatStream> {
         ],
       ),
     );
+    Widget sendButton = NeoIconButton(
+      icon: _isStreaming ? Icons.stop : Icons.send,
+      onPressed: _isStreaming ? _cancelStreaming : _sendMessage,
+      size: 40,
+      color: NeoBrutalColors.red,
+      iconColor: NeoBrutalColors.white,
+    );
+
     Widget inputBox = FilledContainer(
-      padding: const EdgeInsets.all(4),
-      radius: 15,
+      padding: const EdgeInsets.all(8),
+      useNeoStyle: true,
       child: SafeArea(
         child: Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox.shrink(),
+                const SizedBox.shrink(),
                 Expanded(
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
@@ -631,10 +641,10 @@ class AiChatStreamState extends ConsumerState<AiChatStream> {
                     child: Row(
                       spacing: 8,
                       children: quickPrompts.map((prompt) {
-                        return ActionChip(
-                          // labelPadding: EdgeInsets.all(0),
-                          label: Text(prompt['label']!),
-                          onPressed: () => _useQuickPrompt(prompt['prompt']!),
+                        return NeoFilterChip(
+                          label: prompt['label']!,
+                          selected: false,
+                          onTap: () => _useQuickPrompt(prompt['prompt']!),
                         );
                       }).toList(),
                     ),
@@ -642,7 +652,7 @@ class AiChatStreamState extends ConsumerState<AiChatStream> {
                 ),
               ],
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             TextField(
               controller: inputController,
               decoration: InputDecoration(
@@ -655,7 +665,7 @@ class AiChatStreamState extends ConsumerState<AiChatStream> {
               textInputAction: TextInputAction.send,
               onSubmitted: (_) => _sendMessage(),
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -664,11 +674,8 @@ class AiChatStreamState extends ConsumerState<AiChatStream> {
                     children: [
                       Flexible(child: aiService),
                       if (currentProvider != null)
-                        IconButton(
-                          icon: const Icon(Icons.tune, size: 16),
-                          padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(),
-                          visualDensity: VisualDensity.compact,
+                        NeoIconButton(
+                          icon: Icons.tune,
                           onPressed: () async {
                             final selected = await showModelPickerDialog(
                               context: context,
@@ -684,14 +691,12 @@ class AiChatStreamState extends ConsumerState<AiChatStream> {
                                   );
                             }
                           },
+                          size: 40,
                         ),
                     ],
                   ),
                 ),
-                IconButton(
-                  icon: Icon(_isStreaming ? Icons.stop : Icons.send, size: 18),
-                  onPressed: _isStreaming ? _cancelStreaming : _sendMessage,
-                ),
+                sendButton,
               ],
             ),
           ],
@@ -701,6 +706,7 @@ class AiChatStreamState extends ConsumerState<AiChatStream> {
 
     Widget buildEmptyState() {
       final theme = Theme.of(context);
+      final isDark = theme.brightness == Brightness.dark;
 
       Widget buildQuickChipColumn() {
         if (widget.quickPromptChips.isEmpty) {
@@ -713,10 +719,10 @@ class AiChatStreamState extends ConsumerState<AiChatStream> {
           chips.add(
             Padding(
               padding: EdgeInsets.only(top: i == 0 ? 0 : 8.0),
-              child: ActionChip(
-                avatar: Icon(chip.icon, size: 18),
-                label: Text(chip.label),
-                onPressed: () {
+              child: NeoFilterChip(
+                label: chip.label,
+                selected: false,
+                onTap: () {
                   inputController.text = chip.prompt;
                   _sendMessage();
                 },
@@ -745,31 +751,41 @@ class AiChatStreamState extends ConsumerState<AiChatStream> {
         children: [
           if (widget.quickPromptChips.isEmpty)
             Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    L10n.of(context).tryAQuickPrompt,
-                    style: theme.textTheme.titleMedium,
-                  ),
-                  const SizedBox(height: 12),
-                  Wrap(
-                    alignment: WrapAlignment.center,
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: _suggestedPrompts
-                        .map(
-                          (prompt) => ActionChip(
-                            label: Text(prompt),
-                            onPressed: () {
-                              inputController.text = prompt;
-                              _sendMessage();
-                            },
-                          ),
-                        )
-                        .toList(growable: false),
-                  ),
-                ],
+              child: Container(
+                padding: const EdgeInsets.all(24),
+                margin: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: NeoBrutalColors.cardColor(isDark),
+                  border: Border.all(width: 4, color: NeoBrutalColors.borderColor(isDark)),
+                  boxShadow: NeoBrutalColors.adaptiveShadowMedium(isDark),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      L10n.of(context).tryAQuickPrompt,
+                      style: theme.textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 12),
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: _suggestedPrompts
+                          .map(
+                            (prompt) => NeoFilterChip(
+                              label: prompt,
+                              selected: false,
+                              onTap: () {
+                                inputController.text = prompt;
+                                _sendMessage();
+                              },
+                            ),
+                          )
+                          .toList(growable: false),
+                    ),
+                  ],
+                ),
               ),
             ),
           buildQuickChipColumn(),
@@ -777,27 +793,46 @@ class AiChatStreamState extends ConsumerState<AiChatStream> {
       );
     }
 
-    return Scaffold(
-      key: _scaffoldKey,
-      backgroundColor: Colors.transparent,
+    return NeoBackground(
+      pattern: NeoBackgroundPattern.grid,
+      opacity: 0.03,
+      child: Scaffold(
+        key: _scaffoldKey,
+        backgroundColor: Colors.transparent,
       appBar: AppBar(
-        title: Text(L10n.of(context).aiChat),
-        leading: IconButton(
-          icon: const Icon(Icons.insert_drive_file),
-          tooltip: L10n.of(context).history,
-          onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+        backgroundColor: Colors.transparent,
+        leadingWidth: 48,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 8),
+          child: NeoIconButton(
+            icon: Icons.menu,
+            onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+            size: 32,
+          ),
         ),
+        title: Text(
+          L10n.of(context).aiChat,
+          style: const TextStyle(
+            fontFamily: 'Space Grotesk',
+            fontWeight: FontWeight.w900,
+            fontSize: 18,
+          ),
+        ),
+        centerTitle: true,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.edit_document),
+          const SizedBox(width: 8),
+          NeoIconButton(
+            icon: Icons.add,
             onPressed: _clearMessage,
+            size: 32,
           ),
-          Builder(
-            builder: (context) => IconButton(
-              icon: const Icon(Icons.more_vert),
-              onPressed: () => _showFontSizeMenu(context),
-            ),
+          const SizedBox(width: 8),
+          NeoIconButton(
+            icon: Icons.more_vert,
+            onPressed: () => _showFontSizeMenu(context),
+            size: 32,
           ),
+          const SizedBox(width: 8),
           if (widget.trailing != null) ...widget.trailing!,
         ],
       ),
@@ -843,6 +878,7 @@ class AiChatStreamState extends ConsumerState<AiChatStream> {
                 inputBox,
               ],
             ),
+      ),
     );
   }
 
@@ -860,7 +896,7 @@ class AiChatStreamState extends ConsumerState<AiChatStream> {
             constraints: BoxConstraints(maxWidth: constrainedWidth),
             child: FilledContainer(
               padding: const EdgeInsets.all(24),
-              radius: 20,
+              radius: 0,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -923,6 +959,7 @@ class AiChatStreamState extends ConsumerState<AiChatStream> {
     final parsed = parseReasoningContent(content);
     final isLongMessage = content.length > 300;
     final lastAssistantMessage = _getLastAssistantMessage();
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Padding(
       padding: EdgeInsets.only(
@@ -941,14 +978,13 @@ class AiChatStreamState extends ConsumerState<AiChatStream> {
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: isUser
-                    ? Theme.of(context).colorScheme.surfaceContainer
-                    : Theme.of(context).colorScheme.surface,
-                borderRadius: BorderRadius.only(
-                  topLeft: isUser ? const Radius.circular(12) : Radius.zero,
-                  topRight: isUser ? Radius.zero : const Radius.circular(12),
-                  bottomLeft: isUser ? Radius.zero : const Radius.circular(12),
-                  bottomRight: isUser ? const Radius.circular(12) : Radius.zero,
+                    ? NeoBrutalColors.adaptiveYellow(isDark)
+                    : NeoBrutalColors.cardColor(isDark),
+                border: Border.all(
+                  width: 4,
+                  color: NeoBrutalColors.borderColor(isDark),
                 ),
+                boxShadow: NeoBrutalColors.adaptiveShadowMedium(isDark),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -957,19 +993,22 @@ class AiChatStreamState extends ConsumerState<AiChatStream> {
                       ? _buildCollapsibleText(content, isLongMessage)
                       : _buildAssistantTimeline(parsed, isStreaming),
                   if (!isUser)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        if (identical(message, lastAssistantMessage))
-                          TextButton(
-                            onPressed: _regenerateLastMessage,
-                            child: Text(L10n.of(context).aiRegenerate),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          if (identical(message, lastAssistantMessage))
+                            _buildNeoTextButton(
+                              L10n.of(context).aiRegenerate,
+                              _regenerateLastMessage,
+                            ),
+                          _buildNeoTextButton(
+                            L10n.of(context).commonCopy,
+                            () => _copyMessageContent(content),
                           ),
-                        TextButton(
-                          onPressed: () => _copyMessageContent(content),
-                          child: Text(L10n.of(context).commonCopy),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                 ],
               ),
@@ -977,6 +1016,32 @@ class AiChatStreamState extends ConsumerState<AiChatStream> {
           ),
           const SizedBox(width: 8),
         ],
+      ),
+    );
+  }
+
+  Widget _buildNeoTextButton(String text, VoidCallback onPressed) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Padding(
+      padding: const EdgeInsets.only(left: 4),
+      child: GestureDetector(
+        onTap: onPressed,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          decoration: BoxDecoration(
+            color: NeoBrutalColors.cardColor(isDark),
+            border: Border.all(width: 2, color: NeoBrutalColors.borderColor(isDark)),
+          ),
+          child: Text(
+            text.toUpperCase(),
+            style: TextStyle(
+              fontFamily: 'Space Grotesk',
+              fontSize: 10,
+              fontWeight: FontWeight.w700,
+              color: NeoBrutalColors.borderColor(isDark),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -1098,11 +1163,10 @@ class AiChatStreamState extends ConsumerState<AiChatStream> {
   }
 
   Widget _buildThinkingPanel(List<Widget> children) {
-    final theme = Theme.of(context);
-    final accentColor = theme.colorScheme.secondary.withValues(alpha: 0.82);
-    final subtleColor = theme.colorScheme.secondary.withValues(alpha: 0.68);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final borderColor = NeoBrutalColors.borderColor(isDark);
     return Theme(
-      data: theme.copyWith(dividerColor: Colors.transparent),
+      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
       child: ExpansionTile(
         initiallyExpanded: false,
         dense: true,
@@ -1111,18 +1175,20 @@ class AiChatStreamState extends ConsumerState<AiChatStream> {
         childrenPadding: const EdgeInsets.fromLTRB(28, 2, 0, 8),
         shape: const Border(),
         collapsedShape: const Border(),
-        iconColor: subtleColor,
-        collapsedIconColor: subtleColor,
+        iconColor: borderColor,
+        collapsedIconColor: borderColor,
         leading: Icon(
           Icons.psychology_alt_outlined,
           size: 15,
-          color: accentColor,
+          color: borderColor,
         ),
         title: Text(
           L10n.of(context).aiThinkingHint,
-          style: theme.textTheme.bodySmall?.copyWith(
-            color: accentColor,
+          style: TextStyle(
+            fontFamily: 'Space Grotesk',
             fontSize: 12,
+            fontWeight: FontWeight.w700,
+            color: borderColor,
           ),
         ),
         children: [
@@ -1132,17 +1198,14 @@ class AiChatStreamState extends ConsumerState<AiChatStream> {
             decoration: BoxDecoration(
               border: Border(
                 left: BorderSide(
-                  color: subtleColor.withValues(alpha: 0.55),
-                  width: 1,
+                  color: borderColor,
+                  width: 4,
                 ),
               ),
             ),
-            child: Opacity(
-              opacity: 0.9,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: children,
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: children,
             ),
           ),
         ],
@@ -1191,55 +1254,53 @@ class _CollapsibleTextState extends State<_CollapsibleText> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final borderColor = NeoBrutalColors.borderColor(isDark);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (_isExpanded)
           SelectableText(
             widget.text,
-            style: TextStyle(fontSize: widget.fontSize),
+            style: TextStyle(fontSize: widget.fontSize, color: borderColor),
             selectionControls: MaterialTextSelectionControls(),
           )
         else
-          Stack(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SelectableText(
-                widget.text.substring(0, 300),
-                style: TextStyle(fontSize: widget.fontSize),
+                widget.text.substring(0, 300.clamp(0, widget.text.length)),
+                style: TextStyle(fontSize: widget.fontSize, color: borderColor),
                 selectionControls: MaterialTextSelectionControls(),
               ),
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  height: 40,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Theme.of(context)
-                            .colorScheme
-                            .surfaceContainer
-                            .withValues(alpha: 0),
-                        Theme.of(context).colorScheme.surfaceContainer,
-                      ],
-                    ),
-                  ),
-                ),
+              Container(
+                height: 4,
+                color: borderColor,
               ),
             ],
           ),
-        TextButton(
-          onPressed: () {
+        GestureDetector(
+          onTap: () {
             setState(() {
               _isExpanded = !_isExpanded;
             });
           },
-          child: Text(_isExpanded
-              ? L10n.of(context).aiHintCollapse
-              : L10n.of(context).aiHintExpand),
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: Text(
+              _isExpanded
+                  ? L10n.of(context).aiHintCollapse
+                  : L10n.of(context).aiHintExpand,
+              style: TextStyle(
+                fontFamily: 'Space Grotesk',
+                fontWeight: FontWeight.w700,
+                fontSize: 10,
+                color: borderColor,
+              ),
+            ),
+          ),
         ),
       ],
     );

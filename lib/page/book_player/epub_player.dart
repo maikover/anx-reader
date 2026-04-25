@@ -1003,7 +1003,7 @@ class EpubPlayerState extends ConsumerState<EpubPlayer>
       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(32),
+        borderRadius: BorderRadius.zero,
       ),
     );
 
