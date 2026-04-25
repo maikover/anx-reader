@@ -119,14 +119,17 @@ Future<void> showContextMenu(
   }
 
   // Neo-brutalist context menu decoration:
-  // white bg, 4px black border, hard offset shadow, NO rounded corners, NO blur.
+  // adaptive background, 4px border, hard offset shadow, NO rounded corners, NO blur.
+  final isDark = Theme.of(context).brightness == Brightness.dark;
   final decoration = BoxDecoration(
-    color: NeoBrutalColors.white,
+    color: isDark ? NeoBrutalColors.darkSurface : NeoBrutalColors.white,
     border: Border.all(
       width: 4,
-      color: NeoBrutalColors.ink,
+      color: NeoBrutalColors.borderColor(isDark),
     ),
-    boxShadow: NeoBrutalColors.hardShadowMedium(),
+    boxShadow: isDark
+        ? NeoBrutalColors.hardShadowDarkMedium()
+        : NeoBrutalColors.hardShadowMedium(),
   );
 
   playerKey.contextMenuEntry = OverlayEntry(builder: (context) {
@@ -148,6 +151,7 @@ Future<void> showContextMenu(
       verticalMargin: verticalMargin,
       gap: gap,
       initialBottomInset: keyboardInset,
+      isDark: isDark,
     );
   });
 
@@ -250,6 +254,7 @@ class _ContextMenuOverlay extends StatefulWidget {
     required this.verticalMargin,
     required this.gap,
     required this.initialBottomInset,
+    required this.isDark,
   });
 
   final Axis axis;
@@ -269,6 +274,7 @@ class _ContextMenuOverlay extends StatefulWidget {
   final double verticalMargin;
   final double gap;
   final double initialBottomInset;
+  final bool isDark;
 
   @override
   State<_ContextMenuOverlay> createState() => _ContextMenuOverlayState();
@@ -469,90 +475,97 @@ class _ContextMenuOverlayState extends State<_ContextMenuOverlay>
 
   @override
   Widget build(BuildContext context) {
+    final textColor = widget.isDark ? NeoBrutalColors.lightText : NeoBrutalColors.darkText;
     return Positioned(
       left: _position.dx,
       top: _position.dy,
-      child: PointerInterceptor(
-        child: Stack(
-          children: [
-            GestureDetector(
-              onTap: widget.onClose,
-              child: IgnorePointer(
-                ignoring: _waitingForFirstMeasurement,
-                child: Opacity(
-                  opacity: _waitingForFirstMeasurement ? 0 : 1,
-                  child: Container(
-                    key: _menuKey,
-                    color: Colors.transparent,
-                    constraints: _menuConstraints,
-                    child: AxisFlex(
-                      axis: flipAxis(widget.axis),
-                      reverse: _reverse,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        AxisFlex(
+      child: IconTheme(
+        data: IconThemeData(color: textColor),
+        child: DefaultTextStyle(
+          style: TextStyle(color: textColor),
+          child: PointerInterceptor(
+            child: Stack(
+              children: [
+                GestureDetector(
+                  onTap: widget.onClose,
+                  child: IgnorePointer(
+                    ignoring: _waitingForFirstMeasurement,
+                    child: Opacity(
+                      opacity: _waitingForFirstMeasurement ? 0 : 1,
+                      child: Container(
+                        key: _menuKey,
+                        color: Colors.transparent,
+                        constraints: _menuConstraints,
+                        child: AxisFlex(
                           axis: flipAxis(widget.axis),
                           reverse: _reverse,
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             AxisFlex(
-                              axis: widget.axis,
+                              axis: flipAxis(widget.axis),
+                              reverse: _reverse,
                               children: [
-                                ExcerptMenu(
-                                  annoCfi: widget.annoCfi,
-                                  annoContent: widget.annoContent,
-                                  id: widget.annoId,
-                                  onClose: widget.onClose,
-                                  footnote: widget.footnote,
-                                  decoration: widget.decoration,
-                                  toggleTranslationMenu: _toggleTranslationMenu,
-                                  toggleReaderNoteMenu: _toggleReaderNoteMenu,
-                                  openReaderNoteMenu: _openReaderNoteMenu,
-                                  onNoteCreated: _handleNoteCreated,
+                                AxisFlex(
                                   axis: widget.axis,
-                                  reverse: _reverse,
+                                  children: [
+                                    ExcerptMenu(
+                                      annoCfi: widget.annoCfi,
+                                      annoContent: widget.annoContent,
+                                      id: widget.annoId,
+                                      onClose: widget.onClose,
+                                      footnote: widget.footnote,
+                                      decoration: widget.decoration,
+                                      toggleTranslationMenu: _toggleTranslationMenu,
+                                      toggleReaderNoteMenu: _toggleReaderNoteMenu,
+                                      openReaderNoteMenu: _openReaderNoteMenu,
+                                      onNoteCreated: _handleNoteCreated,
+                                      axis: widget.axis,
+                                      reverse: _reverse,
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
+                            if (_showReaderNoteMenu) ...[
+                              const SizedBox.square(dimension: 10),
+                              AxisFlex(
+                                axis: widget.axis,
+                                children: [
+                                  ReaderNoteMenu(
+                                    key: _readerNoteMenuKey,
+                                    noteId: _noteId,
+                                    decoration: widget.decoration,
+                                    axis: widget.axis,
+                                    onVisibilityChange:
+                                        _handleReaderNoteVisibilityChange,
+                                    onSizeChanged: _handleReaderNoteSizeChanged,
+                                  ),
+                                ],
+                              ),
+                            ],
+                            if (_showTranslationMenu) ...[
+                              const SizedBox.square(dimension: 10),
+                              AxisFlex(
+                                axis: widget.axis,
+                                children: [
+                                  TranslationMenu(
+                                    content: widget.annoContent,
+                                    decoration: widget.decoration,
+                                    axis: widget.axis,
+                                    contextText: widget.contextText,
+                                  ),
+                                ],
+                              ),
+                            ],
                           ],
                         ),
-                        if (_showReaderNoteMenu) ...[
-                          const SizedBox.square(dimension: 10),
-                          AxisFlex(
-                            axis: widget.axis,
-                            children: [
-                              ReaderNoteMenu(
-                                key: _readerNoteMenuKey,
-                                noteId: _noteId,
-                                decoration: widget.decoration,
-                                axis: widget.axis,
-                                onVisibilityChange:
-                                    _handleReaderNoteVisibilityChange,
-                                onSizeChanged: _handleReaderNoteSizeChanged,
-                              ),
-                            ],
-                          ),
-                        ],
-                        if (_showTranslationMenu) ...[
-                          const SizedBox.square(dimension: 10),
-                          AxisFlex(
-                            axis: widget.axis,
-                            children: [
-                              TranslationMenu(
-                                content: widget.annoContent,
-                                decoration: widget.decoration,
-                                axis: widget.axis,
-                                contextText: widget.contextText,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ],
+                      ),
                     ),
                   ),
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

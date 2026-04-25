@@ -27,6 +27,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return NeoBackground(
       pattern: NeoBackgroundPattern.halftone,
       opacity: 0.03,
@@ -45,11 +46,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ),
         ),
         pages: [
-          _buildWelcomePage(),
-          _buildAppearancePage(),
-          _buildSyncPage(),
-          _buildAIPage(),
-          _buildCompletePage(),
+          _buildWelcomePage(isDark),
+          _buildAppearancePage(isDark),
+          _buildSyncPage(isDark),
+          _buildAIPage(isDark),
+          _buildCompletePage(isDark),
         ],
         onDone: _onIntroEnd,
         onSkip: _onIntroEnd,
@@ -64,16 +65,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         controlsPadding: const EdgeInsets.fromLTRB(4.0, 4.0, 4.0, 4.0),
         dotsDecorator: DotsDecorator(
           size: const Size(12.0, 12.0),
-          color: NeoBrutalColors.ink.withAlpha(80),
+          color: isDark ? NeoBrutalColors.lightText.withAlpha(80) : NeoBrutalColors.ink.withAlpha(80),
           activeSize: const Size(28.0, 12.0),
           activeColor: NeoBrutalColors.red,
           activeShape: RoundedRectangleBorder(
             borderRadius: BorderRadius.zero,
-            side: const BorderSide(color: NeoBrutalColors.ink, width: 2),
+            side: BorderSide(color: isDark ? NeoBrutalColors.lightText : NeoBrutalColors.ink, width: 2),
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.zero,
-            side: const BorderSide(color: NeoBrutalColors.ink, width: 2),
+            side: BorderSide(color: isDark ? NeoBrutalColors.lightText : NeoBrutalColors.ink, width: 2),
           ),
         ),
         next: _buildNeoNextButton(),
@@ -171,57 +172,53 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  PageViewModel _buildWelcomePage() {
+  PageViewModel _buildWelcomePage(bool isDark) {
     return PageViewModel(
       title: L10n.of(context).onboardingWelcomeTitle,
       body: L10n.of(context).onboardingWelcomeBody,
       image: _buildIconPage(Icons.book_outlined),
-      decoration: _getPageDecoration(),
+      decoration: _getPageDecoration(isDark),
     );
   }
 
-  PageViewModel _buildAppearancePage() {
+  PageViewModel _buildAppearancePage(bool isDark) {
     return PageViewModel(
       title: '',
-      bodyWidget: _buildAppearanceSettings(),
-      decoration: _getPageDecoration(),
+      bodyWidget: _buildAppearanceSettings(isDark),
+      decoration: _getPageDecoration(isDark),
     );
   }
 
-  PageViewModel _buildSyncPage() {
+  PageViewModel _buildSyncPage(bool isDark) {
     return PageViewModel(
       title: L10n.of(context).onboardingSyncTitle,
-      bodyWidget: _buildPageWithTip(
-        L10n.of(context).onboardingSyncBody,
-        L10n.of(context).onboardingSyncTip,
-      ),
+      bodyWidget: _buildPageWithTip(isDark, L10n.of(context).onboardingSyncBody, L10n.of(context).onboardingSyncTip),
       image: _buildIconPage(Icons.sync_outlined),
-      decoration: _getPageDecoration(),
+      decoration: _getPageDecoration(isDark),
     );
   }
 
-  PageViewModel _buildAIPage() {
+  PageViewModel _buildAIPage(bool isDark) {
     return PageViewModel(
       title: L10n.of(context).onboardingAiTitle,
-      bodyWidget: _buildPageWithTip(
-        L10n.of(context).onboardingAiBody,
-        L10n.of(context).onboardingAiTip,
-      ),
+      bodyWidget: _buildPageWithTip(isDark, L10n.of(context).onboardingAiBody, L10n.of(context).onboardingAiTip),
       image: _buildIconPage(Icons.auto_awesome_outlined),
-      decoration: _getPageDecoration(),
+      decoration: _getPageDecoration(isDark),
     );
   }
 
-  PageViewModel _buildCompletePage() {
+  PageViewModel _buildCompletePage(bool isDark) {
     return PageViewModel(
       title: L10n.of(context).onboardingCompleteTitle,
       body: L10n.of(context).onboardingCompleteBody,
       image: _buildIconPage(Icons.check_circle_outline),
-      decoration: _getPageDecoration(),
+      decoration: _getPageDecoration(isDark),
     );
   }
 
   Widget _buildIconPage(IconData icon) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final iconColor = isDark ? NeoBrutalColors.lightText : NeoBrutalColors.ink;
     return Container(
       decoration: BoxDecoration(
         color: NeoBrutalColors.yellow,
@@ -232,23 +229,24 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       child: Icon(
         icon,
         size: 100,
-        color: NeoBrutalColors.ink,
+        color: iconColor,
       ),
     );
   }
 
-  PageDecoration _getPageDecoration() {
+  PageDecoration _getPageDecoration(bool isDark) {
+    final textColor = isDark ? NeoBrutalColors.lightText : NeoBrutalColors.ink;
     return PageDecoration(
-      titleTextStyle: const TextStyle(
+      titleTextStyle: TextStyle(
         fontSize: 28.0,
         fontWeight: FontWeight.bold,
         fontFamily: 'Space Grotesk',
-        color: NeoBrutalColors.ink,
+        color: textColor,
       ),
-      bodyTextStyle: const TextStyle(
+      bodyTextStyle: TextStyle(
         fontSize: 18.0,
         fontFamily: 'SourceHanSerif',
-        color: NeoBrutalColors.ink,
+        color: textColor,
       ),
       bodyPadding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
       pageColor: Colors.transparent,
@@ -256,7 +254,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  Widget _buildAppearanceSettings() {
+  Widget _buildAppearanceSettings(bool isDark) {
+    final textColor = isDark ? NeoBrutalColors.lightText : NeoBrutalColors.ink;
+
     Widget buildLanguageSelector() {
       final currentLocale = Prefs().locale;
       final currentLanguageCode = currentLocale?.languageCode ?? 'System';
@@ -284,11 +284,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               const SizedBox(width: 8),
               Text(
                 L10n.of(context).settingsAppearanceLanguage,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Space Grotesk',
-                  color: NeoBrutalColors.ink,
+                  color: textColor,
                 ),
               ),
             ],
@@ -310,6 +310,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       (option) => option.values.first == currentLanguageTag)
                   ? currentLanguageTag
                   : 'system',
+              style: TextStyle(
+                color: isDark ? NeoBrutalColors.ink : Colors.black87,
+                fontWeight: FontWeight.w600,
+                fontFamily: 'Space Grotesk',
+                fontSize: 14,
+              ),
+              dropdownColor: NeoBrutalColors.white,
               onChanged: (String? newValue) {
                 if (newValue != null) {
                   setState(() {
@@ -323,7 +330,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 final languageCode = option.values.first;
                 return DropdownMenuItem<String>(
                   value: languageCode,
-                  child: Text(displayName),
+                  child: Text(
+                    displayName,
+                    style: TextStyle(
+                      color: isDark ? NeoBrutalColors.ink : Colors.black87,
+                    ),
+                  ),
                 );
               }).toList(),
             ),
@@ -370,11 +382,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               const SizedBox(width: 8),
               Text(
                 L10n.of(context).settingsAppearanceThemeColor,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Space Grotesk',
-                  color: NeoBrutalColors.ink,
+                  color: textColor,
                 ),
               ),
             ],
@@ -438,6 +450,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
     return Consumer<Prefs>(
       builder: (context, prefs, child) {
+        final currentIsDark = Theme.of(context).brightness == Brightness.dark;
+        final currentTextColor = currentIsDark ? NeoBrutalColors.lightText : NeoBrutalColors.ink;
         return SingleChildScrollView(
           child: Column(
             children: [
@@ -459,21 +473,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   const SizedBox(height: 16),
                   Text(
                     L10n.of(context).settingsAppearance,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Space Grotesk',
-                      color: NeoBrutalColors.ink,
+                      color: currentTextColor,
                     ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 8),
                   Text(
                     L10n.of(context).customizeYourExperience,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
                       fontFamily: 'SourceHanSerif',
-                      color: NeoBrutalColors.ink,
+                      color: currentTextColor,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -503,19 +517,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       children: [
                         Text(
                           L10n.of(context).eInkMode,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             fontFamily: 'Space Grotesk',
-                            color: NeoBrutalColors.ink,
+                            color: currentTextColor,
                           ),
                         ),
                         Text(
                           L10n.of(context).optimizedForEInkDisplays,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 12,
                             fontFamily: 'SourceHanSerif',
-                            color: NeoBrutalColors.ink,
+                            color: currentTextColor,
                           ),
                         ),
                       ],
@@ -584,16 +598,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  Widget _buildPageWithTip(String bodyText, String tipText) {
+  Widget _buildPageWithTip(bool isDark, String bodyText, String tipText) {
+    final textColor = isDark ? NeoBrutalColors.lightText : NeoBrutalColors.ink;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
           bodyText,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 18.0,
             fontFamily: 'SourceHanSerif',
-            color: NeoBrutalColors.ink,
+            color: textColor,
           ),
           textAlign: TextAlign.center,
         ),

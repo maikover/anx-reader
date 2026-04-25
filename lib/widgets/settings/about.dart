@@ -10,7 +10,6 @@ import 'package:cubebook/utils/toast/common.dart';
 import 'package:cubebook/widgets/common/container/filled_container.dart';
 import 'package:cubebook/widgets/neo/cube_book_logo.dart';
 import 'package:cubebook/widgets/neo/neo_background.dart';
-import 'package:cubebook/widgets/settings/show_donate_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -139,32 +138,51 @@ Future<void> openAboutDialog() async {
                     _handleDeveloperUnlockTap(context);
                   },
                 ),
-                if (EnvVar.enableDonation)
-                  _NeoMenuItem(
-                    title: L10n.of(context).appDonate,
-                    icon: Icons.volunteer_activism,
-                    onTap: () {
-                      showDonateDialog(context);
-                    },
-                  ),
                 _NeoMenuItem(
                   title: L10n.of(context).appLicense,
                   icon: Icons.description,
                   onTap: () {
-                    showLicensePage(
+                    showDialog(
                       context: context,
-                      applicationName: 'CubeBook',
-                      applicationVersion: version,
+                      builder: (context) => AlertDialog(
+                        title: const Text('MIT License'),
+                        content: const SingleChildScrollView(
+                          child: Text(
+                            'MIT License\n\n'
+                            'Copyright (c) 2025 Anxcye\n\n'
+                            'Permission is hereby granted, free of charge, to any person obtaining a copy\n'
+                            'of this software and associated documentation files (the "Software"), to deal\n'
+                            'in the Software without restriction, including without limitation the rights\n'
+                            'to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n'
+                            'copies of the Software, and to permit persons to whom the Software is\n'
+                            'furnished to do so, subject to the following conditions:\n\n'
+                            'The above copyright notice and this permission notice shall be included in all\n'
+                            'copies or substantial portions of the Software.\n\n'
+                            'THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n'
+                            'IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n'
+                            'FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n'
+                            'AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n'
+                            'LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n'
+                            'OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n'
+                            'SOFTWARE.',
+                          ),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      ),
                     );
                   },
                 ),
                 _NeoMenuItem(
-                  title: L10n.of(context).appAuthor,
+                  title: 'Original Repository',
                   icon: EvaIcons.people,
                   onTap: () {
                     launchUrl(
-                      Uri.parse(
-                          'https://github.com/Anxcye/anx-reader/graphs/contributors'),
+                      Uri.parse('https://github.com/Anxcye/anx-reader'),
                       mode: LaunchMode.externalApplication,
                     );
                   },
@@ -185,16 +203,6 @@ Future<void> openAboutDialog() async {
                   onTap: () async {
                     launchUrl(
                       Uri.parse('https://anx.anxcye.com/terms'),
-                      mode: LaunchMode.externalApplication,
-                    );
-                  },
-                ),
-                _NeoMenuItem(
-                  title: L10n.of(context).aboutHelp,
-                  icon: Icons.help,
-                  onTap: () async {
-                    launchUrl(
-                      Uri.parse('https://anx.anxcye.com/docs'),
                       mode: LaunchMode.externalApplication,
                     );
                   },
@@ -231,43 +239,6 @@ Future<void> openAboutDialog() async {
                           color: NeoBrutalColors.ink,
                         ),
                         url: 'https://anx.anxcye.com',
-                      ),
-                      const SizedBox(width: 8),
-                      _NeoLinkButton(
-                        icon: Icon(
-                          IonIcons.logo_github,
-                          color: NeoBrutalColors.ink,
-                        ),
-                        url: 'https://github.com/Anxcye/anx-reader',
-                      ),
-                      if (EnvVar.showTelegramLink) ...[
-                        const SizedBox(width: 8),
-                        _NeoLinkButton(
-                          icon: Icon(
-                            Icons.telegram,
-                            color: NeoBrutalColors.ink,
-                          ),
-                          url: 'https://t.me/AnxReader',
-                        ),
-                      ],
-                      const SizedBox(width: 8),
-                      _NeoLinkButton(
-                        icon: Image.asset(
-                          'assets/images/xiaohongshu.png',
-                          color: NeoBrutalColors.ink,
-                        ),
-                        url: 'https://www.xiaohongshu.com/user/profile/5d403f3e00000000100151ff',
-                      ),
-                      const SizedBox(width: 8),
-                      _NeoLinkButton(
-                        icon: Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Image.asset(
-                            'assets/images/qq.png',
-                            color: NeoBrutalColors.ink,
-                          ),
-                        ),
-                        url: 'http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=8BYItJOMz4RCQJoHAAei7FV-nGB0iT8O&authKey=MD6a7gI%2FENiMr32rQRTLx2BpzTaa1wO9Qfmhx9ETcaLS%2FdcOFeptvVH9FWfvUpL2&noverify=0&group_code=1042905699',
                       ),
                     ],
                   ),

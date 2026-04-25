@@ -634,6 +634,7 @@ class ReadingPageState extends ConsumerState<ReadingPage>
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     Offstage controller = Offstage(
       offstage: bottomBarOffstage,
       child: PointerInterceptor(
@@ -651,46 +652,44 @@ class ReadingPageState extends ConsumerState<ReadingPage>
                     color: Colors.black.withAlpha(30),
                   )),
             ),
-            Column(
-              children: [
-                // Neo-brutalist top bar
-                Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? NeoBrutalColors.white
-                        : NeoBrutalColors.cream,
-                    border: const Border(
-                      bottom: BorderSide(
-                        width: 4,
-                        color: NeoBrutalColors.ink,
-                      ),
-                    ),
-                  ),
-                  child: SafeArea(
-                    bottom: false,
-                    child: SizedBox(
-                      height: 60,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: Row(
-                          children: [
-                            _NeoTopBarButton(
-                              icon: Icons.arrow_back,
-                              onPressed: () => Navigator.pop(context),
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                _book.title,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontFamily: 'Space Grotesk',
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: NeoBrutalColors.ink,
-                                ),
-                              ),
-                            ),
+             Column(
+               children: [
+                 // Neo-brutalist top bar
+                 Container(
+                   decoration: BoxDecoration(
+                     color: isDark ? NeoBrutalColors.darkSurface : NeoBrutalColors.cream,
+                     border: Border(
+                       bottom: BorderSide(
+                         width: 4,
+                         color: isDark ? NeoBrutalColors.lightText : NeoBrutalColors.ink,
+                       ),
+                     ),
+                   ),
+                   child: SafeArea(
+                     bottom: false,
+                     child: SizedBox(
+                       height: 60,
+                       child: Padding(
+                         padding: const EdgeInsets.symmetric(horizontal: 8),
+                         child: Row(
+                           children: [
+                             _NeoTopBarButton(
+                               icon: Icons.arrow_back,
+                               onPressed: () => Navigator.pop(context),
+                             ),
+                             const SizedBox(width: 8),
+                             Expanded(
+                               child: Text(
+                                 _book.title,
+                                 overflow: TextOverflow.ellipsis,
+                                 style: TextStyle(
+                                   fontFamily: 'Space Grotesk',
+                                   fontSize: 18,
+                                   fontWeight: FontWeight.bold,
+                                   color: isDark ? NeoBrutalColors.lightText : NeoBrutalColors.ink,
+                                 ),
+                               ),
+                             ),
                             if (EnvVar.enableAIFeature) ...[
                               _NeoTopBarButton(
                                 icon: Icons.auto_awesome,
@@ -778,80 +777,81 @@ class ReadingPageState extends ConsumerState<ReadingPage>
                 BottomSheet(
                   onClosing: () {},
                   enableDrag: false,
-                  builder: (context) => SafeArea(
-                    top: false,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? NeoBrutalColors.white
-                            : NeoBrutalColors.cream,
-                        border: const Border(
-                          top: BorderSide(
-                            width: 4,
-                            color: NeoBrutalColors.ink,
-                          ),
-                        ),
-                        boxShadow: const [
-                          BoxShadow(
-                            offset: Offset(0, -6),
-                            blurRadius: 0,
-                            color: NeoBrutalColors.ink,
-                          ),
-                        ],
-                      ),
-                      constraints: const BoxConstraints(maxWidth: 600),
-                      child: StatefulBuilder(
-                        builder: (BuildContext context, StateSetter setState) {
-                          final hasContent = !identical(_currentPage, empty);
-                          return IntrinsicHeight(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                if (hasContent)
-                                  Expanded(
-                                    child: _currentPage,
-                                  ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 4,
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      _NeoToolbarButton(
-                                        icon: Icons.toc,
-                                        onPressed: tocHandler,
-                                      ),
-                                      _NeoToolbarButton(
-                                        icon: EvaIcons.edit,
-                                        onPressed: noteHandler,
-                                      ),
-                                      _NeoToolbarButton(
-                                        icon: Icons.data_usage,
-                                        onPressed: progressHandler,
-                                      ),
-                                      _NeoToolbarButton(
-                                        icon: Icons.color_lens,
-                                        onPressed: () {
-                                          styleHandler(setState);
-                                        },
-                                      ),
-                                      _NeoToolbarButton(
-                                        icon: EvaIcons.headphones,
-                                        onPressed: ttsHandler,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
+                  builder: (context) {
+                    final isDark = Theme.of(context).brightness == Brightness.dark;
+                    return SafeArea(
+                      top: false,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: isDark ? NeoBrutalColors.darkSurface : NeoBrutalColors.cream,
+                          border: Border(
+                            top: BorderSide(
+                              width: 4,
+                              color: NeoBrutalColors.borderColor(isDark),
                             ),
-                          );
-                        },
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              offset: const Offset(0, -6),
+                              blurRadius: 0,
+                              color: NeoBrutalColors.borderColor(isDark),
+                            ),
+                          ],
+                        ),
+                        constraints: const BoxConstraints(maxWidth: 600),
+                        child: StatefulBuilder(
+                          builder: (BuildContext context, StateSetter setState) {
+                            final hasContent = !identical(_currentPage, empty);
+                            return IntrinsicHeight(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  if (hasContent)
+                                    Expanded(
+                                      child: _currentPage,
+                                    ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 4,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        _NeoToolbarButton(
+                                          icon: Icons.toc,
+                                          onPressed: tocHandler,
+                                        ),
+                                        _NeoToolbarButton(
+                                          icon: EvaIcons.edit,
+                                          onPressed: noteHandler,
+                                        ),
+                                        _NeoToolbarButton(
+                                          icon: Icons.data_usage,
+                                          onPressed: progressHandler,
+                                        ),
+                                        _NeoToolbarButton(
+                                          icon: Icons.color_lens,
+                                          onPressed: () {
+                                            styleHandler(setState);
+                                          },
+                                        ),
+                                        _NeoToolbarButton(
+                                          icon: EvaIcons.headphones,
+                                          onPressed: ttsHandler,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 ),
               ],
             ),
@@ -1142,10 +1142,10 @@ class _NeoTopBarButtonState extends State<_NeoTopBarButton> {
           width: 44,
           height: 44,
           transform: Matrix4.translationValues(
-          _isPressed ? 2.0 : 0.0,
-          _isPressed ? 2.0 : 0.0,
-          0,
-        ),
+            _isPressed ? 2.0 : 0.0,
+            _isPressed ? 2.0 : 0.0,
+            0,
+          ),
           decoration: BoxDecoration(
             color: NeoBrutalColors.white,
             border: Border.all(width: 3, color: NeoBrutalColors.ink),

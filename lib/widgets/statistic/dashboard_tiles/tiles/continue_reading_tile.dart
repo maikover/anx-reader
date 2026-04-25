@@ -155,7 +155,10 @@ class _ContinueReadingContent extends StatelessWidget {
                     height: progressHeight.clamp(4.0, 8.0),
                     decoration: BoxDecoration(
                       color: isDark ? NeoBrutalColors.darkSurface : NeoBrutalColors.cream,
-                      border: Border.all(width: 2, color: NeoBrutalColors.ink),
+                      border: Border.all(
+                        width: 2,
+                        color: NeoBrutalColors.borderColor(isDark),
+                      ),
                     ),
                     child: FractionallySizedBox(
                       alignment: Alignment.centerLeft,

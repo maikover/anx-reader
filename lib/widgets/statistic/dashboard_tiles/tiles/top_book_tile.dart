@@ -117,23 +117,25 @@ class TopBookTile extends StatisticsDashboardTileBase {
                           ),
                           mock: BookDailyReadingData.mock(),
                           builder: (bookReadingData, ready) {
-                            return ready
-                                ? Container(
-                                    padding: const EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
-                                      color: isDark
-                                          ? NeoBrutalColors.darkSurface
-                                          : NeoBrutalColors.cream,
-                                      border: Border.all(
-                                          width: 2, color: NeoBrutalColors.ink),
-                                    ),
-                                    child: BookReadingChart(
-                                      cumulativeValues: bookReadingData.readingTimes,
-                                      dailySeconds: bookReadingData.readingTimes,
-                                      dates: bookReadingData.dates,
-                                    ),
-                                  )
-                                : const SizedBox.shrink();
+                        return ready
+                            ? Container(
+                                padding: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  color: isDark
+                                      ? NeoBrutalColors.darkSurface
+                                      : NeoBrutalColors.cream,
+                                  border: Border.all(
+                                    width: 2,
+                                    color: NeoBrutalColors.borderColor(isDark),
+                                  ),
+                                ),
+                                child: BookReadingChart(
+                                  cumulativeValues: bookReadingData.readingTimes,
+                                  dailySeconds: bookReadingData.readingTimes,
+                                  dates: bookReadingData.dates,
+                                ),
+                              )
+                            : const SizedBox.shrink();
                           },
                         ),
                       ),

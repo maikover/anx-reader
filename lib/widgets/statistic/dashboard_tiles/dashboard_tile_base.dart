@@ -36,14 +36,15 @@ abstract class StatisticsDashboardTileBase {
   L10n get l10nLocal => L10n.of(navigatorKey.currentContext!);
 
   Widget buildTile(BuildContext context, WidgetRef ref) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         border: Border.all(
           width: 4,
-          color: NeoBrutalColors.ink,
+          color: NeoBrutalColors.borderColor(isDark),
         ),
-        boxShadow: NeoBrutalColors.hardShadowMedium(),
+        boxShadow: NeoBrutalColors.adaptiveShadowMedium(isDark),
       ),
       child: Stack(
         children: [
@@ -138,6 +139,7 @@ abstract class StatisticsDashboardTileBase {
 
   Widget flipScaffold(BuildContext context, WidgetRef ref, Widget flipContent) {
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     final spacing = 8.0;
 
     return Container(
@@ -145,9 +147,9 @@ abstract class StatisticsDashboardTileBase {
         color: theme.colorScheme.surface,
         border: Border.all(
           width: 4,
-          color: NeoBrutalColors.ink,
+          color: NeoBrutalColors.borderColor(isDark),
         ),
-        boxShadow: NeoBrutalColors.hardShadowMedium(),
+        boxShadow: NeoBrutalColors.adaptiveShadowMedium(isDark),
       ),
       width: flipSize(context).width,
       height: flipSize(context).height,
@@ -163,7 +165,7 @@ abstract class StatisticsDashboardTileBase {
               border: Border(
                 bottom: BorderSide(
                   width: 4,
-                  color: NeoBrutalColors.ink,
+                  color: NeoBrutalColors.borderColor(isDark),
                 ),
               ),
             ),

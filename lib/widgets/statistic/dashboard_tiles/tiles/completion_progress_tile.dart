@@ -68,16 +68,19 @@ class _CompletionContent extends StatelessWidget {
               height: topSectionHeight,
               child: Row(
                 children: [
-                  // Neo ring
-                  Container(
-                    width: ringSize.clamp(50.0, 70.0),
-                    height: ringSize.clamp(50.0, 70.0),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(width: 3, color: NeoBrutalColors.ink),
-                      boxShadow: NeoBrutalColors.hardShadowSmall(),
-                      color: isDark ? NeoBrutalColors.darkSurface : NeoBrutalColors.white,
-                    ),
+                   // Neo ring
+                   Container(
+                     width: ringSize.clamp(50.0, 70.0),
+                     height: ringSize.clamp(50.0, 70.0),
+                     decoration: BoxDecoration(
+                       shape: BoxShape.circle,
+                       border: Border.all(
+                         width: 3,
+                         color: NeoBrutalColors.borderColor(isDark),
+                       ),
+                       boxShadow: NeoBrutalColors.adaptiveShadowSmall(isDark),
+                       color: isDark ? NeoBrutalColors.darkSurface : NeoBrutalColors.white,
+                     ),
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
@@ -97,7 +100,7 @@ class _CompletionContent extends StatelessWidget {
                             fontFamily: 'Space Grotesk',
                             fontWeight: FontWeight.bold,
                             fontSize: ringSize * 0.18,
-                            color: NeoBrutalColors.ink,
+                            color: isDark ? NeoBrutalColors.lightText : NeoBrutalColors.ink,
                           ),
                         ),
                       ],
@@ -141,7 +144,10 @@ class _CompletionContent extends StatelessWidget {
               ),
             ),
             // Divider
-            Container(height: 2, color: NeoBrutalColors.ink),
+            Container(
+              height: 2,
+              color: NeoBrutalColors.borderColor(isDark),
+            ),
             const SizedBox(height: 4),
             // Book list
             SizedBox(

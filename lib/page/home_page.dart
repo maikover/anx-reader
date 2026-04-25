@@ -211,6 +211,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     return LayoutBuilder(
       builder: (context, constraints) {
+        final isDark = Theme.of(context).brightness == Brightness.dark;
         _expanded ??= constraints.maxWidth > 1000;
         if (constraints.maxWidth > 600) {
           return Scaffold(
@@ -223,8 +224,11 @@ class _HomePageState extends ConsumerState<HomePage> {
                     margin: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.surface,
-                      border: Border.all(width: 4, color: NeoBrutalColors.ink),
-                      boxShadow: NeoBrutalColors.hardShadowMedium(),
+                      border: Border.all(
+                        width: 4,
+                        color: NeoBrutalColors.borderColor(isDark),
+                      ),
+                      boxShadow: NeoBrutalColors.adaptiveShadowMedium(isDark),
                     ),
                     child: SafeArea(
                       child: NavigationRail(
@@ -278,9 +282,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                   color: Theme.of(context).colorScheme.surface,
                   border: Border.all(
                     width: 4,
-                    color: NeoBrutalColors.ink,
+                    color: NeoBrutalColors.borderColor(isDark),
                   ),
-                  boxShadow: NeoBrutalColors.hardShadowMedium(),
+                  boxShadow: NeoBrutalColors.adaptiveShadowMedium(isDark),
                 ),
                 child: BottomNavigationBar(
                   selectedFontSize: 12,

@@ -79,15 +79,16 @@ class _NumberTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         border: Border.all(
           width: 4,
-          color: NeoBrutalColors.ink,
+          color: NeoBrutalColors.borderColor(isDark),
         ),
-        boxShadow: NeoBrutalColors.hardShadowSmall(),
+        boxShadow: NeoBrutalColors.adaptiveShadowSmall(isDark),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

@@ -121,6 +121,7 @@ class _StatPill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -128,9 +129,9 @@ class _StatPill extends StatelessWidget {
         color: theme.colorScheme.surface,
         border: Border.all(
           width: 4,
-          color: NeoBrutalColors.ink,
+          color: NeoBrutalColors.borderColor(isDark),
         ),
-        boxShadow: NeoBrutalColors.hardShadowSmall(),
+        boxShadow: NeoBrutalColors.adaptiveShadowSmall(isDark),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
