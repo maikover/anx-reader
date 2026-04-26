@@ -33,7 +33,7 @@ class AzureTtsProvider extends TtsServiceProvider {
         label: L10n.of(context).translateTip,
         type: ConfigItemType.tip,
         defaultValue: L10n.of(context).settingsNarrateAzureHelpText,
-        link: 'https://anx.anxcye.com/docs/tts/azure',
+        link: 'https://cube-book.vercel.app/docs/tts/azure',
       ),
       ConfigItem(
         key: 'key',

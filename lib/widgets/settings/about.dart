@@ -138,71 +138,77 @@ Future<void> openAboutDialog() async {
                     _handleDeveloperUnlockTap(context);
                   },
                 ),
-                _NeoMenuItem(
-                  title: L10n.of(context).appLicense,
-                  icon: Icons.description,
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text('MIT License'),
-                        content: const SingleChildScrollView(
-                          child: Text(
-                            'MIT License\n\n'
-                            'Copyright (c) 2025 Anxcye\n\n'
-                            'Permission is hereby granted, free of charge, to any person obtaining a copy\n'
-                            'of this software and associated documentation files (the "Software"), to deal\n'
-                            'in the Software without restriction, including without limitation the rights\n'
-                            'to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n'
-                            'copies of the Software, and to permit persons to whom the Software is\n'
-                            'furnished to do so, subject to the following conditions:\n\n'
-                            'The above copyright notice and this permission notice shall be included in all\n'
-                            'copies or substantial portions of the Software.\n\n'
-                            'THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n'
-                            'IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n'
-                            'FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n'
-                            'AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n'
-                            'LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n'
-                            'OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n'
-                            'SOFTWARE.',
-                          ),
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.pop(context),
-                            child: const Text('OK'),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-                _NeoMenuItem(
-                  title: 'Original Repository',
-                  icon: EvaIcons.people,
-                  onTap: () {
-                    launchUrl(
-                      Uri.parse('https://github.com/Anxcye/anx-reader'),
-                      mode: LaunchMode.externalApplication,
-                    );
-                  },
-                ),
-                _NeoMenuItem(
+                 _NeoMenuItem(
+                   title: L10n.of(context).appLicense,
+                   icon: Icons.description,
+                   onTap: () {
+                     showDialog(
+                       context: context,
+                       builder: (context) => AlertDialog(
+                         title: const Text('MIT License'),
+                         content: SingleChildScrollView(
+                           child: Column(
+                             mainAxisSize: MainAxisSize.min,
+                             children: [
+                               const Text(
+                                 'MIT License\n\n'
+                                 'Copyright (c) 2025 Anxcye\n\n'
+                                 'Permission is hereby granted, free of charge, to any person obtaining a copy\n'
+                                 'of this software and associated documentation files (the "Software"), to deal\n'
+                                 'in the Software without restriction, including without limitation the rights\n'
+                                 'to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n'
+                                 'copies of the Software, and to permit persons to whom the Software is\n'
+                                 'furnished to do so, subject to the following conditions:\n\n'
+                                 'The above copyright notice and this permission notice shall be included in all\n'
+                                 'copies or substantial portions of the Software.\n\n'
+                                 'THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n'
+                                 'IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n'
+                                 'FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n'
+                                 'AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n'
+                                 'LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n'
+                                 'OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n'
+                                 'SOFTWARE.',
+                               ),
+                               const SizedBox(height: 16),
+                               TextButton.icon(
+                                 onPressed: () {
+                                   launchUrl(
+                                     Uri.parse('https://github.com/Anxcye/anx-reader'),
+                                     mode: LaunchMode.externalApplication,
+                                   );
+                                 },
+                                 icon: const Icon(Icons.code, size: 16),
+                                 label: const Text('View Repository'),
+                               ),
+                             ],
+                           ),
+                         ),
+                         actions: [
+                           TextButton(
+                             onPressed: () => Navigator.pop(context),
+                             child: const Text('OK'),
+                           ),
+                         ],
+                       ),
+                     );
+                   },
+                 ),
+                 _NeoMenuItem(
                   title: L10n.of(context).aboutPrivacyPolicy,
                   icon: Icons.privacy_tip,
                   onTap: () async {
                     launchUrl(
-                      Uri.parse('https://anx.anxcye.com/privacy'),
+                      Uri.parse('https://cube-book.vercel.app/en/privacy'),
                       mode: LaunchMode.externalApplication,
                     );
                   },
                 ),
-                _NeoMenuItem(
-                  title: L10n.of(context).aboutTermsOfUse,
-                  icon: Icons.article,
+                 _NeoMenuItem(
+                  title: 'Contacto',
+                  icon: Icons.email_outlined,
                   onTap: () async {
                     launchUrl(
-                      Uri.parse('https://anx.anxcye.com/terms'),
+                      Uri.parse('mailto:contacto@arcaico.com.co'),
                       mode: LaunchMode.externalApplication,
                     );
                   },
@@ -233,13 +239,13 @@ Future<void> openAboutDialog() async {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _NeoLinkButton(
-                        icon: Icon(
-                          IonIcons.earth,
-                          color: NeoBrutalColors.ink,
-                        ),
-                        url: 'https://anx.anxcye.com',
-                      ),
+                       _NeoLinkButton(
+                         icon: Icon(
+                           IonIcons.earth,
+                           color: NeoBrutalColors.ink,
+                         ),
+                         url: 'https://cube-book.vercel.app',
+                       ),
                     ],
                   ),
                 ),

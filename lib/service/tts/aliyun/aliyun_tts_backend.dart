@@ -48,7 +48,7 @@ class AliyunTtsProvider extends TtsServiceProvider {
         label: L10n.of(context).translateTip,
         type: ConfigItemType.tip,
         defaultValue: L10n.of(context).settingsNarrateAliyunHelpText,
-        link: 'https://anx.anxcye.com/docs/tts/aliyun',
+        link: 'https://cube-book.vercel.app/docs/tts/aliyun',
       ),
       ConfigItem(
         key: 'appkey',

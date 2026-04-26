@@ -20,5 +20,13 @@ ThemeData colorSchema(
 
   // Neo-brutalist theme - uses fixed high-saturation colors
   // Future: could make accent colors user-configurable within Neo palette
-  return isDark ? NeoTheme.dark() : NeoTheme.light();
+  return isDark
+      ? NeoTheme.dark(
+          themeColor: prefsNotifier.themeColor,
+          oledMode: prefsNotifier.trueDarkMode,
+        )
+      : NeoTheme.light(
+          themeColor: prefsNotifier.themeColor,
+          eInkMode: prefsNotifier.eInkMode,
+        );
 }

@@ -122,8 +122,8 @@ CubeBook — продуманная читалка электронных кни
 ## Политика подписания кода  
 - Коммитеры и рецензенты: [Команда участников](https://github.com/anxcye/anx-reader/graphs/contributors)  
 - Утверждающие: [Владельцы](https://github.com/anxcye)  
-- [Политика конфиденциальности](https://anx.anxcye.com/privacy.html)  
-- [Условия использования](https://anx.anxcye.com/terms.html)
+- [Политика конфиденциальности](https://cube-book.vercel.app/en/privacy)  
+- [Условия использования](https://cube-book.vercel.app/terms)
 
 ### Спонсоры  
 | ![signpath](https://signpath.org/assets/favicon-50x50.png) | Бесплатное подписание кода на Windows предоставлено [SignPath.io](https://about.signpath.io/), сертификат выдан [SignPath Foundation](https://signpath.org/) |

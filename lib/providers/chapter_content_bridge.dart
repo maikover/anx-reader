@@ -18,4 +18,4 @@ class ChapterContentHandlers {
 }
 
 final chapterContentBridgeProvider =
-    StateProvider.autoDispose<ChapterContentHandlers?>((ref) => null);
+    StateProvider<ChapterContentHandlers?>((ref) => null);

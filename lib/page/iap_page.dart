@@ -133,24 +133,24 @@ class IAPPage extends ConsumerWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      TextButton(
-                        child: Text(L10n.of(context).aboutPrivacyPolicy),
-                        onPressed: () async {
-                          launchUrl(
-                            Uri.parse('https://anx.anxcye.com/privacy.html'),
-                            mode: LaunchMode.externalApplication,
-                          );
-                        },
-                      ),
-                      TextButton(
-                        child: Text(L10n.of(context).aboutTermsOfUse),
-                        onPressed: () async {
-                          launchUrl(
-                            Uri.parse('https://anx.anxcye.com/terms.html'),
-                            mode: LaunchMode.externalApplication,
-                          );
-                        },
-                      ),
+                       TextButton(
+                         child: Text(L10n.of(context).aboutPrivacyPolicy),
+                         onPressed: () async {
+                           launchUrl(
+                             Uri.parse('https://cube-book.vercel.app/en/privacy'),
+                             mode: LaunchMode.externalApplication,
+                           );
+                         },
+                       ),
+                       TextButton(
+                         child: Text(L10n.of(context).aboutTermsOfUse),
+                         onPressed: () async {
+                           launchUrl(
+                             Uri.parse('https://cube-book.vercel.app/terms'),
+                             mode: LaunchMode.externalApplication,
+                           );
+                         },
+                       ),
                     ],
                   ),
                 ],

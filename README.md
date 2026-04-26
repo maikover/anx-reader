@@ -141,8 +141,8 @@ You may encounter Flutter version incompatibility issues. Please refer to the [F
 ## Code signing policy
 - Committers and reviewers: [Members team](https://github.com/anxcye/anx-reader/graphs/contributors)
 - Approvers: [Owners](https://github.com/anxcye)
-- [Privacy Policy](https://anx.anxcye.com/privacy.html)
-- [Terms of Service](https://anx.anxcye.com/terms.html)
+- [Privacy Policy](https://cube-book.vercel.app/en/privacy)
+- [Terms of Service](https://cube-book.vercel.app/terms)
 
 ### Sponsors
 | ![signpath](https://signpath.org/assets/favicon-50x50.png) | Free code signing on Windows provided by [SignPath.io](https://about.signpath.io/),certficate by [SignPath Foundation](https://signpath.org/) |

@@ -135,8 +135,8 @@ Flutter sürüm uyumsuzluklarıyla karşılaşabilirsiniz. Detaylar için [Flutt
 ## Kod imzalama politikası
 - Katkıda bulunanlar ve gözden geçirenler: [Members ekibi](https://github.com/anxcye/anx-reader/graphs/contributors)
 - Onaylayıcılar: [Owners](https://github.com/anxcye)
-- [Gizlilik Politikası](https://anx.anxcye.com/privacy.html)
-- [Hizmet Şartları](https://anx.anxcye.com/terms.html)
+- [Gizlilik Politikası](https://cube-book.vercel.app/en/privacy)
+- [Hizmet Şartları](https://cube-book.vercel.app/terms)
 
 ### Sponsorlar
 | ![signpath](https://signpath.org/assets/favicon-50x50.png) | Windows'ta ücretsiz kod imzalama [SignPath.io](https://about.signpath.io/) tarafından sağlanır, sertifika [SignPath Foundation](https://signpath.org/) tarafından temin edilir |

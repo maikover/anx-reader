@@ -119,7 +119,7 @@ class DeepLTranslateProvider extends TranslateServiceProvider {
         label: L10n.of(context).translateTip,
         type: ConfigItemType.tip,
         defaultValue: L10n.of(context).translateDeepLHelpText,
-        link: 'https://anx.anxcye.com/docs/translate/deepl',
+        link: 'https://cube-book.vercel.app/docs/translate/deepl',
       ),
       ConfigItem(
         key: 'api_url',

@@ -65,7 +65,7 @@ class _SyncSettingState extends ConsumerState<SyncSetting> {
                 child: GestureDetector(
                   onTap: () async {
                     if (!await launchUrl(
-                        Uri.parse('https://anx.anxcye.com/docs/sync/webdav'),
+                         Uri.parse('https://cube-book.vercel.app/docs/sync/webdav'),
                         mode: LaunchMode.externalApplication)) {
                       AnxToast.show(L10n.of(context).commonFailed);
                     }

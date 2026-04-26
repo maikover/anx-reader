@@ -102,14 +102,17 @@ class NeoTypography {
 class NeoTheme {
   NeoTheme._();
 
-  static ThemeData light() {
+  static ThemeData light({Color? themeColor, bool eInkMode = false}) {
+    final primaryColor = themeColor ?? NeoBrutalColors.red;
+    final bgColor = eInkMode ? Colors.white : NeoBrutalColors.cream;
+
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
       fontFamily: NeoTypography.fontFamily,
-      scaffoldBackgroundColor: NeoBrutalColors.cream,
-      colorScheme: const ColorScheme.light(
-        primary: NeoBrutalColors.red,
+      scaffoldBackgroundColor: bgColor,
+      colorScheme: ColorScheme.light(
+        primary: primaryColor,
         onPrimary: NeoBrutalColors.white,
         secondary: NeoBrutalColors.yellow,
         onSecondary: NeoBrutalColors.ink,
@@ -120,8 +123,8 @@ class NeoTheme {
         error: NeoBrutalColors.red,
         onError: NeoBrutalColors.white,
       ),
-      appBarTheme: const AppBarTheme(
-        backgroundColor: NeoBrutalColors.cream,
+      appBarTheme: AppBarTheme(
+        backgroundColor: bgColor,
         foregroundColor: NeoBrutalColors.ink,
         elevation: 0,
         centerTitle: true,
@@ -133,9 +136,9 @@ class NeoTheme {
           letterSpacing: 0.05,
         ),
       ),
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: NeoBrutalColors.white,
-        selectedItemColor: NeoBrutalColors.red,
+        selectedItemColor: primaryColor,
         unselectedItemColor: NeoBrutalColors.ink,
         type: BottomNavigationBarType.fixed,
         elevation: 0,
@@ -153,7 +156,7 @@ class NeoTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: NeoBrutalColors.red,
+          backgroundColor: primaryColor,
           foregroundColor: NeoBrutalColors.white,
           elevation: 0,
           shape: const RoundedRectangleBorder(
@@ -259,21 +262,21 @@ class NeoTheme {
         }),
         trackColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return NeoBrutalColors.red;
+            return primaryColor;
           }
           return NeoBrutalColors.white;
         }),
         trackOutlineColor: WidgetStateProperty.all(NeoBrutalColors.ink),
       ),
-      sliderTheme: const SliderThemeData(
-        thumbColor: NeoBrutalColors.red,
-        activeTrackColor: NeoBrutalColors.red,
+      sliderTheme: SliderThemeData(
+        thumbColor: primaryColor,
+        activeTrackColor: primaryColor,
         inactiveTrackColor: NeoBrutalColors.white,
-        overlayColor: Color(0x29FF6B6B),
+        overlayColor: primaryColor.withAlpha(41),
         trackHeight: 8,
       ),
-      progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: NeoBrutalColors.red,
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        color: primaryColor,
         linearTrackColor: NeoBrutalColors.white,
       ),
       dividerTheme: const DividerThemeData(
@@ -333,29 +336,33 @@ class NeoTheme {
     );
   }
 
-  static ThemeData dark() {
+  static ThemeData dark({Color? themeColor, bool oledMode = false}) {
     // In dark mode: cards/containers are WHITE with BLACK borders and black hard shadows.
     // This creates maximum neo-brutalist contrast on the dark background canvas.
+    final primaryColor = themeColor ?? NeoBrutalColors.darkRed;
+    final bgColor = oledMode ? Colors.black : NeoBrutalColors.darkBg;
+    final surfaceColor = oledMode ? Colors.black : NeoBrutalColors.darkSurface;
+
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
       fontFamily: NeoTypography.fontFamily,
-      scaffoldBackgroundColor: NeoBrutalColors.darkBg,
-      colorScheme: const ColorScheme.dark(
-        primary: NeoBrutalColors.darkRed,
+      scaffoldBackgroundColor: bgColor,
+      colorScheme: ColorScheme.dark(
+        primary: primaryColor,
         onPrimary: NeoBrutalColors.white,
         secondary: NeoBrutalColors.darkYellow,
         onSecondary: NeoBrutalColors.ink,
         tertiary: NeoBrutalColors.darkViolet,
         onTertiary: NeoBrutalColors.ink,
         // dark-adapted surface color for comfortable contrast
-        surface: NeoBrutalColors.darkSurface,
+        surface: surfaceColor,
         onSurface: NeoBrutalColors.white,
         error: NeoBrutalColors.darkRed,
         onError: NeoBrutalColors.white,
       ),
-      appBarTheme: const AppBarTheme(
-        backgroundColor: NeoBrutalColors.darkBg,
+      appBarTheme: AppBarTheme(
+        backgroundColor: bgColor,
         foregroundColor: NeoBrutalColors.white,
         elevation: 0,
         centerTitle: true,
@@ -368,15 +375,15 @@ class NeoTheme {
         ),
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: NeoBrutalColors.darkSurface,
-        selectedItemColor: NeoBrutalColors.darkRed,
+        backgroundColor: surfaceColor,
+        selectedItemColor: primaryColor,
         unselectedItemColor: NeoBrutalColors.white,
         type: BottomNavigationBarType.fixed,
         elevation: 0,
       ),
       // Cards in dark mode: darkSurface with darkBorder — comfortable contrast
       cardTheme: CardThemeData(
-        color: NeoBrutalColors.darkSurface,
+        color: surfaceColor,
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.zero,
@@ -388,7 +395,7 @@ class NeoTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: NeoBrutalColors.darkRed,
+          backgroundColor: primaryColor,
           foregroundColor: NeoBrutalColors.white,
           elevation: 0,
           shape: const RoundedRectangleBorder(
@@ -448,7 +455,7 @@ class NeoTheme {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: NeoBrutalColors.darkSurface,
+        fillColor: surfaceColor,
         border: const OutlineInputBorder(
           borderRadius: BorderRadius.zero,
           borderSide: BorderSide(
@@ -494,30 +501,30 @@ class NeoTheme {
         }),
         trackColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return NeoBrutalColors.darkRed;
+            return primaryColor;
           }
-          return NeoBrutalColors.darkSurface;
+          return surfaceColor;
         }),
         trackOutlineColor: WidgetStateProperty.all(NeoBrutalColors.darkBorder),
       ),
-      sliderTheme: const SliderThemeData(
-        thumbColor: NeoBrutalColors.darkRed,
-        activeTrackColor: NeoBrutalColors.darkRed,
-        inactiveTrackColor: NeoBrutalColors.darkSurface,
-        overlayColor: Color(0x29CC5555),
+      sliderTheme: SliderThemeData(
+        thumbColor: primaryColor,
+        activeTrackColor: primaryColor,
+        inactiveTrackColor: surfaceColor,
+        overlayColor: primaryColor.withAlpha(41),
         trackHeight: 8,
       ),
-      progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: NeoBrutalColors.darkRed,
-        linearTrackColor: NeoBrutalColors.darkSurface,
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        color: primaryColor,
+        linearTrackColor: surfaceColor,
       ),
       dividerTheme: const DividerThemeData(
         color: NeoBrutalColors.darkBorder,
         thickness: 4,
         space: 0,
       ),
-      listTileTheme: const ListTileThemeData(
-        tileColor: NeoBrutalColors.darkSurface,
+      listTileTheme: ListTileThemeData(
+        tileColor: surfaceColor,
         textColor: NeoBrutalColors.white,
         iconColor: NeoBrutalColors.white,
         contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -527,7 +534,7 @@ class NeoTheme {
         ),
       ),
       dialogTheme: DialogThemeData(
-        backgroundColor: NeoBrutalColors.darkSurface,
+        backgroundColor: surfaceColor,
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.zero,
@@ -537,8 +544,8 @@ class NeoTheme {
           ),
         ),
       ),
-      bottomSheetTheme: const BottomSheetThemeData(
-        backgroundColor: NeoBrutalColors.darkSurface,
+      bottomSheetTheme: BottomSheetThemeData(
+        backgroundColor: surfaceColor,
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.zero,
@@ -548,12 +555,12 @@ class NeoTheme {
           ),
         ),
       ),
-      drawerTheme: const DrawerThemeData(
-        backgroundColor: NeoBrutalColors.darkSurface,
+      drawerTheme: DrawerThemeData(
+        backgroundColor: surfaceColor,
         elevation: 0,
       ),
       snackBarTheme: SnackBarThemeData(
-        backgroundColor: NeoBrutalColors.darkSurface,
+        backgroundColor: surfaceColor,
         contentTextStyle: const TextStyle(
           fontFamily: NeoTypography.fontFamily,
           fontWeight: FontWeight.w700,

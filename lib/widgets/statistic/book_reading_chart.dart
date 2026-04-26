@@ -89,17 +89,17 @@ class _BookReadingChartState extends State<BookReadingChart> {
             color: lineColor,
             barWidth: 3, // Thicker line for neo-brutalist look
             isStrokeCapRound: true,
-            dotData: FlDotData(
-              show: true,
-              getDotPainter: (spot, percent, barData, index) {
-                return FlDotCirclePainter(
-                  radius: 4,
-                  color: areaColor,
-                  strokeWidth: 2,
-                  strokeColor: lineColor,
-                );
-              },
-            ),
+             dotData: FlDotData(
+               show: true,
+               getDotPainter: (spot, percent, barData, index) {
+                 return FlDotCirclePainter(
+                   radius: 2.5,
+                   color: areaColor,
+                   strokeWidth: 1,
+                   strokeColor: lineColor,
+                 );
+               },
+             ),
             belowBarData: BarAreaData(
               show: true,
               // Neo-brutalist: solid color with opacity, not gradient
