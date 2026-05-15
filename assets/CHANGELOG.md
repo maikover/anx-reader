@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.14.1
+- Fix(android): Fix bottom navigation buttons overlapping onboarding screen
+- Fix(design): Fix various UI layout issues and visual inconsistencies
+- Fix(navigation): Fix navigation flow and transition issues
+- Fix(bugs): Fix multiple known bugs and crashes
+
 ## 1.14.0
 - Fix(translate): Remove legacy Microsoft reverse-engineered translation service and migrate saved full-text translation preference to Microsoft Azure API
 - Fix(l10n): Remove legacy Microsoft translation localization entries

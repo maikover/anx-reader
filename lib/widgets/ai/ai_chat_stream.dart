@@ -14,7 +14,7 @@ import 'package:cubebook/service/ai/index.dart';
 import 'package:cubebook/utils/env_var.dart';
 import 'package:cubebook/utils/toast/common.dart';
 import 'package:cubebook/utils/ai_reasoning_parser.dart';
-import 'package:cubebook/widgets/ai/model_picker_dialog.dart';
+import 'package:cubebook/page/settings_page/ai_settings_page.dart';
 import 'package:cubebook/widgets/ai/tool_step_tile.dart';
 import 'package:cubebook/widgets/ai/tool_tiles/apply_book_tags_step_tile.dart';
 import 'package:cubebook/widgets/ai/tool_tiles/mindmap_step_tile.dart';
@@ -25,6 +25,7 @@ import 'package:cubebook/widgets/delete_confirm.dart';
 import 'package:cubebook/widgets/markdown/styled_markdown.dart';
 import 'package:cubebook/widgets/neo/neo_background.dart';
 import 'package:cubebook/theme/neo_colors.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -676,20 +677,13 @@ class AiChatStreamState extends ConsumerState<AiChatStream> {
                       if (currentProvider != null)
                         NeoIconButton(
                           icon: Icons.tune,
-                          onPressed: () async {
-                            final selected = await showModelPickerDialog(
-                              context: context,
-                              provider: currentProvider,
-                              currentModel: currentProvider.model,
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => const AiSettingsPage(),
+                              ),
                             );
-                            if (selected != null &&
-                                selected != currentProvider.model) {
-                              ref
-                                  .read(aiProvidersProvider.notifier)
-                                  .updateProvider(
-                                    currentProvider.copyWith(model: selected),
-                                  );
-                            }
                           },
                           size: 40,
                         ),

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://app.kilo.ai/config.json",
+  "mcp": {
+    "MiniMax": {
+      "type": "local",
+      "command": ["uvx", "minimax-coding-plan-mcp", "-y"],
+      "environment": {
+        "MINIMAX_API_KEY": "sk-cp-8qa2YAh4LnBCQSqX4S5KoF8ow0RtVgLuSl4Mw2J_jYHxOnw44I6UxjQpkC0UcPqMzZR8n2k4YWpXBqAwodNkLUccoUO0VRtk2Hrb_AObCK7EM5zC7-uMdF8",
+        "MINIMAX_API_HOST": "https://api.minimax.io"
+      },
+      "enabled": true
+    }
+  }
+}

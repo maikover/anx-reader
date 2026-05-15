@@ -349,6 +349,7 @@ Future<void> _showOnboarding(BuildContext context) async {
   showCupertinoSheet(
     context: navigatorKey.currentContext ?? context,
     builder: (sheetContext) => Scaffold(
+      resizeToAvoidBottomInset: false,
       body: OnboardingScreen(
         onComplete: () {
           Prefs().lastAppVersion = currentVersion;

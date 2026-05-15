@@ -1,39 +1,51 @@
 import 'package:cubebook/l10n/generated/L10n.dart';
+import 'package:cubebook/theme/neo_colors.dart';
 import 'package:flutter/material.dart';
 
 class NotesTips extends StatelessWidget {
   const NotesTips({super.key});
 
-  final TextStyle textStyleBig = const TextStyle(
-    fontSize: 20,
-    fontWeight: FontWeight.bold,
-  );
-  final TextStyle textStyle = const TextStyle(
-    fontSize: 15,
-  );
-
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = L10n.of(context);
+
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text('o(TヘTo) ',
-              style: TextStyle(
-                  fontSize: 50,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey)),
-          const SizedBox(height: 50),
-          Text(
-            L10n.of(context).notesTips_1,
-            style: textStyleBig,
+      child: Container(
+        margin: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          color: NeoBrutalColors.cardColor(isDark),
+          border: Border.all(
+            width: 4,
+            color: NeoBrutalColors.borderColor(isDark),
           ),
-          const SizedBox(height: 10),
-          Text(
-            L10n.of(context).notesTips_2,
-            style: textStyle,
-          ),
-        ],
+          boxShadow: NeoBrutalColors.adaptiveShadowMedium(isDark),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('o(TヘTo) ',
+                style: TextStyle(
+                    fontSize: 50,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey)),
+            const SizedBox(height: 16),
+            Text(
+              l10n.notesTips_1,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              l10n.notesTips_2,
+              style: const TextStyle(fontSize: 15),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -120,7 +120,7 @@
   "statisticsTips_1": "選択した期間中に読書記録がありません",
   "statisticsTips_2": "本は手に持つ夢です",
   "notesTips_1": "ノートがありません",
-  "notesTips_2": "読書中にノートを追加してください！",
+  "notesTips_2": "本のテキストをハイライトしてノートを作成",
   "readingPageChapterPages": "章のページ数",
   "readingPageCurrentPage": "現在のページ",
   "readingPageAutoMarkSelection": "Auto-mark selection",

@@ -233,7 +233,6 @@ class AndroidSettingsTile extends StatelessWidget {
                 if (trailing != null && tileType == SettingsTileType.switchTile)
                   Row(
                     children: [
-                      trailing!,
                       Padding(
                         padding: const EdgeInsetsDirectional.only(end: 8),
                         child: Switch(
@@ -244,6 +243,7 @@ class AndroidSettingsTile extends StatelessWidget {
                               : Theme.of(context).disabledColor,
                         ),
                       ),
+                      trailing!,
                     ],
                   )
                 else if (tileType == SettingsTileType.switchTile)

@@ -325,35 +325,27 @@ class BookshelfPageState extends ConsumerState<BookshelfPage>
           child: Row(
             children: [
               Expanded(
-                child: Container(
-                  height: 40,
+                child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 400),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => const SearchPage(),
-                        ),
-                      );
-                    },
-                    child: FilledContainer(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      color: Theme.of(context).colorScheme.surface.withAlpha(80),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.search, color: Colors.grey),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              L10n.of(context).searchBooksOrNotes,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(color: Theme.of(context).hintColor),
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                  child: Container(
+                    height: 40,
+                    decoration: BoxDecoration(
+                      boxShadow: NeoBrutalColors.adaptiveShadowMedium(
+                        Theme.of(context).brightness == Brightness.dark,
+                      ),
+                    ),
+                    child: TextField(
+                      readOnly: true,
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => const SearchPage(),
                           ),
-                        ],
+                        );
+                      },
+                      decoration: InputDecoration(
+                        hintText: L10n.of(context).searchBooksOrNotes,
+                        prefixIcon: const Icon(Icons.search),
                       ),
                     ),
                   ),

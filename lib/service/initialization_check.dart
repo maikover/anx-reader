@@ -60,6 +60,7 @@ class InitializationCheck {
       showCupertinoSheet(
         context: navigatorKey.currentContext!,
         builder: (context) => Scaffold(
+          resizeToAvoidBottomInset: false,
           body: OnboardingScreen(
             onComplete: () async {
               Prefs().lastAppVersion = cv;
