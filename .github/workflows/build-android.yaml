@@ -11,13 +11,13 @@ on:
         type: string
     secrets:
       KEYSTORE_BASE64:
-        required: true
+        required: false
       KEYSTORE_PASSWORD:
-        required: true
+        required: false
       KEY_PASSWORD:
-        required: true
+        required: false
       KEY_ALIAS:
-        required: true
+        required: false
 
 jobs:
   build-android:
