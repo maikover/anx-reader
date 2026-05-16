@@ -109,7 +109,7 @@ jobs:
           } >> $GITHUB_OUTPUT
 
       - name: Send beta message
-        if: ${{ inputs.is_beta == 'true' }}
+        if: ${{ inputs.is_beta == 'true' && secrets.TELEGRAM_TO != '' }}
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
@@ -117,18 +117,18 @@ jobs:
           format: markdown
           message: |
             🧪 *Beta Version Released!*
-            
+
             🧪 **Testing Version:** `${{ inputs.version }}`
-            
+
             ⚠️ *This is a beta release for testing purposes. Please report any issues you encounter.*
-            
+
             **What's New:**
             ${{ steps.format_changelog.outputs.formatted_notes }}
-            
+
             📥 **Download:** https://github.com/cubebook/cubebook/releases/tag/${{ inputs.tag }}
 
       - name: Send release message
-        if: ${{ inputs.is_beta != 'true' && inputs.is_alpha != 'true' }}
+        if: ${{ inputs.is_beta != 'true' && inputs.is_alpha != 'true' && secrets.TELEGRAM_TO != '' }}
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
