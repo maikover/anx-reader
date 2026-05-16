@@ -152,7 +152,7 @@ Future<void> openAboutDialog() async {
                              children: [
                                const Text(
                                  'MIT License\n\n'
-                                 'Copyright (c) 2025 Anxcye\n\n'
+                                 'Copyright (c) 2025 Cubebook\n\n'
                                  'Permission is hereby granted, free of charge, to any person obtaining a copy\n'
                                  'of this software and associated documentation files (the "Software"), to deal\n'
                                  'in the Software without restriction, including without limitation the rights\n'
@@ -173,7 +173,7 @@ Future<void> openAboutDialog() async {
                                TextButton.icon(
                                  onPressed: () {
                                    launchUrl(
-                                     Uri.parse('https://github.com/Anxcye/anx-reader'),
+                                     Uri.parse('https://github.com/cubebook/cubebook'),
                                      mode: LaunchMode.externalApplication,
                                    );
                                  },

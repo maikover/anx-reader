@@ -85,7 +85,7 @@ class ExcerptShareCard extends StatelessWidget {
     }
   }
 
-  Widget _getAnxReaderLogo({double fontSize = 12, Color? color}) {
+  Widget _getCubebookLogo({double fontSize = 12, Color? color}) {
     color ??= textColor;
     return Text(
       'CubeBook',
@@ -278,7 +278,7 @@ class ExcerptShareCard extends StatelessWidget {
                   ],
                 ),
               ),
-              _getAnxReaderLogo(),
+              _getCubebookLogo(),
             ],
           ),
         ],
@@ -346,7 +346,7 @@ class ExcerptShareCard extends StatelessWidget {
               Row(
                 children: [
                   Spacer(),
-                  _getAnxReaderLogo(),
+                  _getCubebookLogo(),
                 ],
               ),
             ],
@@ -395,7 +395,7 @@ class ExcerptShareCard extends StatelessWidget {
                 Row(
                   children: [
                     const Spacer(),
-                    _getAnxReaderLogo(
+                    _getCubebookLogo(
                       fontSize: 16,
                       color: backgroundImage != null ? Colors.white : null,
                     ),
@@ -454,7 +454,7 @@ class ExcerptShareCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16),
-              _getAnxReaderLogo(),
+              _getCubebookLogo(),
             ],
           ),
         ],

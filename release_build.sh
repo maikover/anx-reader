@@ -51,6 +51,6 @@ fi
 
 if [[ $BUILD_RESULT == 0 && $OPT_DEPLOYMENT == "-d" ]]; then
     echo "deploy to /Applications/"
-    rm -rf /Applications/AnxReader.app
-    cp -rf "$APP_PATH" /Applications/AnxReader.app
+    rm -rf /Applications/Cubebook.app
+    cp -rf "$APP_PATH" /Applications/Cubebook.app
 fi

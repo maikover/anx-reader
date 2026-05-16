@@ -102,7 +102,7 @@ class _LogPageState extends State<LogPage> {
     // );
     // await FlutterFileDialog.saveFile(params: params);
     String fileName =
-        'AnxReader-Log-${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}.txt';
+        'Cubebook-Log-${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}.txt';
     String? filePath = await saveFileToDownload(
         bytes: await logFile.readAsBytes(),
         fileName: fileName,

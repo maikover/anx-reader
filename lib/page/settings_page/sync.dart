@@ -32,7 +32,7 @@ import 'package:path/path.dart' as path;
 import 'package:cubebook/widgets/settings/settings_section.dart';
 import 'package:cubebook/widgets/settings/settings_tile.dart';
 
-const String _prefsBackupFileName = 'anx_shared_prefs.json';
+const String _prefsBackupFileName = 'cubebook_shared_prefs.json';
 
 class SyncSetting extends ConsumerStatefulWidget {
   const SyncSetting({super.key});
@@ -184,7 +184,7 @@ class _SyncSettingState extends ConsumerState<SyncSetting> {
       // );
       // final filePath = await FlutterFileDialog.saveFile(params: params);
       String fileName =
-          'AnxReader-Backup-${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}-v3.zip';
+          'Cubebook-Backup-${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}-v3.zip';
 
       String? filePath = await saveFileToDownload(
           sourceFilePath: file.path,
@@ -305,7 +305,7 @@ Future<String> createZipFile(Map<String, dynamic> params) async {
   BackgroundIsolateBinaryMessenger.ensureInitialized(token);
   final date =
       '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}';
-  final zipPath = '${(await getAnxTempDir()).path}/AnxReader-Backup-$date.zip';
+  final zipPath = '${(await getAnxTempDir()).path}/Cubebook-Backup-$date.zip';
   final docPath = await getAnxDocumentsPath();
   final directoryList = [
     getFileDir(path: docPath),
