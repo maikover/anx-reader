@@ -33,8 +33,6 @@ jobs:
   upload-artifacts:
     if: inputs.is_alpha == 'true'
     runs-on: ubuntu-latest
-    env:
-      BASE_NOTIFICATION_URL: ${{ secrets.NOTIFICATION_URL }}/Cubebook%20Action
     steps:
       - name: Checkout tagged source
         uses: actions/checkout@v4
@@ -54,17 +52,9 @@ jobs:
           path: artifacts/
           if-no-files-found: warn
 
-      - name: Send build completion notification
-        shell: bash
-        run: |
-          RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          curl -s "$BASE_NOTIFICATION_URL/Build%20Completed?url=$RUN_URL&level=timeSensitive&icon=https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png" || echo "Notification failed, continuing..."
-
   create-release:
     if: inputs.is_alpha != 'true'
     runs-on: ubuntu-latest
-    env:
-      BASE_NOTIFICATION_URL: ${{ secrets.NOTIFICATION_URL }}/Cubebook%20Action
     steps:
       - name: Checkout tagged source
         uses: actions/checkout@v4
@@ -86,66 +76,3 @@ jobs:
           body: ${{ inputs.release_notes }}
           generate_release_notes: false
           prerelease: ${{ inputs.is_beta == 'true' }}
-
-      - name: Format changelog for Telegram
-        if: ${{ inputs.is_beta == 'true' || (inputs.is_beta != 'true' && inputs.is_alpha != 'true') }}
-        id: format_changelog
-        shell: bash
-        run: |
-          VERSION="${{ inputs.version }}"
-          MAIN_VERSION=${VERSION%%-*}
-          
-          # Format using the Node.js script (Node is pre-installed in GitHub Actions)
-          FORMATTED_NOTES=$(node scripts/format_telegram_message.js assets/CHANGELOG.md "$MAIN_VERSION" 2>&1) || {
-            echo "::warning::Format script failed, using original notes"
-            FORMATTED_NOTES='${{ inputs.release_notes }}'
-          }
-          
-          # Save to output
-          {
-            echo "formatted_notes<<EOF"
-            echo "$FORMATTED_NOTES"
-            echo "EOF"
-          } >> $GITHUB_OUTPUT
-
-      - name: Send beta message
-        if: ${{ inputs.is_beta == 'true' && secrets.TELEGRAM_TO != '' }}
-        uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          format: markdown
-          message: |
-            🧪 *Beta Version Released!*
-
-            🧪 **Testing Version:** `${{ inputs.version }}`
-
-            ⚠️ *This is a beta release for testing purposes. Please report any issues you encounter.*
-
-            **What's New:**
-            ${{ steps.format_changelog.outputs.formatted_notes }}
-
-            📥 **Download:** https://github.com/cubebook/cubebook/releases/tag/${{ inputs.tag }}
-
-      - name: Send release message
-        if: ${{ inputs.is_beta != 'true' && inputs.is_alpha != 'true' && secrets.TELEGRAM_TO != '' }}
-        uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          format: markdown
-          message: |
-            🎉 *New Release Available!*
-            
-            🚀 **Version:** `${{ inputs.version }}`
-            
-            **What's New:**
-            ${{ steps.format_changelog.outputs.formatted_notes }}
-            
-            📥 **Download:** https://github.com/cubebook/cubebook/releases/tag/${{ inputs.tag }}
-
-      - name: Send build completion notification
-        shell: bash
-        run: |
-          RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          curl -s "$BASE_NOTIFICATION_URL/Build%20Completed?url=$RUN_URL&level=timeSensitive&icon=https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png" || echo "Notification failed, continuing..."
