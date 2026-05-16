@@ -2,7 +2,7 @@ name: cubebook
 description: "CubeBook - AI-powered e-book reader"
 publish_to: 'none'
 
-version: 1.14.1+2
+version: 1.14.2+3
 
 environment:
   sdk: '>=3.5.2 <4.0.0'
