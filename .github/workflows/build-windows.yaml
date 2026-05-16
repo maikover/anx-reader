@@ -11,7 +11,7 @@ on:
         type: string
     secrets:
       SIGNPATH_API_TOKEN:
-        required: true
+        required: false
       NOTIFICATION_URL:
         required: true
 
@@ -68,8 +68,14 @@ jobs:
           curl -s "$BASE_NOTIFICATION_URL/zip%20File%20Waiting%20for%20approval$NOTIFICATION_PARAMS" || echo "Notification failed, continuing..."
         shell: bash
 
+      - name: Prepare zip for signing
+        if: ${{ env.IS_ALPHA != 'true' && secrets.SIGNPATH_API_TOKEN != '' }}
+        run: |
+          cp build/windows/unsigned/app.zip build/windows/app.zip
+        shell: bash
+
       - name: Sign Windows zip
-        if: ${{ env.IS_ALPHA != 'true' }}
+        if: ${{ env.IS_ALPHA != 'true' && secrets.SIGNPATH_API_TOKEN != '' }}
         uses: signpath/github-action-submit-signing-request@v1.1
         with:
           api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
@@ -105,7 +111,7 @@ jobs:
         shell: bash
 
       - name: Sign Windows exe
-        if: ${{ env.IS_ALPHA != 'true' }}
+        if: ${{ env.IS_ALPHA != 'true' && secrets.SIGNPATH_API_TOKEN != '' }}
         uses: signpath/github-action-submit-signing-request@v1.1
         with:
           api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
@@ -116,6 +122,12 @@ jobs:
           github-artifact-id: ${{ steps.upload-unsigned-exe.outputs.artifact-id }}
           wait-for-completion: true
           output-artifact-directory: 'build/windows'
+
+      - name: Prepare exe for signing
+        if: ${{ env.IS_ALPHA != 'true' && secrets.SIGNPATH_API_TOKEN != '' }}
+        run: |
+          cp build/windows/unsigned/app.exe build/windows/app.exe
+        shell: bash
 
       - name: Prepare unsigned exe for alpha
         if: ${{ env.IS_ALPHA == 'true' }}
