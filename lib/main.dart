@@ -39,7 +39,7 @@ Future<void> main() async {
   await Prefs().initPrefs();
 
   // Initialize desktop window with validated position
-  if (AnxPlatform.isWindows || AnxPlatform.isMacOS) {
+  if (AnxPlatform.isWindows || AnxPlatform.isMacOS || AnxPlatform.isLinux) {
     await initializeDesktopWindow();
   }
 
@@ -137,7 +137,7 @@ class _MyAppState extends ConsumerState<MyApp>
   }
 
   Future<void> _updateWindowInfo() async {
-    if (!AnxPlatform.isWindows && !AnxPlatform.isMacOS) {
+    if (!AnxPlatform.isWindows && !AnxPlatform.isMacOS && !AnxPlatform.isLinux) {
       return;
     }
     final windowOffset = await windowManager.getPosition();

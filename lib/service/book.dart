@@ -19,6 +19,7 @@ import 'package:cubebook/providers/book_list.dart';
 import 'package:cubebook/providers/toc_search.dart';
 import 'package:cubebook/service/convert_to_epub/txt/convert_from_txt.dart';
 import 'package:cubebook/service/md5_service.dart';
+import 'package:cubebook/service/book_metadata_parser.dart';
 import 'package:cubebook/utils/webView/anx_headless_webview.dart';
 import 'package:cubebook/utils/env_var.dart';
 import 'package:cubebook/utils/get_path/get_base_path.dart';
@@ -561,6 +562,22 @@ Future<void> getBookMetadata(
   String? md5,
   WidgetRef? ref,
 }) async {
+  if (Platform.isLinux && file.path.toLowerCase().endsWith('.epub')) {
+    AnxLog.info('import start: using archive fallback for EPUB on Linux');
+    final metadata = await parseEpubMetadata(file);
+    await saveBook(
+      file,
+      metadata['title'] as String,
+      metadata['author'] as String,
+      metadata['description'] as String,
+      md5,
+      metadata['cover'] as String,
+      provideBook: book,
+    );
+    ref?.read(bookListProvider.notifier).refresh();
+    return;
+  }
+
   String serverFileName = Server().setTempFile(file);
 
   String cfi = '';

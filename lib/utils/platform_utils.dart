@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 
-enum AnxPlatformEnum { android, ios, macos, windows, ohos }
+enum AnxPlatformEnum { android, ios, macos, windows, ohos, linux }
 
 class AnxPlatform {
   static AnxPlatformEnum? _cachedType;
@@ -28,6 +28,9 @@ class AnxPlatform {
           return _cachedType = AnxPlatformEnum.ohos;
         }
       } catch (_) {}
+      if (Platform.isLinux) {
+        return _cachedType = AnxPlatformEnum.linux;
+      }
     }
     throw UnsupportedError('Unsupported platform');
   }
@@ -72,7 +75,15 @@ class AnxPlatform {
     }
   }
 
+  static bool get isLinux {
+    try {
+      return type == AnxPlatformEnum.linux;
+    } catch (_) {
+      return false;
+    }
+  }
+
   static bool get isMobile => isAndroid || isIOS || isOhos;
 
-  static bool get isDesktop => isWindows || isMacOS;
+  static bool get isDesktop => isWindows || isMacOS || isLinux;
 }

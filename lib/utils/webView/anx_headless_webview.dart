@@ -53,16 +53,23 @@ class AnxHeadlessWebView {
     if (useOverlay) {
       _runOverlay();
     } else {
-      _headlessWebView = HeadlessInAppWebView(
-        webViewEnvironment: webViewEnvironment,
-        initialUrlRequest: initialUrlRequest,
-        initialSettings: initialSettings,
-        onWebViewCreated: onWebViewCreated,
-        onLoadStop: onLoadStop,
-        onConsoleMessage: onConsoleMessage,
-        onLoadError: onLoadError,
-        onLoadHttpError: onLoadHttpError,
-      );
+      try {
+        _headlessWebView = HeadlessInAppWebView(
+          webViewEnvironment: webViewEnvironment,
+          initialUrlRequest: initialUrlRequest,
+          initialSettings: initialSettings,
+          onWebViewCreated: onWebViewCreated,
+          onLoadStop: onLoadStop,
+          onConsoleMessage: onConsoleMessage,
+          onLoadError: onLoadError,
+          onLoadHttpError: onLoadHttpError,
+        );
+      } catch (e) {
+        AnxLog.info(
+            "HeadlessInAppWebView failed to construct, falling back to Overlay: $e");
+        _runOverlay();
+        return;
+      }
       try {
         await _headlessWebView?.run();
       } catch (e) {

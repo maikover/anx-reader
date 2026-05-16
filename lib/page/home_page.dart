@@ -24,6 +24,7 @@ import 'package:cubebook/utils/toast/common.dart';
 import 'package:cubebook/widgets/ai/ai_chat_stream.dart';
 import 'package:cubebook/widgets/settings/about.dart';
 import 'package:cubebook/theme/neo_colors.dart';
+import 'package:cubebook/widgets/neo/neo_primitives.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 import 'package:flutter/material.dart';
@@ -232,15 +233,17 @@ class _HomePageState extends ConsumerState<HomePage> {
                     ),
                     child: SafeArea(
                       child: NavigationRail(
-                        leading: InkWell(
-                          onTap: () => openAboutDialog(),
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 2.0),
-                            child: Image.asset(
-                              width: 32,
-                              height: 32,
-                              'assets/icon/CubeBook-logo.png',
-                              color: Theme.of(context).colorScheme.secondary,
+                        leading: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: NeoButton(
+                            onPressed: () => openAboutDialog(),
+                            variant: NeoButtonVariant.secondary,
+                            size: NeoButtonSize.small,
+                            child: Icon(
+                              Icons.info_outline,
+                              color: isDark
+                                  ? NeoBrutalColors.white
+                                  : NeoBrutalColors.ink,
                             ),
                           ),
                         ),
