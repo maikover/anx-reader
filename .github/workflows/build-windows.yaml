@@ -22,8 +22,18 @@ jobs:
       BASE_NOTIFICATION_URL: ${{ secrets.NOTIFICATION_URL }}/Cubebook%20Action
       NOTIFICATION_PARAMS: ?url=https://app.signpath.io/Web/254a26d6-6c3a-4a55-9ca6-890d0d34deb1/SigningRequests&level=timeSensitive&icon=https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png
       IS_ALPHA: ${{ contains(inputs.version, '-alpha.') }}
-    
+
     steps:
+      - name: Check if SignPath token exists
+        id: check_token
+        run: |
+          if [[ "${{ secrets.SIGNPATH_API_TOKEN }}" != "" ]]; then
+            echo "has_token=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_token=false" >> $GITHUB_OUTPUT
+          fi
+        shell: bash
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -46,7 +56,6 @@ jobs:
 
       - name: Install Inno Setup
         run: |
-          # Use chocolatey to install Inno Setup as it's more reliable than winget in CI
           choco install innosetup -y --no-progress
         shell: pwsh
 
@@ -63,19 +72,13 @@ jobs:
           if-no-files-found: error
 
       - name: Send notification after zip signing
-        if: ${{ env.IS_ALPHA != 'true' }}
+        if: ${{ env.IS_ALPHA != 'true' && steps.check_token.outputs.has_token == 'true' }}
         run: |
           curl -s "$BASE_NOTIFICATION_URL/zip%20File%20Waiting%20for%20approval$NOTIFICATION_PARAMS" || echo "Notification failed, continuing..."
         shell: bash
 
-      - name: Prepare zip for signing
-        if: ${{ env.IS_ALPHA != 'true' && secrets.SIGNPATH_API_TOKEN != '' }}
-        run: |
-          cp build/windows/unsigned/app.zip build/windows/app.zip
-        shell: bash
-
       - name: Sign Windows zip
-        if: ${{ env.IS_ALPHA != 'true' && secrets.SIGNPATH_API_TOKEN != '' }}
+        if: ${{ env.IS_ALPHA != 'true' && steps.check_token.outputs.has_token == 'true' }}
         uses: signpath/github-action-submit-signing-request@v1.1
         with:
           api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
@@ -86,7 +89,17 @@ jobs:
           github-artifact-id: ${{ steps.upload-unsigned-zip.outputs.artifact-id }}
           wait-for-completion: true
           output-artifact-directory: 'build/windows'
-      
+
+      - name: Prepare zip for signing or use unsigned
+        if: ${{ env.IS_ALPHA != 'true' }}
+        run: |
+          if [ -f "build/windows/Cubebook-windows-${{ inputs.version }}.zip" ]; then
+            echo "Using signed zip"
+          else
+            cp build/windows/unsigned/app.zip build/windows/app.zip
+          fi
+        shell: bash
+
       - name: Prepare unsigned zip for alpha
         if: ${{ env.IS_ALPHA == 'true' }}
         run: cp build/windows/unsigned/app.zip build/windows/app.zip
@@ -105,13 +118,13 @@ jobs:
           if-no-files-found: error
 
       - name: Send notification after exe signing
-        if: ${{ env.IS_ALPHA != 'true' }}
+        if: ${{ env.IS_ALPHA != 'true' && steps.check_token.outputs.has_token == 'true' }}
         run: |
           curl -s "$BASE_NOTIFICATION_URL/exe%20File%20Waiting%20for%20approval$NOTIFICATION_PARAMS" || echo "Notification failed, continuing..."
         shell: bash
 
       - name: Sign Windows exe
-        if: ${{ env.IS_ALPHA != 'true' && secrets.SIGNPATH_API_TOKEN != '' }}
+        if: ${{ env.IS_ALPHA != 'true' && steps.check_token.outputs.has_token == 'true' }}
         uses: signpath/github-action-submit-signing-request@v1.1
         with:
           api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
@@ -123,10 +136,14 @@ jobs:
           wait-for-completion: true
           output-artifact-directory: 'build/windows'
 
-      - name: Prepare exe for signing
-        if: ${{ env.IS_ALPHA != 'true' && secrets.SIGNPATH_API_TOKEN != '' }}
+      - name: Prepare exe for signing or use unsigned
+        if: ${{ env.IS_ALPHA != 'true' }}
         run: |
-          cp build/windows/unsigned/app.exe build/windows/app.exe
+          if [ -f "build/windows/Cubebook-windows-${{ inputs.version }}.exe" ]; then
+            echo "Using signed exe"
+          else
+            cp build/windows/unsigned/app.exe build/windows/app.exe
+          fi
         shell: bash
 
       - name: Prepare unsigned exe for alpha
