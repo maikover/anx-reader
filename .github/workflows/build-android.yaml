@@ -58,6 +58,21 @@ jobs:
         run: |
           flutter gen-l10n
           dart run build_runner build --delete-conflicting-outputs
+
+          flutter pub get
+
+      - name: Increment Android versionCode
+        run: |
+          LOCAL_PROPS="android/local.properties"
+          CURRENT_VERSIONCODE=$(grep "versionCode" $LOCAL_PROPS | grep -o '[0-9]\+' | head -1)
+          NEXT_VERSIONCODE=$((CURRENT_VERSIONCODE + 1))
+          sed -i "s/flutter.versionCode=$CURRENT_VERSIONCODE/flutter.versionCode=$NEXT_VERSIONCODE/" $LOCAL_PROPS
+          echo "Incremented versionCode to $NEXT_VERSIONCODE"
+          cat $LOCAL_PROPS
+        shell: bash
+
+      - name: Build APKs
+        run: |
           flutter build apk --release
           flutter build apk --split-per-abi
 
