@@ -43,7 +43,7 @@ class TopBookTile extends StatisticsDashboardTileBase {
       mock: StatisticDataModel.mock(),
       builder: (statisticData, _) {
         if (statisticData.bookReadingTime.isEmpty) {
-          return Center(child: StatisticsTips());
+          return Center(child: StatisticsTips(compact: true));
         }
         final entry = statisticData.bookReadingTime.first;
         final book = entry.keys.first;

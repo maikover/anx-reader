@@ -1,9 +1,12 @@
 import 'package:cubebook/l10n/generated/L10n.dart';
+import 'package:cubebook/theme/neo_colors.dart';
 import 'package:cubebook/utils/get_current_language_code.dart';
+import 'package:cubebook/utils/log/common.dart';
 import 'package:cubebook/widgets/markdown/styled_markdown.dart';
+import 'package:cubebook/widgets/neo/neo_primitives.dart';
+import 'package:cubebook/widgets/neo/neo_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:cubebook/utils/log/common.dart';
 
 /// Changelog screen for showing app updates
 /// Displays version history and new features
@@ -130,66 +133,84 @@ class _ChangelogScreenState extends State<ChangelogScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return NeoScaffold(
       appBar: AppBar(
         title: Text(L10n.of(context).whatsNew),
         elevation: 0,
-        actions: [],
+        backgroundColor: Colors.transparent,
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(16),
-                  color: Theme.of(context).colorScheme.surface,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.update,
-                            color: Theme.of(context).colorScheme.primary,
-                            size: 24,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            L10n.of(context).updateFromVersion(lastVersion),
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Theme.of(context).colorScheme.onSurface,
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                  child: NeoContainer(
+                    width: double.infinity,
+                    color: NeoBrutalColors.adaptiveYellow(isDark),
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.update,
+                              color: NeoBrutalColors.borderColor(isDark),
+                              size: 24,
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        L10n.of(context).welcomeToVersion(currentVersion),
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.onSurface,
+                            const SizedBox(width: 8),
+                            Text(
+                              L10n.of(context).updateFromVersion(lastVersion),
+                              style: TextStyle(
+                                fontFamily: 'Space Grotesk',
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: NeoBrutalColors.borderColor(isDark),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 6),
+                        Text(
+                          L10n.of(context).welcomeToVersion(currentVersion),
+                          style: TextStyle(
+                            fontFamily: 'Space Grotesk',
+                            fontSize: 20,
+                            fontWeight: FontWeight.w900,
+                            color: NeoBrutalColors.borderColor(isDark),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Expanded(
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(16),
-                    child: StyledMarkdown(data: _changelogContent),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: NeoContainer(
+                      padding: const EdgeInsets.all(16),
+                      child: SingleChildScrollView(
+                        child: StyledMarkdown(data: _changelogContent),
+                      ),
+                    ),
                   ),
                 ),
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(16),
-                  child: FilledButton(
-                    onPressed: _onComplete,
-                    child: Text(L10n.of(context).commonOk),
+                SafeArea(
+                  top: false,
+                  bottom: true,
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                    child: NeoButton(
+                      onPressed: _onComplete,
+                      variant: NeoButtonVariant.primary,
+                      fullWidth: true,
+                      child: Text(L10n.of(context).commonOk.toUpperCase()),
+                    ),
                   ),
                 ),
               ],

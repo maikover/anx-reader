@@ -17,6 +17,7 @@ import 'package:flutter/services.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:pubspec_parse/pubspec_parse.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:in_app_review/in_app_review.dart';
 
 class About extends StatefulWidget {
   const About({
@@ -193,16 +194,36 @@ Future<void> openAboutDialog() async {
                      );
                    },
                  ),
+                  _NeoMenuItem(
+                   title: L10n.of(context).aboutPrivacyPolicy,
+                   icon: Icons.privacy_tip,
+                   onTap: () async {
+                     launchUrl(
+                       Uri.parse('https://cube-book.vercel.app/en/privacy'),
+                       mode: LaunchMode.externalApplication,
+                     );
+                   },
+                 ),
                  _NeoMenuItem(
-                  title: L10n.of(context).aboutPrivacyPolicy,
-                  icon: Icons.privacy_tip,
-                  onTap: () async {
-                    launchUrl(
-                      Uri.parse('https://cube-book.vercel.app/en/privacy'),
-                      mode: LaunchMode.externalApplication,
-                    );
-                  },
-                ),
+                   title: L10n.of(context).aboutRateApp,
+                   icon: Icons.star_rate_outlined,
+                   onTap: () async {
+                     final InAppReview inAppReview = InAppReview.instance;
+                     try {
+                       if (await inAppReview.isAvailable()) {
+                         await inAppReview.requestReview();
+                       } else {
+                         await inAppReview.openStoreListing();
+                       }
+                     } catch (e) {
+                       try {
+                         await inAppReview.openStoreListing();
+                       } catch (err) {
+                         AnxToast.show('No se pudo abrir la tienda de aplicaciones: $err');
+                       }
+                     }
+                   },
+                 ),
                  _NeoMenuItem(
                   title: 'Contacto',
                   icon: Icons.email_outlined,

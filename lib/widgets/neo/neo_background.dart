@@ -266,7 +266,7 @@ class NeoIconButton extends StatefulWidget {
   });
 
   final IconData icon;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final double size;
   final Color? color;
   final Color? iconColor;
@@ -281,14 +281,20 @@ class _NeoIconButtonState extends State<NeoIconButton> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDisabled = widget.onPressed == null;
+    
     // Adaptive icon button color
-    final bgColor = widget.color ?? NeoBrutalColors.cardColor(isDark);
-    final borderAndIconColor = widget.iconColor ?? NeoBrutalColors.borderColor(isDark);
+    final Color bgColor = isDisabled
+        ? (isDark ? Colors.grey[800]! : Colors.grey[300]!)
+        : (widget.color ?? NeoBrutalColors.cardColor(isDark));
+    final Color borderAndIconColor = isDisabled
+        ? (isDark ? Colors.grey[600]! : Colors.grey[500]!)
+        : (widget.iconColor ?? NeoBrutalColors.borderColor(isDark));
 
     return GestureDetector(
-      onTapDown: (_) => setState(() => _isPressed = true),
-      onTapUp: (_) => setState(() => _isPressed = false),
-      onTapCancel: () => setState(() => _isPressed = false),
+      onTapDown: isDisabled ? null : (_) => setState(() => _isPressed = true),
+      onTapUp: isDisabled ? null : (_) => setState(() => _isPressed = false),
+      onTapCancel: isDisabled ? null : () => setState(() => _isPressed = false),
       onTap: widget.onPressed,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 100),
@@ -297,13 +303,13 @@ class _NeoIconButtonState extends State<NeoIconButton> {
         transform: Matrix4.identity()
           // ignore: deprecated_member_use
           ..translate(
-            _isPressed ? 2.0 : 0.0,
-            _isPressed ? 3.0 : 0.0,
+            (_isPressed && !isDisabled) ? 2.0 : 0.0,
+            (_isPressed && !isDisabled) ? 3.0 : 0.0,
           ),
         decoration: BoxDecoration(
           color: bgColor,
           border: Border.all(width: 3, color: borderAndIconColor),
-          boxShadow: _isPressed
+          boxShadow: (_isPressed || isDisabled)
               ? []
               : [BoxShadow(offset: const Offset(4, 4), blurRadius: 0, color: borderAndIconColor)],
         ),

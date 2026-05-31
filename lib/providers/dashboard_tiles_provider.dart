@@ -70,14 +70,12 @@ class DashboardTilesNotifier extends StateNotifier<DashboardTilesState> {
 
   void _handlePrefsChange() {
     final sanitized = _sanitize(_prefs.statisticsDashboardTiles);
-    if (state.hasUnsavedChanges) {
-      state = state.copyWith(savedTiles: sanitized);
-    } else {
+    if (!listEquals(sanitized, state.savedTiles)) {
       state = DashboardTilesState(
         savedTiles: sanitized,
         workingTiles: List.of(sanitized),
         hasUnsavedChanges: false,
-        isEditing: state.isEditing && state.hasUnsavedChanges,
+        isEditing: state.isEditing,
       );
     }
   }
@@ -149,9 +147,13 @@ class DashboardTilesNotifier extends StateNotifier<DashboardTilesState> {
   void _updateWorking(List<StatisticsDashboardTileType> next) {
     final sanitized = _sanitize(next);
     final dirty = !listEquals(sanitized, state.savedTiles);
+    if (dirty) {
+      _prefs.statisticsDashboardTiles = sanitized;
+    }
     state = state.copyWith(
+      savedTiles: sanitized,
       workingTiles: sanitized,
-      hasUnsavedChanges: dirty,
+      hasUnsavedChanges: false,
       isEditing: state.isEditing || dirty,
     );
   }

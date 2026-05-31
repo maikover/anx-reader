@@ -10,6 +10,7 @@ import 'package:cubebook/widgets/statistic/dashboard_tiles/dashboard_tile_regist
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:cubebook/widgets/neo/neo_background.dart';
 
 // Provider to track current page index in IntroductionScreen
 final _currentPageIndexProvider = StateProvider.autoDispose<int>((ref) => 0);
@@ -51,21 +52,22 @@ class _StatisticDashboardTitleState
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              IconButton(
-                onPressed: availableTiles.isEmpty ? null : showAddTileSheet,
-                icon: const Icon(Icons.add),
-                tooltip: l10n.statisticsDashboardAddCard,
+              Tooltip(
+                message: l10n.statisticsDashboardAddCard,
+                child: NeoIconButton(
+                  onPressed: availableTiles.isEmpty ? null : showAddTileSheet,
+                  icon: Icons.add,
+                  size: 40,
+                ),
               ),
-              // IconButton(
-              //   onPressed: notifier.discardChanges,
-              //   icon: const Icon(Icons.close),
-              //   tooltip: 'Discard',
-              // ),
               const SizedBox(width: 8),
-              IconButton(
-                onPressed: notifier.saveLayout,
-                icon: const Icon(Icons.save),
-                tooltip: l10n.commonSave,
+              Tooltip(
+                message: l10n.commonSave,
+                child: NeoIconButton(
+                  onPressed: notifier.saveLayout,
+                  icon: Icons.save,
+                  size: 40,
+                ),
               ),
             ],
           ),

@@ -1,10 +1,5 @@
 **English** | [简体中文](README_zh.md) | [Türkçe](README_tr.md) | [Русский](README_RU.md)
 
-<br>
-
-<p align="center">
-  <img src="./docs/images/CubeBook-logo.jpg" alt="CubeBook-logo" width="100" />
-</p>
 <h1 align="center">CubeBook</h1>
 <p align="center"><a href="https://trendshift.io/repositories/10329" target="_blank"><img src="https://trendshift.io/api/badge/repositories/10329" alt="Anxcye%2Fanx-reader | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a></p>
 
@@ -23,9 +18,6 @@
 </p>
 
 CubeBook, a thoughtfully crafted e-book reader for book lovers. Featuring powerful AI capabilities and supporting various e-book formats, it makes reading smarter and more focused. With its modern interface design, we're committed to delivering pure reading pleasure.
-
-
-![](./docs/images/main.jpg)
 
 
 | Feature | Details | Status |
@@ -108,18 +100,7 @@ Telegram Group: [https://t.me/AnxReader](https://t.me/AnxReader)
 
 QQ Group：1042905699
 
-### Screenshots
-| ![](./docs/images/wide1.png) | ![](./docs/images/wide2.png) |
-| :------------------------------: | :----------------------------: |
-|   ![](./docs/images/wide3.png)   |  ![](./docs/images/wide4.png)  |
-|   ![](./docs/images/wide5.png)   |  ![](./docs/images/wide6.png)  |
-|   ![](./docs/images/wide7.png)   |  ![](./docs/images/wide8.png)  |
 
-
-| ![](./docs/images/mobile1.png) | ![](./docs/images/mobile2.png) | ![](./docs/images/mobile3.png) |
-| :----------------------------: | :----------------------------: | :----------------------------: |
-| ![](./docs/images/mobile4.png) | ![](./docs/images/mobile5.png) | ![](./docs/images/mobile6.png) |
-| ![](./docs/images/mobile7.png) | ![](./docs/images/mobile8.png) | ![](./docs/images/mobile9.png) |
 
 ## Donations
 If you like CubeBook, please consider supporting the project by donating. Your donation will help me maintain and improve the project.

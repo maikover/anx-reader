@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.14.11
+- Feat(auth): Improve authentication UI layouts and user verification flows
+- Perf(auth): Optimize session caching and authentication response times
+- Fix(ui): Improve Whats New screen style to follow Neo-brutalist guidelines and resolve Android navigation overlay issues
+- Feat(about): Add native in-app review access for rating the application on Android
+
+- Feat(auth): 优化身份验证界面布局与用户登录流程
+- Perf(auth): 提升会话缓存机制，优化身份验证响应性能
+- Fix(ui): 修复“新版本特性”页面的新粗野主义设计风格，解决安卓底部导航栏重叠问题
+- Feat(about): 在关于页面中新增安卓原生应用内评分入口
+
 ## 1.14.1
 - Fix(android): Fix bottom navigation buttons overlapping onboarding screen
 - Fix(design): Fix various UI layout issues and visual inconsistencies
