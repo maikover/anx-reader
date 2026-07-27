@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.14.12
+- Fix(android): Update targetSdkVersion to API 36 (Android 16) for Google Play Store compliance
+
 ## 1.14.11
 - Feat(auth): Improve authentication UI layouts and user verification flows
 - Perf(auth): Optimize session caching and authentication response times
